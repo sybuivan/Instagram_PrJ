@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { makeStyles } from '@mui/styles';
@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { AiFillFacebook } from 'react-icons/ai';
 import { images } from '../../../constants';
 import { InputField, PasswordField } from '../../../form-control';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles({
   loginForm: {
@@ -56,8 +57,33 @@ const useStyles = makeStyles({
     fontSize: '1.5rem',
     color: '#00376b',
   },
+  userDefault: {
+    width: '15rem',
+    borderRadius: '100%',
+  },
+  continueButton: {
+    textTransform: 'none!important',
+    marginBottom: '1.2rem!important',
+    fontSize: '1.3rem!important',
+  },
+  boxContinue: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    '& span': {
+      fontSize: '1.4rem',
+      '& span': {
+        fontWeight: '600',
+        cursor: 'pointer',
+        color: 'var(--color-blue)',
+      },
+    },
+  },
 });
 const LoginForm = ({ initialValues, onSubmit }) => {
+  const infoLogin = useSelector((state) => state.auth.current);
+  const [isLogin, setIsLogin] = useState(!!infoLogin);
+
   const schema = yup.object().shape({
     account: yup.string().required('Please enter username and try again.'),
     password: yup
@@ -81,48 +107,72 @@ const LoginForm = ({ initialValues, onSubmit }) => {
   return (
     <Box className={classes.loginForm}>
       <Box component="img" src={images.LOGO} className={classes.logo} />
-
-      <Box className={classes.boxForm}>
-        <form onSubmit={handleSubmit(handleOnSubmit)}>
-          <Box sx={{ width: '25rem' }}>
-            <InputField
-              placeholder="Phone number, username, or email"
-              control={control}
-              name="account"
-              errors={errors}
-            />
-            <PasswordField
-              placeholder="Password"
-              control={control}
-              name="password"
-              errors={errors}
-            />
-            <Box sx={{ marginBottom: '1.5rem' }}>
-              <Button variant="contained" sx={{ width: '100%' }} type="submit">
-                Login
-              </Button>
-            </Box>
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Box className={classes.line}></Box>
-              <Box>OR</Box>
-              <Box className={classes.line}></Box>
-            </Box>
-
-            <Box>
-              <Box component="button" className={classes.boxButton}>
-                <Box component="span">
-                  <AiFillFacebook />
-                  Login with facebook
-                </Box>
-              </Box>
-              <Link to="/" className={classes.link}>
-                Forgot password?
-              </Link>
-            </Box>
+      {!!isLogin ? (
+        <Box>
+          <Box
+            src={images.USER_DEFAULT}
+            component="img"
+            className={`${classes.userDefault} ${classes.logo}`}
+          />
+          <Box className={classes.boxContinue}>
+            <Button variant="contained" className={classes.continueButton}>
+              Continue as {infoLogin.account}
+            </Button>
+            <Typography variant="span">
+              Not {infoLogin.account}?
+              <Typography variant="span" onClick={() => setIsLogin(false)}>
+                Switch accounts
+              </Typography>
+            </Typography>
           </Box>
-        </form>
-      </Box>
+        </Box>
+      ) : (
+        <Box className={classes.boxForm}>
+          <form onSubmit={handleSubmit(handleOnSubmit)}>
+            <Box sx={{ width: '25rem' }}>
+              <InputField
+                placeholder="Phone number, username, or email"
+                control={control}
+                name="account"
+                errors={errors}
+              />
+              <PasswordField
+                placeholder="Password"
+                control={control}
+                name="password"
+                errors={errors}
+              />
+              <Box sx={{ marginBottom: '1.5rem' }}>
+                <Button
+                  variant="contained"
+                  sx={{ width: '100%' }}
+                  type="submit"
+                >
+                  Login
+                </Button>
+              </Box>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box className={classes.line}></Box>
+                <Box>OR</Box>
+                <Box className={classes.line}></Box>
+              </Box>
+
+              <Box>
+                <Box component="button" className={classes.boxButton}>
+                  <Box component="span">
+                    <AiFillFacebook />
+                    Login with facebook
+                  </Box>
+                </Box>
+                <Link to="/" className={classes.link}>
+                  Forgot password?
+                </Link>
+              </Box>
+            </Box>
+          </form>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -3,6 +3,9 @@ import { Box, Typography } from '@mui/material';
 import LoginForm from './LoginForm';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
+import { useDispatch } from 'react-redux';
+import { login } from '../authSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const useStyles = makeStyles({
   root: {
@@ -57,11 +60,16 @@ const Login = () => {
     password: '',
   };
 
+  const dispatch = useDispatch();
+
   // handle on submit
   const handleOnSubmit = async (data) => {
     try {
       // call api login
       console.log(data);
+      const resultAction = await dispatch(login(data));
+
+      unwrapResult(resultAction);
     } catch (error) {
       console.log(error);
     }
