@@ -1,12 +1,14 @@
 import { Home, Login, Profile, Register, Saved, Message } from '../page';
 import { Auth } from '../page/Auth';
+import Layout from '../components/Layout';
 let routes = [
   // A route object has the same properties as a <Route>
   // element. The `children` is just an array of child routes.
   {
     path: '/',
-    element: <Home />,
+    element: <Layout />,
     children: [
+      { path: '/', element: <Home /> },
       { path: 'profile', element: <Profile /> },
       { path: 'saved', element: <Saved /> },
       {

@@ -17,6 +17,8 @@ const useStyles = makeStyles({
   root: {
     height: '6rem',
     border: '1px solid var(--border-gray)',
+    marginBottom: '3rem',
+    backgroundColor: 'var(--color-white)',
   },
   header: {
     height: '100%',

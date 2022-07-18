@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Outlet, useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import { Header } from '../../components';
+import Content from './components/Content';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -14,8 +15,7 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <Header />
-      <Outlet />
+      <Content />
     </div>
   );
 };
