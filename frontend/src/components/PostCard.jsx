@@ -23,6 +23,7 @@ import {
 import { BsShare, BsBookmarkCheck } from 'react-icons/bs';
 import { images } from '../constants';
 import { makeStyles } from '@mui/styles';
+import FriendInfo from './FriendInfo';
 
 const useStyles = makeStyles({
   root: {
@@ -49,6 +50,33 @@ const useStyles = makeStyles({
       fontWeight: '600',
     },
   },
+  infoItem: {},
+  avatar: {
+    cursor: 'pointer',
+    position: 'relative',
+
+    '&:hover ': {
+      '& > $boxFriendInfo': {
+        display: 'block',
+      },
+    },
+  },
+  padding: {
+    position: 'absolute',
+    content: 'h',
+    width: '10rem',
+    backgroundColor: 'transparent',
+    height: '2rem',
+    top: '3.5rem',
+    left: 0,
+    right: 0,
+    zIndex: 10,
+  },
+  boxFriendInfo: {
+    position: 'absolute',
+    top: '5rem',
+    display: 'none',
+  },
 });
 const PostCard = ({ onClickShowMore }) => {
   const classes = useStyles();
@@ -74,9 +102,13 @@ const PostCard = ({ onClickShowMore }) => {
     <Box className={classes.root}>
       <Paper>
         <Box>
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
+          <ListItem alignItems="flex-start" className={classes.infoItem}>
+            <ListItemAvatar className={classes.avatar}>
               <Avatar alt="Remy Sharp" src={images.USER_FK} />
+              <Box className={classes.boxFriendInfo}>
+                <FriendInfo />
+              </Box>
+              <Box className={classes.padding} />
             </ListItemAvatar>
             <ListItemText
               className={classes.name}

@@ -2,7 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ListItem } from '@mui/material';
 
-const ModalChooseItem = ({ name, active }) => {
+const ModalChooseItem = ({ name, active, onAcceptUnFollow }) => {
+  const handleChooseItem = () => {
+    if (!!onAcceptUnFollow) {
+      console.log('hihi', !!onAcceptUnFollow);
+      onAcceptUnFollow();
+    }
+  };
   return (
     <ListItem
       sx={{
@@ -14,6 +20,7 @@ const ModalChooseItem = ({ name, active }) => {
         fontWeight: active ? '600' : '300',
         cursor: 'pointer',
       }}
+      onClick={handleChooseItem}
     >
       {name}
     </ListItem>
