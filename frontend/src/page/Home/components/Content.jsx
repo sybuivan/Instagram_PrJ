@@ -1,15 +1,17 @@
-import React, { useSate, useState } from 'react';
+import React, { useMemo, useSate, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Grid } from '@mui/material';
 import ListFriends from './ListFriends';
 import ListPostFriend from './ListPostFriend';
 import ModalPost from './ModalPost';
-import { Footer, Modal, ModalChooseItem } from '../../../components';
+import { BasicModal, Footer, ModalChooseItem } from '../../../components';
 import { useDispatch, useSelector } from 'react-redux';
 import { hiddenModal, showModal } from '../homeSlice';
 import Suggestions from './Suggestions';
 
 const Content = () => {
+  const isShowModal = useSelector((state) => state.home.modal);
+  console.log('isShowmodal', isShowModal);
   const [suggestions, setSuggestions] = useState(() => [
     {
       name: 'daudkavyinza',
@@ -33,13 +35,20 @@ const Content = () => {
     },
   ]);
   const dispatch = useDispatch();
-  const isShowModal = useSelector((state) => state.home.showModal);
   const [user, setUser] = useState(null);
-  const handleOnClickShowMore = () => {
-    dispatch(showModal());
+  const handleOnClickShowMore = (typeModal) => {
+    if (typeModal === 'MORE_POST') {
+      dispatch(showModal('MORE_POST'));
+    } else {
+      dispatch(showModal('UNFOLLOW'));
+    }
   };
-  const handleOnClickHideModal = () => {
-    dispatch(hiddenModal());
+  const handleOnClickHideModal = (typeModal) => {
+    if (typeModal === 'MORE_POST') {
+      dispatch(hiddenModal('MORE_POST'));
+    } else {
+      dispatch(hiddenModal('UNFOLLOW'));
+    }
   };
   const handleOnClickFollow = (name) => {
     const newSuggestions = [...suggestions];
@@ -67,6 +76,25 @@ const Content = () => {
     }
     dispatch(hiddenModal());
   };
+  const memoizedCard = useMemo(() => {
+    return (
+      <BasicModal
+        component={
+          <ModalPost>
+            <ModalChooseItem
+              name="Unfollow"
+              active={true}
+              onAcceptUnFollow={handleOnAcceptUnFollow}
+            />
+            <ModalChooseItem name="Cancal" active={false} />
+          </ModalPost>
+        }
+        type="UNFOLLOW"
+        showModal={isShowModal.UNFOLLOW}
+        onClickHideModal={handleOnClickHideModal}
+      />
+    );
+  }, [isShowModal]);
   return (
     <Container maxWidth="false" sx={{ maxWidth: '82.5rem', height: '100%' }}>
       <Grid container spacing={2}>
@@ -81,29 +109,12 @@ const Content = () => {
             onClickFollow={handleOnClickFollow}
             onClickUnFollow={handleOnClickUnFollow}
           />
-
+          {!!user && memoizedCard}
           {/* Footer */}
           <Footer />
         </Grid>
       </Grid>
-      {!!user && (
-        <Modal
-          component={
-            <ModalPost>
-              <ModalChooseItem
-                name="Unfollow"
-                active={true}
-                onAcceptUnFollow={handleOnAcceptUnFollow}
-              />
-              <ModalChooseItem name="Cancal" active={false} />
-            </ModalPost>
-          }
-          showModal={isShowModal}
-          onClickHideModal={handleOnClickHideModal}
-        />
-      )}
-      {/* (
-      <Modal
+      <BasicModal
         component={
           <ModalPost>
             <ModalChooseItem name="Report" active={true} />
@@ -112,10 +123,10 @@ const Content = () => {
             <ModalChooseItem name="Cancal" active={false} />
           </ModalPost>
         }
-        showModal={isShowModal}
+        type="MORE_POST"
+        showModal={isShowModal.MORE_POST}
         onClickHideModal={handleOnClickHideModal}
       />
-      ) */}
     </Container>
   );
 };
