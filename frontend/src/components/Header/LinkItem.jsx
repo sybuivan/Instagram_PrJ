@@ -10,16 +10,24 @@ const useStyles = makeStyles({
     },
   },
 });
-const LinkItem = ({ path, icon }) => {
+const LinkItem = ({ path, icon, onShowModal }) => {
   const navigate = useNavigate();
   const classes = useStyles();
+  const handleOnClick = () => {
+    console.log('hahah', path);
+    if (!!path) {
+      navigate(`${path}`);
+    } else {
+      onShowModal();
+    }
+  };
   return (
     <IconButton
       size="large"
       aria-label="show 4 new mails"
       color="inherit"
       className={classes.navIcon}
-      onClick={() => navigate(`${path}`)}
+      onClick={handleOnClick}
     >
       {icon}
     </IconButton>

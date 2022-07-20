@@ -95,7 +95,7 @@ const PostCard = ({ onClickShowMore }) => {
 
   const handleOnClickMore = () => {
     if (!onClickShowMore) return;
-    onClickShowMore();
+    onClickShowMore('MORE_POST');
   };
 
   return (

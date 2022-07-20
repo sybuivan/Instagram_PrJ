@@ -5,6 +5,7 @@ import slider3 from '../assets/images/slider_3.png';
 import user from '../assets/images/user_df.jpg';
 import user_fk from '../assets/images/fk_tk.jpg';
 import post_img from '../assets/images/post_img.jpg';
+import pic_svg from '../assets/images/picVideo.svg';
 
 const images = {
   LOGO: logo,
@@ -13,5 +14,5 @@ const images = {
   USER_FK: user_fk,
   POST_IMG: post_img,
 };
-
+export const PicSvg = pic_svg;
 export default images;

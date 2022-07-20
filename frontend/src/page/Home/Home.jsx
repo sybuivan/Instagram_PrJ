@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Outlet, useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
@@ -13,11 +13,8 @@ const Home = () => {
       navigate('/accounts/login');
     }
   }, []);
-  return (
-    <div>
-      <Content />
-    </div>
-  );
+  const memoContent = useMemo(() => <Content />, []);
+  return <div>{memoContent}</div>;
 };
 
 Home.propTypes = {};
