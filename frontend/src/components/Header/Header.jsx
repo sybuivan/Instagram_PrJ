@@ -2,15 +2,13 @@ import { Grid, IconButton } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box, Container } from '@mui/system';
 import React, { useMemo, useState } from 'react';
-import { AiFillHome, AiOutlineHeart } from 'react-icons/ai';
-import { BiMessageSquareAdd } from 'react-icons/bi';
-import { FiSend } from 'react-icons/fi';
 import { RiAccountCircleFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { BasicModal, CreateNewPost } from '..';
+import { BasicModal } from '..';
 import { images, navRoutes } from '../../constants';
 import { hiddenModal, showModal } from '../../page/Home/homeSlice';
+import { CreateNewPost } from '../NewPost';
 import Search from '../Search';
 import LinkItem from './LinkItem';
 import Menu from './MenuFrofile';
@@ -22,6 +20,11 @@ const useStyles = makeStyles({
     border: '1px solid var(--border-gray)',
     marginBottom: '3rem',
     backgroundColor: 'var(--color-white)',
+    position: 'fixed',
+    top: 0,
+    right: 0,
+    left: 0,
+    zIndex: 10,
   },
   header: {
     height: '100%',

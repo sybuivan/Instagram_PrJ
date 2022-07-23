@@ -1,27 +1,15 @@
+import { ListItemButton, ListItemIcon, Menu } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
-import PropTypes from 'prop-types';
-import { List, ListItemButton, ListItemIcon, Menu, Paper } from '@mui/material';
-import { RiAccountCircleFill } from 'react-icons/ri';
 import { BsBookmarkCheck } from 'react-icons/bs';
 import { FiLogOut, FiSettings } from 'react-icons/fi';
-import { makeStyles } from '@mui/styles';
+import { RiAccountCircleFill } from 'react-icons/ri';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
-const useStyles = makeStyles({
-  navDown: {
-    zIndex: 2,
-    '& .css-1ps6pg7-MuiPaper-root': {
-      position: 'absolute',
-      top: '3.2rem',
-      right: 0,
-
-      '& .MuiListItemButton-root': {
-        fontSize: '1.6rem',
-      },
-    },
-  },
-});
 const MenuFrofile = ({ openMenu }) => {
-  const classes = useStyles();
+  const userName = useSelector((state) => state.auth.current);
+  const navigate = useNavigate();
   const handleClose = () => {};
   return (
     <Menu
@@ -40,7 +28,7 @@ const MenuFrofile = ({ openMenu }) => {
         },
       }}
     >
-      <ListItemButton>
+      <ListItemButton onClick={() => navigate(`${userName}`)}>
         <ListItemIcon>
           <RiAccountCircleFill />
         </ListItemIcon>

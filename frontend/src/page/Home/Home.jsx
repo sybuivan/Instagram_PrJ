@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { Outlet, useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
-import { Header } from '../../components';
+import { useNavigate } from 'react-router';
 import Content from './components/Content';
 
 const Home = () => {
@@ -14,7 +12,7 @@ const Home = () => {
     }
   }, []);
   const memoContent = useMemo(() => <Content />, []);
-  return <div>{memoContent}</div>;
+  return <>{memoContent}</>;
 };
 
 Home.propTypes = {};

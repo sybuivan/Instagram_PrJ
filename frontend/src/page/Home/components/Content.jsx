@@ -96,23 +96,21 @@ const Content = () => {
     );
   }, [isShowModal]);
   return (
-    <Container maxWidth="false" sx={{ maxWidth: '82.5rem', height: '100%' }}>
-      <Grid container spacing={2}>
-        <Grid item xs={7}>
-          <ListFriends />
-          <ListPostFriend onClickShowMore={handleOnClickShowMore} />
-        </Grid>
-        <Grid item xs={5}>
-          <Suggestions
-            onClickShowModal={handleOnClickShowMore}
-            suggestions={suggestions}
-            onClickFollow={handleOnClickFollow}
-            onClickUnFollow={handleOnClickUnFollow}
-          />
-          {!!user && memoizedCard}
-          {/* Footer */}
-          <Footer />
-        </Grid>
+    <>
+      <Grid item xs={7}>
+        <ListFriends />
+        <ListPostFriend onClickShowMore={handleOnClickShowMore} />
+      </Grid>
+      <Grid item xs={5}>
+        <Suggestions
+          onClickShowModal={handleOnClickShowMore}
+          suggestions={suggestions}
+          onClickFollow={handleOnClickFollow}
+          onClickUnFollow={handleOnClickUnFollow}
+        />
+        {!!user && memoizedCard}
+        {/* Footer */}
+        <Footer />
       </Grid>
       <BasicModal
         component={
@@ -127,7 +125,7 @@ const Content = () => {
         showModal={isShowModal.MORE_POST}
         onClickHideModal={handleOnClickHideModal}
       />
-    </Container>
+    </>
   );
 };
 

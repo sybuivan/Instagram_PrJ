@@ -1,12 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ListItem } from '@mui/material';
 
-const ModalChooseItem = ({ name, active, onAcceptUnFollow }) => {
+const ModalChooseItem = ({ name, active, onAcceptUnFollow, onDiscard }) => {
   const handleChooseItem = () => {
     if (!!onAcceptUnFollow) {
-      console.log('hihi', !!onAcceptUnFollow);
       onAcceptUnFollow();
+    }
+    if (!!onDiscard) {
+      onDiscard();
     }
   };
   return (
@@ -19,6 +20,10 @@ const ModalChooseItem = ({ name, active, onAcceptUnFollow }) => {
         color: active ? '#ed4956' : '#262626',
         fontWeight: active ? '600' : '300',
         cursor: 'pointer',
+        userSelect: 'none',
+        '&:hover': {
+          backgroundColor: 'rgba(0, 0, 0, .1)',
+        },
       }}
       onClick={handleChooseItem}
     >
@@ -26,7 +31,5 @@ const ModalChooseItem = ({ name, active, onAcceptUnFollow }) => {
     </ListItem>
   );
 };
-
-ModalChooseItem.propTypes = {};
 
 export default ModalChooseItem;
