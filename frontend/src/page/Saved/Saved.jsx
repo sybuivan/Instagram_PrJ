@@ -1,8 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
+import { Grid } from '@mui/material';
 const Saved = () => {
-  return <div>Page Saved</div>;
+  return (
+    <Grid item xs={12}>
+      Page Saved
+    </Grid>
+  );
 };
 
 Saved.propTypes = {};
