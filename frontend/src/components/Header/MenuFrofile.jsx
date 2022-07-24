@@ -7,8 +7,9 @@ import { RiAccountCircleFill } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
-const MenuFrofile = ({ openMenu }) => {
+const MenuFrofile = ({ openMenu, onClickLogout }) => {
   const userName = useSelector((state) => state.auth.current);
+  console.log(userName);
   const navigate = useNavigate();
   const handleClose = () => {};
   return (
@@ -46,7 +47,10 @@ const MenuFrofile = ({ openMenu }) => {
         </ListItemIcon>
         Settings
       </ListItemButton>
-      <ListItemButton sx={{ borderTop: '0.1rem solid var(--border-gray)' }}>
+      <ListItemButton
+        sx={{ borderTop: '0.1rem solid var(--border-gray)' }}
+        onClick={() => onClickLogout()}
+      >
         <ListItemIcon>
           <FiLogOut fontSize="small" />
         </ListItemIcon>

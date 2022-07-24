@@ -4,15 +4,16 @@ import { Box, Container } from '@mui/system';
 import React, { useMemo, useState } from 'react';
 import { RiAccountCircleFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BasicModal } from '..';
 import { images, navRoutes } from '../../constants';
 import { hiddenModal, showModal } from '../../page/Home/homeSlice';
-import { CreateNewPost } from '../NewPost';
+import { CreateNewPost } from '../../features/Post/components';
 import Search from '../Search';
 import LinkItem from './LinkItem';
 import Menu from './MenuFrofile';
 import ResultRearch from './ResultRearch';
+import { logout } from '../../page/Auth/authSlice';
 
 const useStyles = makeStyles({
   root: {
@@ -50,6 +51,7 @@ const Header = () => {
   console.log('header');
   const classes = useStyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isShowModal = useSelector((state) => state.home.modal);
   const handleOnClickShowMore = () => {
     dispatch(showModal('CREATE_POST'));
@@ -145,7 +147,15 @@ const Header = () => {
                 onClick={() => setOpenMenu((pre) => !pre)}
               >
                 <RiAccountCircleFill />
-                {openMenu && <Menu openMenu={openMenu} />}
+                {openMenu && (
+                  <Menu
+                    openMenu={openMenu}
+                    onClickLogout={() => {
+                      dispatch(logout());
+                      navigate('/accounts/login');
+                    }}
+                  />
+                )}
               </IconButton>
             </Grid>
           </Grid>
