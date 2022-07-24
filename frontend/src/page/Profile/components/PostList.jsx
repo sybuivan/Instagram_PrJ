@@ -2,8 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Grid, Typography } from '@mui/material';
 import { images } from '../../../constants';
+import Post from './Post';
 
-function PostList(props) {
+function PostList({ listPost }) {
+  console.log('listPost', listPost);
+  if (listPost.length > 0) {
+    return (
+      <>
+        {listPost.map((post) => (
+          <Grid item xs={4} key={post._id}>
+            <Post post={post} />
+          </Grid>
+        ))}
+      </>
+    );
+  }
   return (
     <>
       <Grid item xs={5}>
