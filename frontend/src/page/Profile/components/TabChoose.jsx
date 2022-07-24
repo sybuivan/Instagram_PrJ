@@ -4,7 +4,8 @@ import { BsBookmarkCheck, BsFillGrid3X3GapFill } from 'react-icons/bs';
 import { useNavigate, useParams, Outlet, useLocation } from 'react-router-dom';
 import { PostList } from '.';
 
-function TabChoose(props) {
+function TabChoose({ listPost }) {
+  console.log('listPost', listPost);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -56,7 +57,7 @@ function TabChoose(props) {
       </Tabs>
       <>
         <Grid container spacing={2}>
-          {!isSaved ? <Outlet /> : <PostList />}
+          {!isSaved ? <Outlet /> : <PostList listPost={listPost} />}
         </Grid>
       </>
     </Grid>

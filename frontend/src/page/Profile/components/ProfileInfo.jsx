@@ -12,6 +12,7 @@ import { images } from '../../../constants';
 import { FiSettings } from 'react-icons/fi';
 
 import { makeStyles } from '@mui/styles';
+import TabChoose from './TabChoose';
 const useStyles = makeStyles({
   root: {
     margin: '2rem 0',
@@ -23,7 +24,9 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
 });
-function ProfileInfo({ onOpenFollowere, onOpenFollowing }) {
+function ProfileInfo({ onOpenFollowere, onOpenFollowing, listPosted, user }) {
+  const { listPost, total } = listPosted;
+  console.log(listPosted.listPost, listPost);
   const classes = useStyles();
   const handleOpenFollowere = () => {
     onOpenFollowere();
@@ -38,7 +41,7 @@ function ProfileInfo({ onOpenFollowere, onOpenFollowing }) {
           <Box sx={{ mr: 10 }}>
             <Avatar
               alt="Remy Sharp"
-              src={images.USER_FK}
+              src={user.avatar || images.USER_FK}
               sx={{ width: '15rem', height: '15rem' }}
             />
           </Box>
@@ -46,7 +49,7 @@ function ProfileInfo({ onOpenFollowere, onOpenFollowing }) {
         <Grid item xs={5}>
           <Box>
             <Box className={classes.flex}>
-              <Typography variant="h3">syqv31</Typography>
+              <Typography variant="h4">{user.userName}</Typography>
               <Button
                 sx={{
                   border: '1px solid var(--border-gray)',
@@ -63,7 +66,7 @@ function ProfileInfo({ onOpenFollowere, onOpenFollowing }) {
             </Box>
             <Box className={classes.flex} sx={{ padding: '3.5rem 0' }}>
               <Box sx={{ fontSize: '1.8rem' }}>
-                <Typography variant="span">1</Typography> posts
+                <Typography variant="span">{total}</Typography> posts
               </Box>
               <Box
                 sx={{ fontSize: '1.8rem', cursor: 'pointer' }}
@@ -79,11 +82,12 @@ function ProfileInfo({ onOpenFollowere, onOpenFollowing }) {
               </Box>
             </Box>
             <Box>
-              <Typography variant="h4">Sỹ Bùi Văn</Typography>
+              <Typography variant="h4">{user.fullName}</Typography>
             </Box>
           </Box>
         </Grid>
       </Grid>
+      <TabChoose listPost={listPost} />
     </>
   );
 }
