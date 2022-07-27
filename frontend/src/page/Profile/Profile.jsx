@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
-import { followApi, postApi } from '../../api';
+import { followApi, postApi, userApi } from '../../api';
 import {
   hiddenLoading,
   hiddenModal,
@@ -16,6 +16,7 @@ const Profile = () => {
   const [listPosted, setListPosted] = useState([]);
   const [user, setUser] = useState([]);
   const [status, setStatus] = useState(false);
+  const [avatar, setAvatar] = useState(null);
   const handleOnOpenModal = (type) => {
     dispatch(showModal(type));
   };
@@ -45,6 +46,18 @@ const Profile = () => {
     })();
   }, []);
   console.log('user', user);
+  const handleOnChangeAvatar = (e) => {
+    const avatar = e.target.files[0];
+    avatar.preview = URL.createObjectURL(avatar);
+    setAvatar(avatar);
+  };
+  const handleOnSaveAvatar = async () => {
+    const formData = new FormData();
+    formData.append('avatar', avatar, avatar.name);
+    try {
+      await userApi.editAvatar(formData);
+    } catch (error) {}
+  };
   return (
     <>
       {status && (
@@ -52,9 +65,12 @@ const Profile = () => {
           onOpenModal={handleOnOpenModal}
           listPosted={listPosted}
           infoUser={user}
+          avatar={avatar}
+          onChangeAvatar={handleOnChangeAvatar}
           isFollowere={isShowModal.FOLLOWERE}
           isFollowing={isShowModal.FOLLOWING}
           onHiddenModal={handleOnClickHideModal}
+          onSaveAvatar={handleOnSaveAvatar}
         />
       )}
     </>

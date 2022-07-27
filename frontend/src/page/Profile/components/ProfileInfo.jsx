@@ -14,6 +14,7 @@ import { FiSettings } from 'react-icons/fi';
 import { makeStyles } from '@mui/styles';
 import { Followers, TabChoose } from '.';
 import { BasicModal } from '../../../components';
+import { BsFillCameraFill } from 'react-icons/bs';
 const useStyles = makeStyles({
   root: {
     margin: '2rem 0',
@@ -24,6 +25,13 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  avatarIcon: {
+    position: 'absolute!important',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%,-50%)',
+    fontSize: '3rem!important',
+  },
 });
 function ProfileInfo({
   onOpenModal,
@@ -32,6 +40,9 @@ function ProfileInfo({
   infoUser,
   isFollowere,
   isFollowing,
+  avatar,
+  onChangeAvatar,
+  onSaveAvatar,
 }) {
   const { user, follow } = infoUser;
 
@@ -46,18 +57,47 @@ function ProfileInfo({
     () => <TabChoose listPost={listPosted} />,
     [listPosted]
   );
-  console.log(user?.avatar);
+  const avatarMemo = useMemo(
+    () => (
+      <Box sx={{ mr: 10, position: 'relative' }}>
+        <Avatar
+          alt="Remy Sharp"
+          src={
+            avatar
+              ? avatar.preview
+              : `${process.env.REACT_APP_BASE_URL}${user?.avatar}`
+          }
+          sx={{ width: '18rem', height: '18rem' }}
+        />
+
+        <IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="label"
+          className={classes.avatarIcon}
+        >
+          <input
+            hidden
+            accept="image/*"
+            type="file"
+            onChange={(e) => onChangeAvatar(e)}
+          />
+          <BsFillCameraFill />
+        </IconButton>
+        {avatar && (
+          <Box className={classes.avatarIcon} sx={{ top: '70%' }}>
+            <Button variant="contained" onClick={() => onSaveAvatar()}>Save</Button>
+          </Box>
+        )}
+      </Box>
+    ),
+    [avatar]
+  );
   return (
     <>
       <Grid container sx={{ alignItems: 'center' }}>
         <Grid item xs={4} sx={{ padding: '5rem 0' }}>
-          <Box sx={{ mr: 10 }}>
-            <Avatar
-              alt="Remy Sharp"
-              src={`${process.env.REACT_APP_BASE_URL}/${user?.avatar}`}
-              sx={{ width: '15rem', height: '15rem' }}
-            />
-          </Box>
+          {avatarMemo}
         </Grid>
         <Grid item xs={5}>
           <Box>

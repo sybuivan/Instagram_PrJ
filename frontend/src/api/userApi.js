@@ -6,6 +6,12 @@ const categoryApi = {
     const user = axiosClient.get(`/users/${userId}`);
     return user;
   },
+  async editAvatar(formData) {
+    const userId = getUserId();
+    await axiosClient.put(`/users/edit-avatar/${userId}`, formData, {
+      headers: { 'content-type': 'multipart/form-data' },
+    });
+  },
 };
 
 export default categoryApi;
