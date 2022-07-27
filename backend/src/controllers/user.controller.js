@@ -29,6 +29,11 @@ const updateUser = catchAsync(async (req, res) => {
   res.send(user);
 });
 
+const editAvatar = catchAsync(async (req, res) => {
+  const user = await userService.editAvatar(req.params.userId, req.file.filename);
+  res.send(user);
+});
+
 const deleteUser = catchAsync(async (req, res) => {
   await userService.deleteUserById(req.params.userId);
   res.status(httpStatus.NO_CONTENT).send();
@@ -40,4 +45,5 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  editAvatar,
 };

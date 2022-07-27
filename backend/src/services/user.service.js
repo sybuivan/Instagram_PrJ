@@ -79,6 +79,17 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+const editAvatar = async (userId, avatar) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  Object.assign(user, { avatar: avatar });
+  console.log(user);
+  await user.save();
+  return user;
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -86,4 +97,5 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  editAvatar,
 };
