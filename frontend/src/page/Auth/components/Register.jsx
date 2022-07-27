@@ -1,8 +1,10 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import RegisterForm from './RegisterForm';
+import { authApi } from '../../../api';
+import { setSession } from '../../../utils';
 
 const useStyles = makeStyles({
   root: {
@@ -51,18 +53,25 @@ const useStyles = makeStyles({
   },
 });
 const Register = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
   const initialValues = {
-    account: '',
+    email: '',
     fullName: '',
     userName: '',
     password: '',
   };
 
-  const handleOnSubmit = (data) => {
+  const handleOnSubmit = async (data) => {
     try {
       // call api register
       console.log(data);
+      const res = await authApi.registerUser(data);
+      console.log(res);
+      navigate('/accounts/login');
+      // const { user, tokens } = res;
+      // setSession(tokens.access.token, tokens.refresh.token, user.id);
+      // console.log(user);
     } catch (error) {}
   };
   return (

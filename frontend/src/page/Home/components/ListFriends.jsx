@@ -1,15 +1,12 @@
-import React from 'react';
 import {
-  Paper,
   List,
   ListItem,
-  ListItemAvatar,
-  Avatar,
-  Typography,
+  ListItemAvatar, Paper, Typography
 } from '@mui/material';
-import { Box } from '@mui/system';
-import { images } from '../../../constants';
 import { makeStyles } from '@mui/styles';
+import { Box } from '@mui/system';
+import React from 'react';
+import { images } from '../../../constants';
 const useStyles = makeStyles({
   item: {
     display: 'inherit!important',

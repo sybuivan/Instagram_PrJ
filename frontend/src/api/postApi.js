@@ -8,14 +8,15 @@ const postApi = {
     });
     return post;
   },
-  async getPostAll() {
-    const userId = getUserId();
-
-    console.log(userId);
-    const { listPost, total } = await axiosClient.get(
-      `/post/get-all/${userId}`
+  async getPostAll(userName) {
+    const { newList } = await axiosClient.get(`/post/get-all/${userName}`);
+    return { newList };
+  },
+  async getPostAllFriend(userName) {
+    const { newList } = await axiosClient.get(
+      `/post/get-all-friend/${userName}`
     );
-    return { listPost, total };
+    return { newList };
   },
 };
 

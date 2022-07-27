@@ -5,7 +5,11 @@ const initialState = {
     CREATE_POST: false,
     UNFOLLOW: false,
     MORE_POST: false,
+    CANCEL: false,
+    FOLLOWING: false,
+    FOLLOWERE: false,
   },
+  loading: false,
 };
 export const homeSlice = createSlice({
   name: 'home',
@@ -22,6 +26,18 @@ export const homeSlice = createSlice({
         }
         case 'MORE_POST': {
           state.modal.MORE_POST = true;
+          break;
+        }
+        case 'CANCEL': {
+          state.modal.CANCEL = true;
+          break;
+        }
+        case 'FOLLOWING': {
+          state.modal.FOLLOWING = true;
+          break;
+        }
+        case 'FOLLOWERE': {
+          state.modal.FOLLOWERE = true;
           break;
         }
         default:
@@ -41,14 +57,33 @@ export const homeSlice = createSlice({
           state.modal.MORE_POST = false;
           break;
         }
+        case 'CANCEL': {
+          state.modal.CANCEL = false;
+          break;
+        }
+        case 'FOLLOWING': {
+          state.modal.FOLLOWING = false;
+          break;
+        }
+        case 'FOLLOWERE': {
+          state.modal.FOLLOWERE = false;
+          break;
+        }
         default:
           break;
       }
+    },
+    setLoading: (state) => {
+      state.loading = true;
+    },
+    hiddenLoading: (state) => {
+      state.loading = false;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { showModal, hiddenModal } = homeSlice.actions;
+export const { showModal, hiddenModal, setLoading, hiddenLoading } =
+  homeSlice.actions;
 
 export default homeSlice.reducer;

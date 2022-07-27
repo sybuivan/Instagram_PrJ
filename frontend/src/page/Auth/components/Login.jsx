@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import LoginForm from './LoginForm';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
-import { useDispatch } from 'react-redux';
-import { login } from '../authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { login_form } from '../authSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { authApi } from '../../../api';
+import axios from 'axios';
+import { setSession } from '../../../utils';
 
 const useStyles = makeStyles({
   root: {
@@ -55,25 +58,46 @@ const useStyles = makeStyles({
 });
 const Login = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const initialValues = {
-    account: '',
+    email: '',
     password: '',
   };
-
-  const dispatch = useDispatch();
-
+  const isLogin = useSelector((state) => state.auth.current);
+  console.log('isLogin', isLogin);
+  if (!!isLogin) {
+    return <Navigate to="/" replace={true} />;
+  }
   // handle on submit
   const handleOnSubmit = async (data) => {
     try {
       // call api login
       console.log(data);
-      const resultAction = await dispatch(login(data));
+      // const resultAction = await dispatch(login(data));
 
-      unwrapResult(resultAction);
+      // unwrapResult(resultAction);
+      const res = await authApi.loginUser(data);
+      console.log('Res', res);
+      const { user, tokens } = res;
+      axios.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${tokens.access.token}`;
+      dispatch(
+        login_form({
+          token: tokens.access.token,
+          refresh: tokens.refresh.token,
+          userName: user.userName,
+          id: user.id,
+        })
+      );
+
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <Box className={classes.root}>
       <Box className={classes.formWrapper}>

@@ -85,7 +85,7 @@ const LoginForm = ({ initialValues, onSubmit }) => {
   const [isLogin, setIsLogin] = useState(!!infoLogin);
 
   const schema = yup.object().shape({
-    account: yup.string().required('Please enter username and try again.'),
+    email: yup.string().required('Please enter username and try again.'),
     password: yup
       .string()
       .required('Please enter passwork and try again.')
@@ -133,7 +133,7 @@ const LoginForm = ({ initialValues, onSubmit }) => {
               <InputField
                 placeholder="Phone number, username, or email"
                 control={control}
-                name="account"
+                name="email"
                 errors={errors}
               />
               <PasswordField

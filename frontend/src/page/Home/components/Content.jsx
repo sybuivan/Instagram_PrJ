@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hiddenModal, showModal } from '../homeSlice';
 import Suggestions from './Suggestions';
 
-const Content = () => {
+const Content = ({ listPost }) => {
   const isShowModal = useSelector((state) => state.home.modal);
   console.log('isShowmodal', isShowModal);
   const [suggestions, setSuggestions] = useState(() => [
@@ -99,7 +99,10 @@ const Content = () => {
     <>
       <Grid item xs={7}>
         <ListFriends />
-        <ListPostFriend onClickShowMore={handleOnClickShowMore} />
+        <ListPostFriend
+          onClickShowMore={handleOnClickShowMore}
+          listPost={listPost}
+        />
       </Grid>
       <Grid item xs={5}>
         <Suggestions

@@ -59,7 +59,7 @@ const useStyles = makeStyles({
 const RegisterForm = ({ initialValues, onSubmit }) => {
   const classes = useStyles();
   const schema = yup.object().shape({
-    account: yup.string().required('Please enter username and try again.'),
+    email: yup.string().required('Please enter username and try again.'),
     fullName: yup
       .string()
       .required('Please enter full name and try again.')
@@ -107,7 +107,7 @@ const RegisterForm = ({ initialValues, onSubmit }) => {
           <Box sx={{ width: '25rem' }}>
             <InputField
               placeholder="Phone number, username, or email"
-              name="account"
+              name="email"
               control={control}
               errors={errors}
             />

@@ -1,6 +1,5 @@
+import { Dialog } from '@mui/material';
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Box, Dialog, Typography } from '@mui/material';
 
 const BasicModal = ({ component, showModal, onClickHideModal, type }) => {
   return (
@@ -12,6 +11,9 @@ const BasicModal = ({ component, showModal, onClickHideModal, type }) => {
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      sx={{
+        '& .css-1t1j96h-MuiPaper-root-MuiDialog-paper': { maxWidth: '80rem' },
+      }}
     >
       {component}
     </Dialog>

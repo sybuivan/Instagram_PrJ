@@ -9,8 +9,8 @@ import {
   Button,
   ListItemText,
 } from '@mui/material';
-import { FriendItem } from '.';
 import { makeStyles } from '@mui/styles';
+import { FriendItem } from '.';
 
 const useStyles = makeStyles({
   root: {
@@ -38,16 +38,18 @@ const useStyles = makeStyles({
     },
   },
 });
-const FriendInfo = () => {
+const FriendInfo = ({ info, user, posted }) => {
+  console.log(posted);
   const classes = useStyles();
   return (
     <Paper className={classes.root}>
       <Box sx={{ borderBottom: '1px solid #efefef' }}>
         <FriendItem
           people={{
-            name: 'daudkavyinza',
+            name: `${user.userName}`,
             byName: 'Follows you',
             isFollow: false,
+            avatar: `${user.avatar}`,
           }}
         />
       </Box>
@@ -70,7 +72,7 @@ const FriendInfo = () => {
                     variant="h5"
                     color="text.primary"
                   >
-                    2
+                    {posted?.length || 0}
                   </Typography>
                 </React.Fragment>
               }
@@ -96,7 +98,7 @@ const FriendInfo = () => {
                     variant="h5"
                     color="text.primary"
                   >
-                    2
+                    {info?.followere?.length || 0}
                   </Typography>
                 </React.Fragment>
               }
@@ -120,7 +122,7 @@ const FriendInfo = () => {
                     variant="h5"
                     color="text.primary"
                   >
-                    2
+                    {info?.following?.length || 0}
                   </Typography>
                 </React.Fragment>
               }
@@ -131,24 +133,14 @@ const FriendInfo = () => {
 
         <Box>
           <List className={`${classes.numberList} ${classes.listImage}`}>
-            <ListItem sx={{ p: '0 0.1rem', height: '12rem' }}>
-              <Box
-                component="img"
-                src="https://cdn.tgdd.vn/2021/01/content/bo%CC%80vai-800x500.jpg"
-              />
-            </ListItem>
-            <ListItem sx={{ p: '0 0.1rem' }}>
-              <Box
-                component="img"
-                src="https://cdn.tgdd.vn/2021/01/content/bo%CC%80vai-800x500.jpg"
-              />
-            </ListItem>
-            <ListItem sx={{ p: '0 0.1rem' }}>
-              <Box
-                component="img"
-                src="https://cdn.tgdd.vn/2021/01/content/bo%CC%80vai-800x500.jpg"
-              />
-            </ListItem>
+            {posted.map((item) => (
+              <ListItem sx={{ p: '0 0.1rem', height: '12rem', width: '13rem' }}>
+                <Box
+                  component="img"
+                  src={`${process.env.REACT_APP_BASE_URL}/${item.images}`}
+                />
+              </ListItem>
+            ))}
           </List>
         </Box>
 

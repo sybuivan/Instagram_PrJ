@@ -44,6 +44,10 @@ const userSchema = mongoose.Schema(
       enum: roles,
       default: 'user',
     },
+    avatar: {
+      type: String,
+      default: 'user_df.png',
+    },
     isEmailVerified: {
       type: Boolean,
       default: false,

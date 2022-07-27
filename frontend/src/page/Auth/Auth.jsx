@@ -43,6 +43,7 @@ const Auth = () => {
       resetTimeout(timeoutRef);
     };
   }, [position]);
+  
   return (
     <Box className={classes.root}>
       <Grid

@@ -5,15 +5,13 @@ import React, { useMemo, useState } from 'react';
 import { RiAccountCircleFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { BasicModal } from '..';
 import { images, navRoutes } from '../../constants';
 import { hiddenModal, showModal } from '../../page/Home/homeSlice';
 import { CreateNewPost } from '../../features/Post/components';
-import Search from '../Search';
-import LinkItem from './LinkItem';
-import Menu from './MenuFrofile';
-import ResultRearch from './ResultRearch';
 import { logout } from '../../page/Auth/authSlice';
+import { BasicModal } from '../Modal';
+import { LinkItem, MenuFrofile } from '.';
+import { ResultRearch, Search } from '..';
 
 const useStyles = makeStyles({
   root: {
@@ -48,7 +46,6 @@ const useStyles = makeStyles({
 });
 
 const Header = () => {
-  console.log('header');
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -148,7 +145,7 @@ const Header = () => {
               >
                 <RiAccountCircleFill />
                 {openMenu && (
-                  <Menu
+                  <MenuFrofile
                     openMenu={openMenu}
                     onClickLogout={() => {
                       dispatch(logout());

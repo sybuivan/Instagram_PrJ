@@ -9,7 +9,11 @@ let routes = [
     element: <Layout />,
     children: [
       { path: '/', element: <Home /> },
-      { path: 'profile', element: <Profile /> },
+      {
+        path: ':userName',
+        element: <Profile />,
+        children: [{ path: 'saved', element: <Saved /> }],
+      },
       { path: 'saved', element: <Saved /> },
       {
         path: 'message',

@@ -1,5 +1,5 @@
 const storegeKeys = {
-  USER: 'user',
+  USER: 'user-name',
   TOKEN: 'access_token',
   MODAL: 'modal',
 };

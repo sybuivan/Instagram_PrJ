@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Picker from 'emoji-picker-react';
 import {
   Box,
@@ -21,9 +21,11 @@ import {
   AiOutlineSmile,
 } from 'react-icons/ai';
 import { BsShare, BsBookmarkCheck } from 'react-icons/bs';
-import { images } from '../constants';
+import { images } from '../../constants';
 import { makeStyles } from '@mui/styles';
-import FriendInfo from './FriendInfo';
+import { FriendInfo } from '..';
+import { postApi } from '../../api';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles({
   root: {
@@ -78,10 +80,11 @@ const useStyles = makeStyles({
     display: 'none',
   },
 });
-const PostCard = ({ onClickShowMore }) => {
+const PostCard = ({ onClickShowMore, post }) => {
   const classes = useStyles();
   const [showEmoji, setShowEmoji] = useState(false);
   const [comment, setComment] = useState('');
+  const [posted, setPosted] = useState([]);
 
   //   show icon
   const onEmojiClick = (event, emojiObject) => {
@@ -98,21 +101,38 @@ const PostCard = ({ onClickShowMore }) => {
     onClickShowMore('MORE_POST');
   };
 
+  useEffect(() => {
+    (async () => {
+      const { newList } = await postApi.getPostAll(post.user.userName);
+      setPosted(newList);
+    })();
+  }, []);
+  const navigate = useNavigate();
   return (
     <Box className={classes.root}>
       <Paper>
         <Box>
           <ListItem alignItems="flex-start" className={classes.infoItem}>
-            <ListItemAvatar className={classes.avatar}>
-              <Avatar alt="Remy Sharp" src={images.USER_FK} />
+            <ListItemAvatar
+              className={classes.avatar}
+              onClick={() => navigate(`${post.user.userName}`)}
+            >
+              <Avatar
+                alt="Remy Sharp"
+                src={`${process.env.REACT_APP_BASE_URL}${post.user.avatar}`}
+              />
               <Box className={classes.boxFriendInfo}>
-                <FriendInfo />
+                <FriendInfo
+                  info={post.user_follow}
+                  user={post.user}
+                  posted={posted}
+                />
               </Box>
               <Box className={classes.padding} />
             </ListItemAvatar>
             <ListItemText
               className={classes.name}
-              primary="linhchi2k904"
+              primary={post.user.userName}
               secondary={
                 <React.Fragment>
                   <Typography
@@ -134,7 +154,7 @@ const PostCard = ({ onClickShowMore }) => {
         <Box>
           <Box
             component="img"
-            src={images.POST_IMG}
+            src={`${process.env.REACT_APP_BASE_URL}${post.images}`}
             sx={{ width: '100%', height: '50rem' }}
           />
         </Box>
@@ -169,8 +189,21 @@ const PostCard = ({ onClickShowMore }) => {
           </Grid>
         </Box>
         <Box sx={{ pl: 2, fontSize: '1.4rem', fontWeight: '600', mb: 3 }}>
+          <Box sx={{ mb: 1 }}>
+            {post.user.userName}{' '}
+            <Typography variant="span" sx={{ fontWeight: '400' }}>
+              {post.caption}
+            </Typography>
+          </Box>
           <Box sx={{ mb: 1 }}>40 likes</Box>
-          <Box sx={{ color: 'var(--color-8e8e8e)' }}>View all 3 comments</Box>
+
+          {post.commnets.length === 0 ? (
+            ''
+          ) : (
+            <Box sx={{ color: 'var(--color-8e8e8e)' }}>
+              View all {post.commnets.length} comments
+            </Box>
+          )}
         </Box>
         <Box sx={{ p: '2rem 0', borderTop: '0.1rem solid #efefef' }}>
           <Box sx={{ display: 'flex' }}>

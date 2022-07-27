@@ -1,18 +1,34 @@
-import React, { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router';
 import Content from './components/Content';
+import { postApi } from '../../api';
+import { getUserName } from '../../utils';
+import { setLoading, hiddenLoading } from './homeSlice';
 
 const Home = () => {
-  const navigate = useNavigate();
   const isLogin = useSelector((state) => state.auth.current);
+  const dispatch = useDispatch();
+  const [listPost, setListPost] = useState([]);
+  const [status, setStatus] = useState(false);
   useEffect(() => {
-    if (!isLogin) {
-      navigate('/accounts/login');
-    }
+    (async () => {
+      try {
+        dispatch(setLoading());
+        const { newList } = await postApi.getPostAllFriend(getUserName());
+        setListPost(newList);
+        setStatus(true);
+        dispatch(hiddenLoading());
+      } catch (error) {
+      } finally {
+        // dispatch(hiddenLoading());
+      }
+    })();
   }, []);
-  const memoContent = useMemo(() => <Content />, []);
-  return <>{memoContent}</>;
+  if (!isLogin) {
+    return <Navigate to="/accounts/login" replace={true} />;
+  }
+  return <>{status && <Content listPost={listPost} />}</>;
 };
 
 Home.propTypes = {};

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Grid, Typography } from '@mui/material';
 import { images } from '../../../constants';
-import Post from './Post';
+import { Post } from '.';
 
 function PostList({ listPost }) {
   console.log('listPost', listPost);

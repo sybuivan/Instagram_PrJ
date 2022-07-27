@@ -12,6 +12,10 @@ const postSchema = mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  user_follow: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: 'Follow',
+  },
   caption: {
     type: String,
   },
@@ -25,6 +29,15 @@ const postSchema = mongoose.Schema({
       },
       user_commnet: {
         type: String,
+      },
+    },
+  ],
+  saved: [
+    {
+      post_id: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Post',
+        required: true,
       },
     },
   ],

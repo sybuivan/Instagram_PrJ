@@ -1,36 +1,60 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { BasicModal } from '../../components';
-import Followers from './components/Followers';
-import ProfileInfo from './components/ProfileInfo';
-import TabChoose from './components/TabChoose';
-import { showModal, hiddenModal } from '../Home/homeSlice';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
+import { followApi, postApi } from '../../api';
+import {
+  hiddenLoading,
+  hiddenModal,
+  setLoading,
+  showModal,
+} from '../Home/homeSlice';
+import { ProfileInfo } from './components';
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const handleOnOpenFollowing = () => {
-    dispatch(showModal('FOLLOWING'));
+  const location = useLocation();
+  const [listPosted, setListPosted] = useState([]);
+  const [user, setUser] = useState([]);
+  const [status, setStatus] = useState(false);
+  const handleOnOpenModal = (type) => {
+    dispatch(showModal(type));
   };
-  const handleOnOpenFollowere = () => {
-    dispatch(showModal('FOLLOWERE'));
-  };
-  const handleClickHideModal = () => {
-    dispatch(hiddenModal('FOLLOWERE'));
+
+  const handleOnClickHideModal = (type) => {
+    dispatch(hiddenModal(type));
   };
   const isShowModal = useSelector((state) => state.home.modal);
-  console.log(isShowModal.FOLLOWERE);
+  const isLoading = useSelector((state) => state.home.loading);
+  console.log(isLoading);
+  useEffect(() => {
+    (async () => {
+      try {
+        dispatch(setLoading());
+        const { newList } = await postApi.getPostAll(
+          location.pathname.replace('/', '')
+        );
+        const { follows, user } = await followApi.getFollowUser();
+        setUser({ follows, user });
+        setListPosted(newList);
+        setStatus(true);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        dispatch(hiddenLoading());
+      }
+    })();
+  }, []);
+  console.log('user', user);
   return (
     <>
-      <ProfileInfo
-        onOpenFollowing={handleOnOpenFollowing}
-        onOpenFollowere={handleOnOpenFollowere}
-      />
-      <TabChoose />
-      {isShowModal.FOLLOWERE && (
-        <BasicModal
-          component={<Followers onClose={handleClickHideModal} />}
-          showModal={isShowModal.FOLLOWERE}
-          onClickHideModal={handleClickHideModal}
+      {status && (
+        <ProfileInfo
+          onOpenModal={handleOnOpenModal}
+          listPosted={listPosted}
+          infoUser={user}
+          isFollowere={isShowModal.FOLLOWERE}
+          isFollowing={isShowModal.FOLLOWING}
+          onHiddenModal={handleOnClickHideModal}
         />
       )}
     </>

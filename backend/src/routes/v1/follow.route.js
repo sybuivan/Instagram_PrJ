@@ -1,12 +1,11 @@
 /* eslint-disable */
 const express = require('express');
-const { postController } = require('../../controllers');
+const { followController } = require('../../controllers');
 const auth = require('../../middlewares/auth');
 const upload = require('../../middlewares/upload');
 const validate = require('../../middlewares/validate');
 
 const router = express.Router();
-router.post('/create', upload.single('images'), postController.createPost);
-router.get('/get-all/:userName', postController.getPostAll);
-router.get('/get-all-friend/:userId', postController.getPostFriend);
+router.post('/add-follow/:userId/:userFriend', followController.addFollow);
+router.get('/get-friend/:userId', followController.getFollows);
 module.exports = router;

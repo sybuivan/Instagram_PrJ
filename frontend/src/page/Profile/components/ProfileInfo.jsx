@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Avatar,
@@ -12,7 +12,8 @@ import { images } from '../../../constants';
 import { FiSettings } from 'react-icons/fi';
 
 import { makeStyles } from '@mui/styles';
-import TabChoose from './TabChoose';
+import { Followers, TabChoose } from '.';
+import { BasicModal } from '../../../components';
 const useStyles = makeStyles({
   root: {
     margin: '2rem 0',
@@ -24,16 +25,28 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
 });
-function ProfileInfo({ onOpenFollowere, onOpenFollowing, listPosted, user }) {
-  const { listPost, total } = listPosted;
-  console.log(listPosted.listPost, listPost);
+function ProfileInfo({
+  onOpenModal,
+  onHiddenModal,
+  listPosted,
+  infoUser,
+  isFollowere,
+  isFollowing,
+}) {
+  const { user, follow } = infoUser;
+
   const classes = useStyles();
-  const handleOpenFollowere = () => {
-    onOpenFollowere();
+  const handleOpenModal = (type) => {
+    onOpenModal(type);
   };
-  const handleOpenFollowing = () => {
-    onOpenFollowing();
+  const handleHiddenModal = (type) => {
+    onHiddenModal(type);
   };
+  const memoTabChoose = useMemo(
+    () => <TabChoose listPost={listPosted} />,
+    [listPosted]
+  );
+  console.log(user?.avatar);
   return (
     <>
       <Grid container sx={{ alignItems: 'center' }}>
@@ -41,7 +54,7 @@ function ProfileInfo({ onOpenFollowere, onOpenFollowing, listPosted, user }) {
           <Box sx={{ mr: 10 }}>
             <Avatar
               alt="Remy Sharp"
-              src={user.avatar || images.USER_FK}
+              src={`${process.env.REACT_APP_BASE_URL}/${user?.avatar}`}
               sx={{ width: '15rem', height: '15rem' }}
             />
           </Box>
@@ -66,19 +79,26 @@ function ProfileInfo({ onOpenFollowere, onOpenFollowing, listPosted, user }) {
             </Box>
             <Box className={classes.flex} sx={{ padding: '3.5rem 0' }}>
               <Box sx={{ fontSize: '1.8rem' }}>
-                <Typography variant="span">{total}</Typography> posts
+                <Typography variant="span">{listPosted.length}</Typography>{' '}
+                posts
               </Box>
               <Box
                 sx={{ fontSize: '1.8rem', cursor: 'pointer' }}
-                onClick={handleOpenFollowere}
+                onClick={() => handleOpenModal('FOLLOWERE')}
               >
-                <Typography variant="span">2</Typography> followers
+                <Typography variant="span">
+                  {follow?.followere?.length || 0}
+                </Typography>{' '}
+                followers
               </Box>
               <Box
                 sx={{ fontSize: '1.8rem', cursor: 'pointer' }}
-                onClick={handleOpenFollowing}
+                onClick={() => handleOpenModal('FOLLOWING')}
               >
-                <Typography variant="span">4</Typography> Following
+                <Typography variant="span">
+                  {follow?.following?.length || 0}
+                </Typography>{' '}
+                Following
               </Box>
             </Box>
             <Box>
@@ -87,7 +107,35 @@ function ProfileInfo({ onOpenFollowere, onOpenFollowing, listPosted, user }) {
           </Box>
         </Grid>
       </Grid>
-      <TabChoose listPost={listPost} />
+      {memoTabChoose}
+      {isFollowere && (
+        <BasicModal
+          component={
+            <Followers
+              onClose={onHiddenModal}
+              title="Followere"
+              followeres={follow?.followere}
+            />
+          }
+          showModal={isFollowere}
+          onClickHideModal={handleHiddenModal}
+          type="FOLLOWERE"
+        />
+      )}
+      {isFollowing && (
+        <BasicModal
+          component={
+            <Followers
+              onClose={onHiddenModal}
+              title="Followings"
+              followings={follow?.following}
+            />
+          }
+          showModal={isFollowing}
+          onClickHideModal={handleHiddenModal}
+          type="FOLLOWING"
+        />
+      )}
     </>
   );
 }

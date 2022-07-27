@@ -1,8 +1,8 @@
 export { default as Layout } from './Layout';
-export { default as Header } from './Header/Header';
-export { default as PostCard } from './PostCard';
-export { default as BasicModal } from './BasicModal';
-export { default as ModalChooseItem } from './ModalChooseItem';
-export { default as FriendItem } from './FriendItem';
 export { default as Footer } from './Footer';
-export { default as CreateNewPost } from './CreateNewPost';
+export { default as Loading } from './Loading';
+export * from './Modal';
+export * from './Friends';
+export * from './PostCard';
+export * from './Search';
+export * from './Header';

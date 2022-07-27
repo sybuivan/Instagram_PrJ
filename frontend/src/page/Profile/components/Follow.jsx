@@ -37,27 +37,29 @@ const useStyles = makeStyles({
     fontSize: '2rem!important',
   },
 });
-function People() {
+function People({ people, type }) {
   return (
     <ListItem>
       <ListItemAvatar>
         <Avatar alt="Remy Sharp" src={images.USER_FK} />
       </ListItemAvatar>
       <ListItemText
-        primary="he"
+        primary={people.userName}
+        sx={{ '& span': { fontSize: '1.3rem', fontWeight: '600' } }}
         secondary={
           <React.Fragment>
             <Typography
               sx={{
-                display: 'inline',
+                display: 'block',
                 fontSize: '1.2rem',
                 color: 'var(--color-8e8e8e)',
+                pt: 0.3,
               }}
               component="span"
               variant="body2"
               color="text.primary"
             >
-              hahah
+              {people.fullName}
             </Typography>
           </React.Fragment>
         }
@@ -68,36 +70,57 @@ function People() {
           color: 'var(--color-text)',
         }}
       >
-        Follow
+        {type}
       </Button>
     </ListItem>
   );
 }
 
-function Followers({ onClose }) {
+function Follow({ onClose, title, followings, followeres }) {
   const classes = useStyles();
   return (
     <Paper className={classes.root}>
       <Box className={classes.boxHead}>
-        <Typography variant="h4">Followers</Typography>
-        <IconButton className={classes.iconClose} onClick={() => onClose()}>
+        <Typography variant="h4">{title}</Typography>
+        <IconButton
+          className={classes.iconClose}
+          onClick={() => {
+            if (followings) {
+              onClose('FOLLOWING');
+            } else {
+              onClose('FOLLOWERE');
+            }
+          }}
+        >
           <AiOutlineCloseCircle />
         </IconButton>
       </Box>
       <Box sx={{ height: '100%' }}>
         <List sx={{ overflowY: 'scroll', height: '100%' }}>
-          <People />
-          <People />
-          <People />
-          <People />
-          <People />
-          <People />
+          {followings ? (
+            <>
+              {followings.map((people) => (
+                <People people={people} type="FOLLOWING" />
+              ))}
+            </>
+          ) : (
+            <Typography variant="h4" sx={{ textAlign: 'center', pt: 3 }}>
+              No people followeres
+            </Typography>
+          )}
+          {followeres && (
+            <>
+              {followeres.map(() => (
+                <People type="FOLLOWERE" />
+              ))}
+            </>
+          )}
         </List>
       </Box>
     </Paper>
   );
 }
 
-Followers.propTypes = {};
+Follow.propTypes = {};
 
-export default Followers;
+export default Follow;

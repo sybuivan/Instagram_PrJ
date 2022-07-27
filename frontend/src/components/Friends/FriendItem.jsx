@@ -7,8 +7,9 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { images } from '../constants';
+import { images } from '../../constants';
 import { makeStyles } from '@mui/styles';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles({
   name: {
@@ -40,7 +41,6 @@ const FriendItem = ({
   onClickShowModal,
 }) => {
   const classes = useStyles();
-  console.log('people', people);
   const handleOnClickFollow = () => {
     console.log('onClickFollow', !!onClickFollow);
 
@@ -51,10 +51,14 @@ const FriendItem = ({
     onClickUnFollow(people.name);
     onClickShowModal();
   };
+  const navigate = useNavigate();
   return (
     <ListItem alignItems="center">
-      <ListItemAvatar>
-        <Avatar alt="Remy Sharp" src={images.USER_FK} />
+      <ListItemAvatar onClick={() => navigate(`${people.name}`)}>
+        <Avatar
+          alt="Remy Sharp"
+          src={`${process.env.REACT_APP_BASE_URL}/${people.avatar}`}
+        />
       </ListItemAvatar>
       <ListItemText
         className={classes.name}
