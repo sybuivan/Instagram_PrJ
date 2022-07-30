@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 import { followApi, postApi, userApi } from '../../api';
+import { getUserName } from '../../utils';
 import {
   hiddenLoading,
   hiddenModal,
@@ -26,7 +27,7 @@ const Profile = () => {
   };
   const isShowModal = useSelector((state) => state.home.modal);
   const isLoading = useSelector((state) => state.home.loading);
-  console.log(isLoading);
+
   useEffect(() => {
     (async () => {
       try {
@@ -34,17 +35,21 @@ const Profile = () => {
         const { newList } = await postApi.getPostAll(
           location.pathname.replace('/', '')
         );
-        const { follows, user } = await followApi.getFollowUser();
+        const { follows, user } = await followApi.getFollowUser(
+          location.pathname.replace('/', '')
+        );
+        console.log(follows, user);
         setUser({ follows, user });
         setListPosted(newList);
         setStatus(true);
+        dispatch(hiddenModal('FOLLOWING'));
       } catch (error) {
         console.log(error);
       } finally {
         dispatch(hiddenLoading());
       }
     })();
-  }, []);
+  }, [location.pathname.replace('/', '')]);
   console.log('user', user);
   const handleOnChangeAvatar = (e) => {
     const avatar = e.target.files[0];
@@ -71,6 +76,7 @@ const Profile = () => {
           isFollowing={isShowModal.FOLLOWING}
           onHiddenModal={handleOnClickHideModal}
           onSaveAvatar={handleOnSaveAvatar}
+          isPrivate={location.pathname.replace('/', '') === getUserName()}
         />
       )}
     </>

@@ -9,7 +9,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hiddenModal, showModal } from '../homeSlice';
 import Suggestions from './Suggestions';
 
-const Content = ({ listPost }) => {
+const Content = ({
+  listPost,
+  listUserSuggets,
+  onClickFollow,
+  onClickUnFollow,
+  userFollow,
+}) => {
   const isShowModal = useSelector((state) => state.home.modal);
   console.log('isShowmodal', isShowModal);
   const [suggestions, setSuggestions] = useState(() => [
@@ -50,20 +56,21 @@ const Content = ({ listPost }) => {
       dispatch(hiddenModal('UNFOLLOW'));
     }
   };
-  const handleOnClickFollow = (name) => {
-    const newSuggestions = [...suggestions];
-    const peopleIndex = suggestions.findIndex((people) => people.name === name);
-    if (peopleIndex >= 0) {
-      newSuggestions[peopleIndex].isFollow = true;
-      console.log(newSuggestions[peopleIndex]);
-      setSuggestions(newSuggestions);
-    }
-  };
-  const handleOnClickUnFollow = (name) => {
-    setUser({
-      name: name,
-    });
-  };
+  // const handleOnClickFollow = (id) => {
+  //   onClickFollow(id);
+  //   const newSuggestions = [...listUserSuggets];
+  //   const peopleIndex = newSuggestions.findIndex((people) => people.id === id);
+  //   if (peopleIndex >= 0) {
+  //     newSuggestions[peopleIndex].isFollow = true;
+  //     console.log(newSuggestions[peopleIndex]);
+  //     setSuggestions(newSuggestions);
+  //   }
+  // };
+  // const handleOnClickUnFollow = (name) => {
+  //   setUser({
+  //     name: name,
+  //   });
+  // };
   const handleOnAcceptUnFollow = () => {
     const newSuggestions = [...suggestions];
     const peopleIndex = suggestions.findIndex(
@@ -95,6 +102,18 @@ const Content = ({ listPost }) => {
       />
     );
   }, [isShowModal]);
+
+  const suggestionsMemo = useMemo(
+    () => (
+      <Suggestions
+        onClickShowModal={handleOnClickShowMore}
+        onClickFollow={onClickFollow}
+        onClickUnFollow={onClickUnFollow}
+        listUserSuggets={listUserSuggets}
+      />
+    ),
+    [listUserSuggets, userFollow]
+  );
   return (
     <>
       <Grid item xs={7}>
@@ -105,12 +124,7 @@ const Content = ({ listPost }) => {
         />
       </Grid>
       <Grid item xs={5}>
-        <Suggestions
-          onClickShowModal={handleOnClickShowMore}
-          suggestions={suggestions}
-          onClickFollow={handleOnClickFollow}
-          onClickUnFollow={handleOnClickUnFollow}
-        />
+        {suggestionsMemo}
         {!!user && memoizedCard}
         {/* Footer */}
         <Footer />

@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { FriendItem } from '../../../components';
 const Suggestions = ({
   onClickShowModal,
-  suggestions,
   onClickFollow,
   onClickUnFollow,
+  listUserSuggets,
+  userFollow,
 }) => {
   return (
     <Box>
@@ -35,14 +36,17 @@ const Suggestions = ({
         </Link>
       </Box>
       <List>
-        {suggestions.map((people) => (
-          <FriendItem
-            onClickFollow={onClickFollow}
-            onClickUnFollow={onClickUnFollow}
-            onClickShowModal={onClickShowModal}
-            people={people}
-            key={people.name}
-          />
+        {listUserSuggets.map((people) => (
+          <>
+            {console.log('id', people.isFollow)}
+            <FriendItem
+              onClickFollow={onClickFollow}
+              onClickUnFollow={onClickUnFollow}
+              onClickShowModal={onClickShowModal}
+              people={people}
+              key={people.name}
+            />
+          </>
         ))}
       </List>
     </Box>

@@ -14,6 +14,7 @@ import {
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { images } from '../../../constants';
 import { makeStyles } from '@mui/styles';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles({
   root: {
@@ -38,14 +39,29 @@ const useStyles = makeStyles({
   },
 });
 function People({ people, type }) {
+  const navigate = useNavigate();
+  const handleNavigation = () => {
+    navigate(`/${people.userName}`);
+  };
   return (
     <ListItem>
-      <ListItemAvatar>
-        <Avatar alt="Remy Sharp" src={images.USER_FK} />
+      <ListItemAvatar onClick={handleNavigation}>
+        <Avatar
+          alt={people.userName}
+          src={`${process.env.REACT_APP_BASE_URL}${people?.avatar}`}
+          sx={{ cursor: 'pointer' }}
+        />
       </ListItemAvatar>
       <ListItemText
+        onClick={handleNavigation}
         primary={people.userName}
-        sx={{ '& span': { fontSize: '1.3rem', fontWeight: '600' } }}
+        sx={{
+          '& span': {
+            fontSize: '1.3rem',
+            fontWeight: '600',
+            cursor: 'pointer',
+          },
+        }}
         secondary={
           <React.Fragment>
             <Typography

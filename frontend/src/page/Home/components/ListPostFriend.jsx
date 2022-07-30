@@ -6,7 +6,11 @@ const ListPostFriend = ({ onClickShowMore, listPost }) => {
   return (
     <div>
       {listPost.map((post) => (
-        <PostCard onClickShowMore={onClickShowMore} post={post} key={post.id} />
+        <PostCard
+          onClickShowMore={onClickShowMore}
+          post={post}
+          key={post._id}
+        />
       ))}
     </div>
   );

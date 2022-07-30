@@ -134,7 +134,10 @@ const FriendInfo = ({ info, user, posted }) => {
         <Box>
           <List className={`${classes.numberList} ${classes.listImage}`}>
             {posted.map((item) => (
-              <ListItem sx={{ p: '0 0.1rem', height: '12rem', width: '13rem' }}>
+              <ListItem
+                sx={{ p: '0 0.1rem', height: '12rem', width: '13rem' }}
+                key={item._id}
+              >
                 <Box
                   component="img"
                   src={`${process.env.REACT_APP_BASE_URL}/${item.images}`}

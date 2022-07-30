@@ -42,13 +42,11 @@ const FriendItem = ({
 }) => {
   const classes = useStyles();
   const handleOnClickFollow = () => {
-    console.log('onClickFollow', !!onClickFollow);
-
-    onClickFollow(people.name);
+    onClickFollow(people.id);
   };
   const handleOnClickUnFollow = () => {
     if (!onClickUnFollow) return;
-    onClickUnFollow(people.name);
+    onClickUnFollow(people.id);
     onClickShowModal();
   };
   const navigate = useNavigate();
@@ -62,7 +60,7 @@ const FriendItem = ({
       </ListItemAvatar>
       <ListItemText
         className={classes.name}
-        primary={people.name}
+        primary={people.userName}
         secondary={
           <React.Fragment>
             <Typography
@@ -75,7 +73,7 @@ const FriendItem = ({
               variant="body2"
               color="text.primary"
             >
-              {people.byName}
+              Suggested for you
             </Typography>
           </React.Fragment>
         }
