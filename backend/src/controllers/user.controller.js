@@ -39,6 +39,11 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const getSuggestionsForUser = catchAsync(async (req, res) => {
+  const { listUserSuggets } = await userService.getSuggestionsForUser(req.params.userId);
+  res.send({ listUserSuggets });
+});
+
 module.exports = {
   createUser,
   getUsers,
@@ -46,4 +51,5 @@ module.exports = {
   updateUser,
   deleteUser,
   editAvatar,
+  getSuggestionsForUser,
 };

@@ -8,6 +8,11 @@ const followSchema = mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  userName: {
+    type: String,
+    ref: 'User',
+    required: true,
+  },
   followere: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'User', required: true }],
   following: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'User', required: true }],
 });

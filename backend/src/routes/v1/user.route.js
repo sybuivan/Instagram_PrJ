@@ -19,6 +19,7 @@ router
   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
 
 router.put('/edit-avatar/:userId', upload.single('avatar'), userController.editAvatar);
+router.get('/get-suggetions-friend/:userId', userController.getSuggestionsForUser);
 module.exports = router;
 
 /**

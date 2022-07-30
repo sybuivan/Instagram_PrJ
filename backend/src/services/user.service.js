@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { User } = require('../models');
+const { User, Follow } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -11,7 +11,9 @@ const createUser = async (userBody) => {
   if (await User.isEmailTaken(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-  return User.create(userBody);
+  const user = await User.create(userBody);
+  await Follow.create({ user: user.id, userName: user.useName, following: [], followere: [] });
+  return user;
 };
 
 /**
@@ -85,9 +87,21 @@ const editAvatar = async (userId, avatar) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   Object.assign(user, { avatar: avatar });
-  console.log(user);
   await user.save();
   return user;
+};
+
+const getSuggestionsForUser = async (userId) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  const listUserFollowing = await Follow.find({ user: userId });
+
+  listUserSuggets = await User.find({
+    $and: [{ _id: { $nin: listUserFollowing[0]?.following } }, { _id: { $ne: userId } }],
+  }).limit(5);
+  return { listUserSuggets };
 };
 
 module.exports = {
@@ -98,4 +112,5 @@ module.exports = {
   updateUserById,
   deleteUserById,
   editAvatar,
+  getSuggestionsForUser,
 };

@@ -12,6 +12,12 @@ const categoryApi = {
       headers: { 'content-type': 'multipart/form-data' },
     });
   },
+
+  async getSuggetionsForUser() {
+    const userId = getUserId();
+    const listUser = axiosClient.get(`/users/get-suggetions-friend/${userId}`);
+    return listUser;
+  },
 };
 
 export default categoryApi;
