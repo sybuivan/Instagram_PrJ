@@ -14,13 +14,10 @@ const addFollow = async (userId, userFriend) => {
     return await Follow.create({ user: userId, following: [userFriend] });
   }
 };
-const getFollows = async (userId) => {
-  const follows = await Follow.find({ user: userId })
-    .populate({
-      path: 'user',
-    })
-    .populate({ path: 'following' });
-  const user = await User.findById(userId);
+
+const getFollows = async (userName) => {
+  const follows = await Follow.find({ userName: userName }).populate({ path: 'following' });
+  const user = await User.findById(follows[0].user);
   return { follows, user };
 };
 

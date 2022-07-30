@@ -2,16 +2,15 @@ import { getUserId } from '../utils';
 import axiosClient from './axiosClient';
 
 const followApi = {
-  addFriend(formData) {
-    const post = axiosClient.post('/post/create', formData, {
+  async addFriend(formData) {
+    console.log('formData', formData);
+    const user = await axiosClient.post('/follow/add-follow', formData, {
       headers: { 'content-type': 'multipart/form-data' },
     });
-    return post;
+    return user;
   },
-  async getFollowUser() {
-    const userId = getUserId();
-
-    const follows = await axiosClient.get(`/follow/get-friend/${userId}`);
+  async getFollowUser(userName) {
+    const follows = await axiosClient.get(`/follow/get-friend/${userName}`);
     return follows;
   },
 };
