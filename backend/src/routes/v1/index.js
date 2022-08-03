@@ -2,6 +2,8 @@ const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const postRoute = require('./post.route');
+const commentsRoute = require('./comments.route');
+const likesRoute = require('./likes.route');
 const docsRoute = require('./docs.route');
 const followRoute = require('./follow.route');
 const config = require('../../config/config');
@@ -24,6 +26,14 @@ const defaultRoutes = [
   {
     path: '/follow',
     route: followRoute,
+  },
+  {
+    path: '/comments',
+    route: commentsRoute,
+  },
+  {
+    path: '/likes',
+    route: likesRoute,
   },
 ];
 
