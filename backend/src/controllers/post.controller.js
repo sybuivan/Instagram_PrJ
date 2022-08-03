@@ -9,16 +9,23 @@ const createPost = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send({ post });
 });
 const getPostAll = catchAsync(async (req, res) => {
-  const { newList } = await postService.getPostAll(req.params.userName);
-  res.send({ newList });
+  const { newList, follows } = await postService.getPostAll(req.params.userName);
+  res.send({ newList, follows });
 });
+
 const getPostFriend = catchAsync(async (req, res) => {
   const { newList } = await postService.getPostFriend(req.params.userId);
   res.send({ newList });
+});
+
+const getPostById = catchAsync(async (req, res) => {
+  const { posted, comments } = await postService.getPostById(req.params.postId);
+  res.send({ posted, comments });
 });
 
 module.exports = {
   createPost,
   getPostAll,
   getPostFriend,
+  getPostById,
 };

@@ -20,27 +20,6 @@ const postSchema = mongoose.Schema({
     type: String,
   },
 
-  commnets: [
-    {
-      user_id: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'User',
-        required: true,
-      },
-      user_commnet: {
-        type: String,
-      },
-    },
-  ],
-  saved: [
-    {
-      post_id: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Post',
-        required: true,
-      },
-    },
-  ],
   created_at: {
     type: Date,
   },

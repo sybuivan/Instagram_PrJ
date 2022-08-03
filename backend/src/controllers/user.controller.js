@@ -44,6 +44,15 @@ const getSuggestionsForUser = catchAsync(async (req, res) => {
   res.send({ listUserSuggets });
 });
 
+const findUsers = catchAsync(async (req, res) => {
+  const listResult = await userService.findUsers(req.params.userName);
+  res.send({ listResult });
+});
+
+const editProfile = catchAsync(async (req, res) => {
+  const user = await userService.editProfile(req.body);
+  res.send({ user });
+});
 module.exports = {
   createUser,
   getUsers,
@@ -52,4 +61,6 @@ module.exports = {
   deleteUser,
   editAvatar,
   getSuggestionsForUser,
+  findUsers,
+  editProfile,
 };
