@@ -1,19 +1,18 @@
-import React from 'react';
 import {
   Avatar,
   Box,
+  Button,
   IconButton,
+  List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Paper,
   Typography,
-  List,
-  Button,
 } from '@mui/material';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { images } from '../../../constants';
 import { makeStyles } from '@mui/styles';
+import React from 'react';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles({
@@ -39,6 +38,7 @@ const useStyles = makeStyles({
   },
 });
 function People({ people, type }) {
+  console.log(people);
   const navigate = useNavigate();
   const handleNavigation = () => {
     navigate(`/${people.userName}`);
@@ -92,8 +92,9 @@ function People({ people, type }) {
   );
 }
 
-function Follow({ onClose, title, followings, followeres }) {
+function Follow({ onClose, title, followings, followeres, listUser }) {
   const classes = useStyles();
+  console.log('listUser', listUser);
   return (
     <Paper className={classes.root}>
       <Box className={classes.boxHead}>
@@ -113,21 +114,29 @@ function Follow({ onClose, title, followings, followeres }) {
       </Box>
       <Box sx={{ height: '100%' }}>
         <List sx={{ overflowY: 'scroll', height: '100%' }}>
-          {followings ? (
+          {followings && (
             <>
               {followings.map((people) => (
-                <People people={people} type="FOLLOWING" />
+                <People people={people} type="FOLLOWING" key={people._id} />
               ))}
             </>
-          ) : (
-            <Typography variant="h4" sx={{ textAlign: 'center', pt: 3 }}>
-              No people followeres
-            </Typography>
           )}
+
           {followeres && (
             <>
               {followeres.map(() => (
                 <People type="FOLLOWERE" />
+              ))}
+            </>
+          )}
+          {listUser && (
+            <>
+              {listUser.map((item) => (
+                <People
+                  type="LIKES"
+                  people={item.user_id}
+                  key={item.user_id.id}
+                />
               ))}
             </>
           )}
