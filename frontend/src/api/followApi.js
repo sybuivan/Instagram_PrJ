@@ -13,6 +13,10 @@ const followApi = {
     const follows = await axiosClient.get(`/follow/get-friend/${userName}`);
     return follows;
   },
+  async getFriendsMe(userName) {
+    const friends = await axiosClient.get(`/follow/get-friends-me/${userName}`);
+    return friends;
+  },
 };
 
 export default followApi;

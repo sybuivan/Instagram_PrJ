@@ -18,6 +18,15 @@ const categoryApi = {
     const listUser = axiosClient.get(`/users/get-suggetions-friend/${userId}`);
     return listUser;
   },
+  async findUsers(userSearch) {
+    const listResult = await axiosClient.get(`/users/get-search/${userSearch}`);
+    return listResult;
+  },
+
+  async editProfile(data) {
+    const user = await axiosClient.put('/users/edit-profile', data);
+    return user;
+  },
 };
 
 export default categoryApi;
