@@ -16,9 +16,14 @@ const addFollow = async (userId, userFriend) => {
 };
 
 const getFollows = async (userName) => {
-  const follows = await Follow.find({ userName: userName }).populate({ path: 'following' });
+  const follows = await getFollowsMe(userName);
+  console.log(follows);
   const user = await User.findById(follows[0].user);
   return { follows, user };
 };
 
-module.exports = { addFollow, getFollows };
+const getFollowsMe = async (userName) => {
+  const friends = await Follow.find({ userName: userName }).populate({ path: 'following' });
+  return friends;
+};
+module.exports = { addFollow, getFollows, getFollowsMe };

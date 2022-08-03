@@ -12,7 +12,13 @@ const getFollows = catchAsync(async (req, res) => {
   const { follows, user } = await followService.getFollows(req.params.userName);
   res.send({ follows, user });
 });
+const getFollowsMe = catchAsync(async (req, res) => {
+  const friends = await followService.getFollowsMe(req.params.userName);
+  res.send({ friends });
+});
+
 module.exports = {
   addFollow,
   getFollows,
+  getFollowsMe,
 };
