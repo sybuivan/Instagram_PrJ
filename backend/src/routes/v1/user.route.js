@@ -20,6 +20,8 @@ router
 
 router.put('/edit-avatar/:userId', upload.single('avatar'), userController.editAvatar);
 router.get('/get-suggetions-friend/:userId', userController.getSuggestionsForUser);
+router.get('/get-search/:userName', userController.findUsers);
+router.put('/edit-profile', userController.editProfile);
 module.exports = router;
 
 /**

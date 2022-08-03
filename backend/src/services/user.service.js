@@ -104,6 +104,24 @@ const getSuggestionsForUser = async (userId) => {
   return { listUserSuggets };
 };
 
+const findUsers = async (user) => {
+  const listResult = await User.find({ userName: { $regex: user, $options: 'i' } });
+  return listResult;
+};
+
+const editProfile = async (body) => {
+  const user = await getUserById(body.userId);
+  console.log(body);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  Object.assign(user, { fullName: body.fullName, userName: body.userName });
+  await user.save();
+  await Follow.findOneAndUpdate({ user: body.userId }, { userName: body.userName });
+
+  return user;
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -113,4 +131,6 @@ module.exports = {
   deleteUserById,
   editAvatar,
   getSuggestionsForUser,
+  findUsers,
+  editProfile,
 };
