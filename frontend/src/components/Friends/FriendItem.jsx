@@ -50,17 +50,18 @@ const FriendItem = ({
     onClickShowModal();
   };
   const navigate = useNavigate();
+  console.log('people', people);
   return (
     <ListItem alignItems="center">
       <ListItemAvatar onClick={() => navigate(`${people.name}`)}>
         <Avatar
           alt="Remy Sharp"
-          src={`${process.env.REACT_APP_BASE_URL}/${people.avatar}`}
+          src={`${process.env.REACT_APP_BASE_URL}${people.avatar}`}
         />
       </ListItemAvatar>
       <ListItemText
         className={classes.name}
-        primary={people.userName}
+        primary={people.name}
         secondary={
           <React.Fragment>
             <Typography

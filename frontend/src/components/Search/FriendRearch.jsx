@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { images } from '../../constants';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles({
   root: {
@@ -43,10 +44,18 @@ const useStyles = makeStyles({
 });
 const FriendRearch = ({ people }) => {
   const classes = useStyles();
+  const navigate = useNavigate();
   return (
-    <ListItem alignItems="center" className={classes.root}>
+    <ListItem
+      alignItems="center"
+      className={classes.root}
+      onClick={() => navigate(`/${people.userName}`)}
+    >
       <ListItemAvatar>
-        <Avatar alt="Remy Sharp" src={images.USER_FK} />
+        <Avatar
+          alt={people.userName}
+          src={`${process.env.REACT_APP_BASE_URL}${people?.avatar}`}
+        />
       </ListItemAvatar>
       <ListItemText
         className={classes.name}

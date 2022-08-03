@@ -1,9 +1,10 @@
-import { IconButton, InputBase, Paper } from '@mui/material';
+import { IconButton, InputBase, Paper, CircularProgress } from '@mui/material';
 import React from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { BsSearch } from 'react-icons/bs';
 
-const Search = ({ onChangeSearch, focused, valueSearch }) => {
+const Search = ({ onChangeSearch, focused, valueSearch, showLoading }) => {
+  console.log(showLoading);
   const handleOnChangeSearch = (e) => {
     onChangeSearch(e.target.value);
   };
@@ -16,7 +17,19 @@ const Search = ({ onChangeSearch, focused, valueSearch }) => {
         onChange={(e) => handleOnChangeSearch(e)}
       />
       <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-        {focused && !!valueSearch ? <AiOutlineCloseCircle /> : <BsSearch />}
+        {focused && !!valueSearch ? (
+          <>
+            {showLoading ? (
+              <CircularProgress
+                sx={{ width: '2rem!important', height: '2rem!important' }}
+              />
+            ) : (
+              <AiOutlineCloseCircle />
+            )}
+          </>
+        ) : (
+          <BsSearch />
+        )}
       </IconButton>
     </Paper>
   );

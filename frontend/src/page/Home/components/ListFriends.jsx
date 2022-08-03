@@ -1,60 +1,78 @@
 import {
   List,
   ListItem,
-  ListItemAvatar, Paper, Typography
+  ListItemAvatar,
+  Paper,
+  Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import React from 'react';
+import { useNavigate } from 'react-router';
 import { images } from '../../../constants';
 const useStyles = makeStyles({
   item: {
     display: 'inherit!important',
-    width: '6.6rem!important',
-    marginRight: '1.4rem',
+    width: '8.6rem!important',
+    margin: '1.2rem 2.8rem 1.2rem 0',
+    cursor: 'pointer',
+    padding: '0!important',
+    '&:first-child': {
+      marginLeft: '2.8rem',
+    },
   },
   avatar: {
-    width: '6.6rem',
-    height: '6.6rem',
+    width: '8.6rem',
+    height: '8.6rem',
     borderRadius: '100%',
     marginBottom: '1rem',
   },
   name: {
-    fontSize: '1.3rem',
+    fontSize: '1.4rem',
     display: 'block',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: '100%',
+    lineHeight: '2rem',
+    color: 'var(--color-text)',
+    fontWeight: '500',
   },
 });
-const ListFriends = () => {
+const ListFriends = ({ friends }) => {
   const classes = useStyles();
+  const navigate = useNavigate();
   return (
     <Paper sx={{ mb: 2 }}>
       <List sx={{ display: 'flex' }}>
-        <ListItem className={classes.item}>
-          <ListItemAvatar sx={{ width: '100%' }}>
-            <Box
-              component="img"
-              alt="Remy Sharp"
-              src={images.USER_FK}
-              className={classes.avatar}
-            />
-            <Typography variant="span" align="center" className={classes.name}>
-              linhchi2k904
-            </Typography>
-          </ListItemAvatar>
-        </ListItem>
-        <ListItem className={classes.item}>
-          <ListItemAvatar sx={{ width: '100%' }}>
-            <Box
-              component="img"
-              alt="Remy Sharp"
-              src={images.USER_FK}
-              className={classes.avatar}
-            />
-            <Typography variant="span" align="center" className={classes.name}>
-              linhchi2k904
-            </Typography>
-          </ListItemAvatar>
-        </ListItem>
+        {friends.length > 0 ? (
+          <>
+            {friends.map((people) => (
+              <ListItem
+                key={people._id}
+                className={classes.item}
+                onClick={() => navigate(`/${people.userName}`)}
+              >
+                <ListItemAvatar sx={{ width: '100%' }}>
+                  <Box
+                    component="img"
+                    alt={people.userName}
+                    src={`${process.env.REACT_APP_BASE_URL}${people.avatar}`}
+                    className={classes.avatar}
+                  />
+                  <Typography
+                    variant="span"
+                    align="center"
+                    className={classes.name}
+                  >
+                    {people.userName}
+                  </Typography>
+                </ListItemAvatar>
+              </ListItem>
+            ))}
+          </>
+        ) : (
+          <h2>No Friends</h2>
+        )}
       </List>
     </Paper>
   );

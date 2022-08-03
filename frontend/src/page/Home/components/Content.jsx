@@ -11,10 +11,12 @@ import Suggestions from './Suggestions';
 
 const Content = ({
   listPost,
+  friends,
   listUserSuggets,
   onClickFollow,
   onClickUnFollow,
   userFollow,
+  onPostComments,
 }) => {
   const isShowModal = useSelector((state) => state.home.modal);
   console.log('isShowmodal', isShowModal);
@@ -117,10 +119,11 @@ const Content = ({
   return (
     <>
       <Grid item xs={7}>
-        <ListFriends />
+        <ListFriends friends={friends} />
         <ListPostFriend
           onClickShowMore={handleOnClickShowMore}
           listPost={listPost}
+          onPostComments={onPostComments}
         />
       </Grid>
       <Grid item xs={5}>

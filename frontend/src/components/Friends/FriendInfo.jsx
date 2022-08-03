@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { FriendItem } from '.';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles({
   root: {
@@ -38,8 +39,9 @@ const useStyles = makeStyles({
     },
   },
 });
-const FriendInfo = ({ info, user, posted }) => {
-  console.log(posted);
+const FriendInfo = ({ user, posted }) => {
+  const { follows, newList } = posted;
+  const navigate = useNavigate();
   const classes = useStyles();
   return (
     <Paper className={classes.root}>
@@ -72,7 +74,7 @@ const FriendInfo = ({ info, user, posted }) => {
                     variant="h5"
                     color="text.primary"
                   >
-                    {posted?.length || 0}
+                    {newList?.length || 0}
                   </Typography>
                 </React.Fragment>
               }
@@ -98,7 +100,7 @@ const FriendInfo = ({ info, user, posted }) => {
                     variant="h5"
                     color="text.primary"
                   >
-                    {info?.followere?.length || 0}
+                    {follows[0]?.followere?.length || 0}
                   </Typography>
                 </React.Fragment>
               }
@@ -122,7 +124,7 @@ const FriendInfo = ({ info, user, posted }) => {
                     variant="h5"
                     color="text.primary"
                   >
-                    {info?.following?.length || 0}
+                    {follows[0]?.following?.length || 0}
                   </Typography>
                 </React.Fragment>
               }
@@ -133,14 +135,15 @@ const FriendInfo = ({ info, user, posted }) => {
 
         <Box>
           <List className={`${classes.numberList} ${classes.listImage}`}>
-            {posted.map((item) => (
+            {newList.map((item) => (
               <ListItem
                 sx={{ p: '0 0.1rem', height: '12rem', width: '13rem' }}
                 key={item._id}
+                onClick={() => navigate(`/view/${item.posted._id}`)}
               >
                 <Box
                   component="img"
-                  src={`${process.env.REACT_APP_BASE_URL}/${item.images}`}
+                  src={`${process.env.REACT_APP_BASE_URL}/${item.posted.images}`}
                 />
               </ListItem>
             ))}

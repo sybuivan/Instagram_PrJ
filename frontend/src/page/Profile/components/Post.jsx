@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 import { AiOutlineComment } from 'react-icons/ai';
 import { makeStyles } from '@mui/styles';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles({
   root: {
@@ -51,17 +52,22 @@ const useStyles = makeStyles({
 });
 function Post({ post }) {
   const classes = useStyles();
+  const navigate = useNavigate();
+  const { posted, totalComments } = post;
   return (
-    <Box className={classes.root}>
+    <Box
+      className={classes.root}
+      onClick={() => navigate(`/view/${posted._id}`)}
+    >
       <Box className={classes.boxImages}>
         <Box
           component="img"
-          src={`${process.env.REACT_APP_BASE_URL}/${post.images}`}
+          src={`${process.env.REACT_APP_BASE_URL}/${posted.images}`}
         />
       </Box>
       <Box className={classes.boxIcon}>
         <AiOutlineComment />
-        <Typography variant="span">{post.commnets?.length || 0}</Typography>
+        <Typography variant="span">{totalComments}</Typography>
       </Box>
       <Box className={classes.overlay}></Box>
     </Box>

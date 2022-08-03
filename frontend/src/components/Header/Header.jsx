@@ -1,7 +1,7 @@
 import { Grid, IconButton } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box, Container } from '@mui/system';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { RiAccountCircleFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,6 +12,8 @@ import { logout } from '../../page/Auth/authSlice';
 import { BasicModal } from '../Modal';
 import { LinkItem, MenuFrofile } from '.';
 import { ResultRearch, Search } from '..';
+import { userApi } from '../../api';
+import { useDebounce } from '../../hooks';
 
 const useStyles = makeStyles({
   root: {
@@ -59,20 +61,29 @@ const Header = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [focused, setFocused] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
+
   const [valueSearch, setValueSearch] = useState('');
   const [listResult, setListResult] = useState([]);
-  const user = [
-    { userName: 'ha', fullName: 'ha nguyen' },
-    { userName: 'quang', fullName: 'ha nguyen' },
-    { userName: 'linh2', fullName: 'ha nguyen' },
-    { userName: 'halinh.23', fullName: 'ha nguyen' },
-  ];
+  const valueDebounce = useDebounce(valueSearch, 500);
+  console.log('valueDebounce', valueDebounce);
+  useEffect(() => {
+    (async () => {
+      try {
+        if (valueDebounce) {
+          const { listResult } = await userApi.findUsers(valueDebounce);
+          console.log(listResult);
+          setListResult(listResult);
+          setShowLoading(false);
+        }
+      } catch (error) {}
+    })();
+  }, [valueDebounce]);
   const handleOnChangeSearch = (value) => {
-    console.log(!value);
     if (!!value) {
       setFocused(true);
+      setShowLoading(true);
       setValueSearch(value);
-      setListResult(user.filter((item) => item.userName.includes(value)));
     } else {
       setFocused(false);
     }
@@ -114,20 +125,25 @@ const Header = () => {
                   onChangeSearch={handleOnChangeSearch}
                   focused={focused}
                   valueSearch={valueSearch}
+                  showLoading={showLoading}
                 />
                 <ResultRearch focused={focused} listResult={listResult} />
               </Box>
             </Grid>
 
             <Grid item md={4}>
-              {navRoutes.map((item, index) => (
+              {navRoutes.map((item) => (
                 <>
                   {item?.path ? (
-                    <LinkItem path={item?.path} icon={item.icon} key={index} />
+                    <LinkItem
+                      path={item?.path}
+                      icon={item.icon}
+                      key={item.id}
+                    />
                   ) : (
                     <LinkItem
                       icon={item.icon}
-                      key={index}
+                      key={item.id}
                       onShowModal={handleOnClickShowMore}
                     />
                   )}
