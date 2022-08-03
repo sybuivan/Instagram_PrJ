@@ -4,3 +4,5 @@ export { default as Message } from './Message';
 export { default as Profile } from './Profile';
 export { default as Saved } from './Saved';
 export { default as Settings } from './Settings';
+export { default as PostView } from './PostView';
+export { default as EditProfile } from './EditProfile';

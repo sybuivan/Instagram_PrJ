@@ -4,8 +4,8 @@ import { FiSend } from 'react-icons/fi';
 import { RiAccountCircleFill } from 'react-icons/ri';
 
 export const navRoutes = [
-  { path: '/', icon: <AiFillHome /> },
-  { path: '/message', icon: <FiSend /> },
-  { icon: <BiMessageSquareAdd /> },
-  { icon: <AiOutlineHeart /> },
+  { id: 1, path: '/', icon: <AiFillHome /> },
+  { id: 2, path: '/message', icon: <FiSend /> },
+  { id: 3, icon: <BiMessageSquareAdd /> },
+  { id: 4, icon: <AiOutlineHeart /> },
 ];

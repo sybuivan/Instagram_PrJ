@@ -8,6 +8,8 @@ const initialState = {
     CANCEL: false,
     FOLLOWING: false,
     FOLLOWERE: false,
+    VIEW_POST: false,
+    LIKES: false,
   },
   loading: false,
 };
@@ -40,6 +42,14 @@ export const homeSlice = createSlice({
           state.modal.FOLLOWERE = true;
           break;
         }
+        case 'VIEW_POST': {
+          state.modal.VIEW_POST = true;
+          break;
+        }
+        case 'LIKES': {
+          state.modal.LIKES = true;
+          break;
+        }
         default:
           break;
       }
@@ -67,6 +77,14 @@ export const homeSlice = createSlice({
         }
         case 'FOLLOWERE': {
           state.modal.FOLLOWERE = false;
+          break;
+        }
+        case 'VIEW_POST': {
+          state.modal.VIEW_POST = false;
+          break;
+        }
+        case 'LIKES': {
+          state.modal.LIKES = false;
           break;
         }
         default:

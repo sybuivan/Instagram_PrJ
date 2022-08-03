@@ -23,3 +23,7 @@ export const getUserId = () => {
 export const getUserName = () => {
   return localStorage.getItem('user-name');
 };
+
+export const setUserName = (username) => {
+  return localStorage.setItem('user-name', username);
+};

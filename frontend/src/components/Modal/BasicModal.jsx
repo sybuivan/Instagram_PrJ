@@ -12,7 +12,10 @@ const BasicModal = ({ component, showModal, onClickHideModal, type }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{
-        '& .css-1t1j96h-MuiPaper-root-MuiDialog-paper': { maxWidth: '80rem' },
+        '& .css-1t1j96h-MuiPaper-root-MuiDialog-paper': {
+          maxWidth: '120rem',
+          maxHeight: '90rem',
+        },
       }}
     >
       {component}

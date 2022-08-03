@@ -10,7 +10,7 @@ const Layout = () => {
   return (
     <div>
       <Header />
-      <Box sx={{ paddingTop: '7rem' }}>
+      <Box sx={{ mt: '9rem' }}>
         <Container
           maxWidth="false"
           sx={{ maxWidth: '82.5rem', height: '100%' }}
