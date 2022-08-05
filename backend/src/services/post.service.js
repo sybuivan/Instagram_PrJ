@@ -42,16 +42,17 @@ const getPostFriend = async (user) => {
     })
     .populate({ path: 'following' })
     .select('following');
+  listFriend[0].following.push(listFriend[0].user);
+  // empty people following
   if (listFriend[0].following.length === 0) {
-    console.log('lot 1');
     const newList = await Post.find({})
       .populate({ path: 'user' })
       .populate({ path: 'user_follow' })
       .sort({ created_at: -1 });
     return { newList };
   } else {
-    console.log('lot 2');
     let newPostId = [];
+    let listPostMe = [];
     let newList = [];
 
     for (const iterator of listFriend[0].following) {
