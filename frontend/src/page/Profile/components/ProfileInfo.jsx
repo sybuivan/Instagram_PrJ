@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Avatar,
   Box,
@@ -10,6 +11,7 @@ import { makeStyles } from '@mui/styles';
 import React, { useMemo } from 'react';
 import { BsFillCameraFill } from 'react-icons/bs';
 import { FiMoreHorizontal, FiSettings } from 'react-icons/fi';
+import { useNavigate } from 'react-router';
 import { Followers, TabChoose } from '.';
 import { BasicModal } from '../../../components';
 
@@ -44,6 +46,7 @@ function ProfileInfo({
   isPrivate,
 }) {
   const classes = useStyles();
+  const navigate = useNavigate();
   console.log(isPrivate);
   const { user, follows } = infoUser;
   const handleOpenModal = (type) => {
@@ -58,7 +61,7 @@ function ProfileInfo({
   );
   const avatarMemo = useMemo(
     () => (
-      <Box sx={{ mr: 10, position: 'relative' }}>
+      <Box sx={{ mr: 10, position: 'relative', width: '18rem' }}>
         <Avatar
           alt="Remy Sharp"
           src={
@@ -116,6 +119,7 @@ function ProfileInfo({
                       color: 'var(--color-text)',
                       fontSize: '1.3rem',
                     }}
+                    onClick={() => navigate('/edit-profile')}
                   >
                     Edit profile
                   </Button>

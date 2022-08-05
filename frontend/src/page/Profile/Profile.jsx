@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
@@ -26,7 +27,6 @@ const Profile = () => {
     dispatch(hiddenModal(type));
   };
   const isShowModal = useSelector((state) => state.home.modal);
-  const isLoading = useSelector((state) => state.home.loading);
 
   useEffect(() => {
     (async () => {
@@ -50,7 +50,6 @@ const Profile = () => {
       }
     })();
   }, [location.pathname.replace('/', '')]);
-  console.log('user', user);
   const handleOnChangeAvatar = (e) => {
     const avatar = e.target.files[0];
     avatar.preview = URL.createObjectURL(avatar);

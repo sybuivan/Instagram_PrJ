@@ -1,3 +1,4 @@
+import { getToken } from '../utils';
 import axiosClient from './axiosClient';
 
 const categoryApi = {
@@ -8,6 +9,12 @@ const categoryApi = {
   loginUser(formData) {
     const user = axiosClient.post('/auth/login', formData);
     return user;
+  },
+  async resetPassword(newPassword) {
+    const token = getToken();
+    await axiosClient.post('/auth/reset-password', newPassword, {
+      params: { token },
+    });
   },
 };
 
