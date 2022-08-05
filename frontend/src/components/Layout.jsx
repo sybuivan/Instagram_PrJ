@@ -3,6 +3,8 @@ import { Outlet } from 'react-router-dom';
 import { Box, Container, Grid } from '@mui/material';
 import { Header, Loading } from '.';
 import { useSelector } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Layout = () => {
   const isLoading = useSelector((state) => state.home.loading);
@@ -13,7 +15,7 @@ const Layout = () => {
       <Box sx={{ mt: '9rem' }}>
         <Container
           maxWidth="false"
-          sx={{ maxWidth: '82.5rem', height: '100%' }}
+          sx={{ maxWidth: '97.5rem', height: '100%' }}
         >
           <Grid container spacing={2}>
             <Outlet />
@@ -21,6 +23,19 @@ const Layout = () => {
         </Container>
       </Box>
       {isLoading && <Loading loading={isLoading} />}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      {/* Same as */}
+      <ToastContainer />
     </div>
   );
 };
