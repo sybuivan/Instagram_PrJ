@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 export const resetTimeout = (timeoutRef) => {
   if (timeoutRef.current) {
     clearTimeout(timeoutRef.current);
@@ -26,4 +28,29 @@ export const getUserName = () => {
 
 export const setUserName = (username) => {
   return localStorage.setItem('user-name', username);
+};
+
+export const getToken = () => {
+  return localStorage.getItem('x-refresh-token');
+};
+
+export const toastify = (type, label) => {
+  switch (type) {
+    case 'success': {
+      toast.success(label, {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+      break;
+    }
+    case 'error': {
+      toast.error(label, {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+      break;
+    }
+    default:
+      break;
+  }
 };
