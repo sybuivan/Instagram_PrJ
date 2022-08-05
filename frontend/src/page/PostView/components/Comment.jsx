@@ -12,6 +12,10 @@ import {
 import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router';
 import { AiOutlineHeart } from 'react-icons/ai';
+import { FiMoreHorizontal } from 'react-icons/fi';
+import { getUserId } from '../../../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { showModal, hiddenModal } from '../../Home/homeSlice';
 
 const useStyles = makeStyles({
   name: {
@@ -63,9 +67,19 @@ const useStyles = makeStyles({
     display: 'none',
   },
 });
-function Comment({ comments }) {
+function Comment({
+  comments,
+  onDeleteComment,
+  onEditComment,
+  onShowModalOption,
+}) {
   const classes = useStyles();
   const navigate = useNavigate();
+
+  const handleOnShowMoreModalComment = () => {
+    onShowModalOption(comments._id);
+  };
+
   return (
     <div>
       <ListItem alignItems="flex-start" className={classes.infoItem}>
@@ -84,13 +98,18 @@ function Comment({ comments }) {
           secondary={
             <React.Fragment>
               <Typography
-                sx={{ display: 'inline' }}
+                sx={{ display: 'inline', mr: 2 }}
                 component="span"
                 variant="body2"
                 color="text.primary"
               >
                 {comments.createdAt}
               </Typography>
+              {getUserId() === comments.user_id.id && (
+                <IconButton onClick={handleOnShowMoreModalComment}>
+                  <FiMoreHorizontal />
+                </IconButton>
+              )}
             </React.Fragment>
           }
         />

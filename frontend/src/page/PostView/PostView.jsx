@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { commentsApi, postApi } from '../../api';
 import { BasicModal } from '../../components';
-import { getUserId } from '../../utils';
+import { getUserId, postComment } from '../../utils';
+import { useGetPostDetail } from '../../hooks';
+
 import {
   hiddenLoading,
   hiddenModal,
@@ -16,54 +18,42 @@ import { ViewImages, ViewInforPost } from './components';
 function PostView(props) {
   const { idPost } = useParams();
   const dispatch = useDispatch();
-  const [postById, setPostById] = useState([]);
-  const [listPosted, setListPosted] = useState([]);
-  const [showLoading, setShowLoading] = useState(false);
   const isShowModal = useSelector((state) => state.home.modal);
   const navigate = useNavigate();
-  const getPostById = async (idPost) => {
-    try {
-      console.log(idPost);
+  const [isComment, setIsComment] = useState(false);
 
-      dispatch(setLoading());
-      const { posted, comments } = await postApi.getPostById(idPost);
-      const { newList, follows } = await postApi.getPostAll(
-        posted.user.userName
-      );
-      setListPosted({ newList, follows });
-
-      setPostById({ posted, comments });
-    } catch (error) {
-    } finally {
-      dispatch(hiddenLoading());
-      setShowLoading(true);
-    }
-  };
   useEffect(() => {
-    getPostById(idPost);
     dispatch(showModal('VIEW_POST'));
+    dispatch(hiddenModal('MORE_POST'));
   }, []);
 
   const handleOnPostComments = async (data) => {
-    console.log(data);
-    try {
-      const comment = await commentsApi.createComment({
-        post_id: idPost,
-        user_id: getUserId(),
-        comment: data.comment,
-      });
-      getPostById(idPost);
-    } catch (error) {}
+    await postComment(idPost, data.comment);
+    setIsComment((pre) => !pre);
+  };
+
+  const handleOnDeleteComment = async (idComment) => {
+    await commentsApi.deleteComment(idComment);
+    dispatch(hiddenModal('COMMENT'));
+    setIsComment((pre) => !pre);
+  };
+
+  const handleOnEditComment = async (idComment, comment) => {
+    await commentsApi.editComment({
+      _id: idComment,
+      comment: comment,
+    });
+    setIsComment((pre) => !pre);
   };
 
   const handleOnClickHideModal = () => {
     dispatch(hiddenModal('VIEW_POST'));
     navigate(-1);
   };
-
+  const { postById, listPosted, loading } = useGetPostDetail(idPost, isComment);
   return (
     <div>
-      {showLoading && (
+      {!loading && (
         <BasicModal
           component={
             <Box
@@ -72,18 +62,23 @@ function PostView(props) {
                 height: '62rem',
                 overflow: 'hidden',
                 maxWidth: '120rem',
+                backgroundColor: 'var(--color-white)',
               }}
             >
               <Grid container sx={{ width: '100%', height: '100%' }}>
-                <Grid item xs={6} sx={{ height: '100%' }}>
-                  <ViewImages images={postById.posted.images} />
-                </Grid>
-                <Grid item xs={6} sx={{ height: '100%' }}>
-                  <ViewInforPost
-                    postById={postById}
-                    listPosted={listPosted}
-                    onPostComments={handleOnPostComments}
-                  />
+                <Grid container sx={{ width: '100%', height: '100%' }}>
+                  <Grid item xs={6} sx={{ height: '100%' }}>
+                    <ViewImages images={postById.posted.images} />
+                  </Grid>
+                  <Grid item xs={6} sx={{ height: '100%' }}>
+                    <ViewInforPost
+                      postById={postById}
+                      listPosted={listPosted}
+                      onPostComments={handleOnPostComments}
+                      onDeleteComment={handleOnDeleteComment}
+                      onEditComment={handleOnEditComment}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
             </Box>
