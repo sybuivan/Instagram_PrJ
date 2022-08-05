@@ -19,7 +19,6 @@ const Content = ({
   onPostComments,
 }) => {
   const isShowModal = useSelector((state) => state.home.modal);
-  console.log('isShowmodal', isShowModal);
   const [suggestions, setSuggestions] = useState(() => [
     {
       name: 'daudkavyinza',
@@ -43,13 +42,15 @@ const Content = ({
     },
   ]);
   const dispatch = useDispatch();
+  const [idPostClick, setIdPostClick] = useState('');
   const [user, setUser] = useState(null);
-  const handleOnClickShowMore = (typeModal) => {
+  const handleOnClickShowMore = (typeModal, idPost) => {
     if (typeModal === 'MORE_POST') {
       dispatch(showModal('MORE_POST'));
     } else {
       dispatch(showModal('UNFOLLOW'));
     }
+    setIdPostClick(idPost);
   };
   const handleOnClickHideModal = (typeModal) => {
     if (typeModal === 'MORE_POST') {
@@ -135,9 +136,12 @@ const Content = ({
       <BasicModal
         component={
           <ModalPost>
-            <ModalChooseItem name="Report" active={true} />
             <ModalChooseItem name="Unfollow" active={true} />
-            <ModalChooseItem name="Go to post" active={false} />
+            <ModalChooseItem
+              name="Go to post"
+              active={false}
+              postId={idPostClick}
+            />
             <ModalChooseItem name="Cancal" active={false} />
           </ModalPost>
         }

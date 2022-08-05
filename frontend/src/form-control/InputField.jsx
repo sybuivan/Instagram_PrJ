@@ -16,6 +16,7 @@ const Inputfield = ({ placeholder, control, name, errors }) => {
           placeholder={placeholder}
           sx={{
             width: '25rem',
+            flex: 'auto',
             height: '3.6rem!important',
             marginBottom: !!errors[name] ? '2rem' : '1rem',
             fontSize: '1rem',

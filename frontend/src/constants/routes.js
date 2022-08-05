@@ -7,6 +7,7 @@ import {
   Message,
   PostView,
   EditProfile,
+  ViewPostDetail,
 } from '../page';
 import { Auth } from '../page/Auth';
 import Layout from '../components/Layout';
@@ -18,15 +19,18 @@ let routes = [
     path: '/',
     element: <Layout />,
     children: [
-      { path: 'view/:idPost', element: <PostView /> },
       {
-        index: true,
+        path: '/',
         element: <Home />,
+        children: [{ path: 'view-h/:idPost', element: <PostView /> }],
       },
       {
         path: ':userName',
         element: <Profile />,
-        children: [{ path: 'saved', element: <Saved /> }],
+        children: [
+          { path: 'saved', element: <Saved /> },
+          { path: 'view-p/:idPost', element: <PostView /> },
+        ],
       },
 
       { path: 'saved', element: <Saved /> },
@@ -47,6 +51,10 @@ let routes = [
       {
         path: 'message',
         element: <Message />,
+      },
+      {
+        path: 'view-post-detail/:idPost',
+        element: <ViewPostDetail />,
       },
     ],
   },

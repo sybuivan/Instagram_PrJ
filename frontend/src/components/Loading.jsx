@@ -11,7 +11,7 @@ function Loading({ loading }) {
             width: '100%',
             height: '2rem',
             position: 'fixed',
-            top: '6.4rem',
+            top: '6rem',
             right: 0,
             left: 0,
             zIndex: 1,

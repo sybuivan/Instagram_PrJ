@@ -10,6 +10,7 @@ const initialState = {
     FOLLOWERE: false,
     VIEW_POST: false,
     LIKES: false,
+    COMMENT: false,
   },
   loading: false,
 };
@@ -50,6 +51,10 @@ export const homeSlice = createSlice({
           state.modal.LIKES = true;
           break;
         }
+        case 'COMMENT': {
+          state.modal.COMMENT = true;
+          break;
+        }
         default:
           break;
       }
@@ -85,6 +90,10 @@ export const homeSlice = createSlice({
         }
         case 'LIKES': {
           state.modal.LIKES = false;
+          break;
+        }
+        case 'COMMENT': {
+          state.modal.COMMENT = false;
           break;
         }
         default:

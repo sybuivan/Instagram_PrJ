@@ -1,13 +1,33 @@
 import React from 'react';
 import { ListItem } from '@mui/material';
+import { useNavigate } from 'react-router';
 
-const ModalChooseItem = ({ name, active, onAcceptUnFollow, onDiscard }) => {
+const ModalChooseItem = ({
+  name,
+  active,
+  onAcceptUnFollow,
+  onDiscard,
+  postId,
+  onDeleteComment,
+  idComment,
+  onEditComment,
+}) => {
+  const navigate = useNavigate();
   const handleChooseItem = () => {
     if (!!onAcceptUnFollow) {
       onAcceptUnFollow();
     }
     if (!!onDiscard) {
       onDiscard();
+    }
+    if (!!postId) {
+      navigate(`/view-post-detail/${postId}`);
+    }
+    if (!!onDeleteComment) {
+      onDeleteComment();
+    }
+    if (!!onEditComment) {
+      onEditComment();
     }
   };
   return (

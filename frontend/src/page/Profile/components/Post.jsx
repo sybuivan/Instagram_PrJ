@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 import { AiOutlineComment } from 'react-icons/ai';
 import { makeStyles } from '@mui/styles';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 const useStyles = makeStyles({
   root: {
@@ -53,11 +53,12 @@ const useStyles = makeStyles({
 function Post({ post }) {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { userName } = useParams();
   const { posted, totalComments } = post;
   return (
     <Box
       className={classes.root}
-      onClick={() => navigate(`/view/${posted._id}`)}
+      onClick={() => navigate(`/${userName}/view-p/${posted._id}`)}
     >
       <Box className={classes.boxImages}>
         <Box

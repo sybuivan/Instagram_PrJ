@@ -1,7 +1,13 @@
 import { Dialog } from '@mui/material';
 import React from 'react';
 
-const BasicModal = ({ component, showModal, onClickHideModal, type }) => {
+const BasicModal = ({
+  component,
+  showModal,
+  onClickHideModal,
+  type,
+  backgroundColor,
+}) => {
   return (
     <Dialog
       open={showModal}
@@ -15,6 +21,9 @@ const BasicModal = ({ component, showModal, onClickHideModal, type }) => {
         '& .css-1t1j96h-MuiPaper-root-MuiDialog-paper': {
           maxWidth: '120rem',
           maxHeight: '90rem',
+        },
+        '& .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop': {
+          backgroundColor,
         },
       }}
     >

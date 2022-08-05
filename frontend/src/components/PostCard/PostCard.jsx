@@ -119,7 +119,7 @@ const PostCard = ({ onClickShowMore, post, onPostComments }) => {
 
   const handleOnClickMore = () => {
     if (!onClickShowMore) return;
-    onClickShowMore('MORE_POST');
+    onClickShowMore('MORE_POST', posted._id);
   };
 
   useEffect(() => {
@@ -132,6 +132,7 @@ const PostCard = ({ onClickShowMore, post, onPostComments }) => {
       setLoading(true);
     })();
   }, []);
+
   const getIsHeartPost = async () => {
     const res = await likesApi.checkIsHeartPost({
       userId: getUserId(),
@@ -226,7 +227,7 @@ const PostCard = ({ onClickShowMore, post, onPostComments }) => {
               <Box
                 component="img"
                 src={`${process.env.REACT_APP_BASE_URL}${posted.images}`}
-                sx={{ width: '100%', height: '50rem' }}
+                sx={{ width: '100%', height: '50rem', objectFit: 'cover' }}
               />
             </Box>
             <Box>
@@ -293,7 +294,7 @@ const PostCard = ({ onClickShowMore, post, onPostComments }) => {
               </Box>
               <Box
                 sx={{ color: 'var(--color-8e8e8e)', cursor: 'pointer' }}
-                onClick={() => navigate(`/view/${posted._id}`)}
+                onClick={() => navigate(`/view-h/${posted._id}`)}
               >
                 View all {totalComments} comments
               </Box>

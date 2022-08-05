@@ -15,9 +15,14 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AiOutlineSmile } from 'react-icons/ai';
 import { FiMoreHorizontal } from 'react-icons/fi';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { ListComments } from '.';
+import { commentsApi } from '../../../api';
 import { FriendInfo } from '../../../components';
+import { BasicModal, ModalChooseItem } from '../../../components';
+import ModalPost from '../../Home/components/ModalPost';
+import { hiddenModal, showModal } from '../../Home/homeSlice';
 
 const useStyles = makeStyles({
   name: {
@@ -72,11 +77,23 @@ const useStyles = makeStyles({
     display: 'none',
   },
 });
-function ViewInforPost({ postById, listPosted, onPostComments }) {
+function ViewInforPost({
+  postById,
+  listPosted,
+  onPostComments,
+  onShowMoreModalComment,
+  onDeleteComment,
+  onEditComment,
+}) {
+  const isShowModal = useSelector((state) => state.home.modal);
+  const dispatch = useDispatch();
+
   const { posted, comments } = postById;
   const navigate = useNavigate();
   const classes = useStyles();
   const [showEmoji, setShowEmoji] = useState(false);
+  const [idComment, setIdComment] = useState();
+  console.log(onDeleteComment);
   const {
     handleSubmit,
     control,
@@ -87,6 +104,15 @@ function ViewInforPost({ postById, listPosted, onPostComments }) {
       comment: '',
     },
   });
+
+  const handleOnClickHideModal = () => {
+    dispatch(hiddenModal('COMMENT'));
+  };
+
+  const handleOnShowOption = (idComment) => {
+    dispatch(showModal('COMMENT'));
+    setIdComment(idComment);
+  };
   //   show icon
   const onEmojiClick = (event, emojiObject) => {
     // setComment((pre) => pre + emojiObject.emoji);
@@ -95,6 +121,17 @@ function ViewInforPost({ postById, listPosted, onPostComments }) {
   const handleOnComment = async (data) => {
     await onPostComments(data);
     reset({});
+  };
+  const handleOnViewComment = async () => {
+    try {
+      const res = await commentsApi.getCommentById(idComment);
+      reset({ comment: res.comment });
+      dispatch(hiddenModal('COMMENT'));
+    } catch (error) {}
+  };
+  const handleOnEditComment = async (data) => {
+    await onEditComment(idComment, data.comment);
+    reset({ comment: '' });
   };
   return (
     <Box sx={{ height: '100%' }}>
@@ -129,14 +166,19 @@ function ViewInforPost({ postById, listPosted, onPostComments }) {
             </React.Fragment>
           }
         />
-        <IconButton onClick={{}}>
+        <IconButton>
           <FiMoreHorizontal />
         </IconButton>
       </ListItem>
-
-      <ListComments comments={comments} />
-
-      <form onSubmit={handleSubmit(handleOnComment)}>
+      <ListComments
+        comments={comments}
+        onShowModalOption={handleOnShowOption}
+      />
+      <form
+        onSubmit={handleSubmit(
+          !idComment ? handleOnComment : handleOnEditComment
+        )}
+      >
         <Box sx={{ p: '2rem 0', borderTop: '0.1rem solid #efefef' }}>
           <Box sx={{ display: 'flex' }}>
             <Box
@@ -186,6 +228,28 @@ function ViewInforPost({ postById, listPosted, onPostComments }) {
           </Box>
         </Box>
       </form>
+      {isShowModal.COMMENT && (
+        <BasicModal
+          component={
+            <ModalPost>
+              <ModalChooseItem
+                name="Delete comment"
+                active={true}
+                onDeleteComment={() => onDeleteComment(idComment)}
+              />
+              <ModalChooseItem
+                name="Edit comment"
+                active={true}
+                onEditComment={handleOnViewComment}
+              />
+              <ModalChooseItem name="Cancel" active={true} />
+            </ModalPost>
+          }
+          type="MORE_POST"
+          showModal={true}
+          onClickHideModal={handleOnClickHideModal}
+        />
+      )}
     </Box>
   );
 }
