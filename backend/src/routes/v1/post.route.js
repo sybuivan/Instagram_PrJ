@@ -10,4 +10,5 @@ router.post('/create', upload.single('images'), postController.createPost);
 router.get('/get-all/:userName', postController.getPostAll);
 router.get('/get-all-friend/:userId', postController.getPostFriend);
 router.get('/get-post-id/:postId', postController.getPostById);
+router.delete('/delete-post-id/:postId', postController.deletePostById);
 module.exports = router;

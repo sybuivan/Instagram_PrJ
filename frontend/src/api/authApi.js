@@ -1,7 +1,7 @@
 import { getToken } from '../utils';
 import axiosClient from './axiosClient';
 
-const categoryApi = {
+const authApi = {
   registerUser(formData) {
     const user = axiosClient.post('/auth/register', formData);
     return user;
@@ -18,4 +18,4 @@ const categoryApi = {
   },
 };
 
-export default categoryApi;
+export default authApi;

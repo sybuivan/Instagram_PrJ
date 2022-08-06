@@ -10,6 +10,13 @@ const createPost = async (body, file) => {
   const product = await Post.create(objectValue);
   return product;
 };
+const deletePostById = async (idPost) => {
+  const post = await Post.findById(idPost);
+  if (!post) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'post not found');
+  }
+  await post.remove();
+};
 const getPostById = async (id) => {
   const posted = await Post.findById(id).populate({ path: 'user' });
   const comments = await Comments.find({ post_id: id }).populate({ path: 'user_id' });
@@ -42,7 +49,7 @@ const getPostFriend = async (user) => {
     })
     .populate({ path: 'following' })
     .select('following');
-  listFriend[0].following.push(listFriend[0].user);
+  listFriend[0].following.unshift(listFriend[0].user);
   // empty people following
   if (listFriend[0].following.length === 0) {
     const newList = await Post.find({})
@@ -52,7 +59,6 @@ const getPostFriend = async (user) => {
     return { newList };
   } else {
     let newPostId = [];
-    let listPostMe = [];
     let newList = [];
 
     for (const iterator of listFriend[0].following) {
@@ -67,4 +73,4 @@ const getPostFriend = async (user) => {
   }
 };
 
-module.exports = { createPost, getPostAll, getPostFriend, getPostById };
+module.exports = { createPost, getPostAll, getPostFriend, getPostById, deletePostById };

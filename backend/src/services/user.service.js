@@ -12,7 +12,7 @@ const createUser = async (userBody) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
   const user = await User.create(userBody);
-  await Follow.create({ user: user.id, userName: user.useName, following: [], followere: [] });
+  await Follow.create({ user: user.id, userName: user.userName, following: [], followere: [] });
   return user;
 };
 

@@ -22,10 +22,15 @@ const getPostById = catchAsync(async (req, res) => {
   const { posted, comments } = await postService.getPostById(req.params.postId);
   res.send({ posted, comments });
 });
+const deletePostById = catchAsync(async (req, res) => {
+  await postService.deletePostById(req.params.postId);
+  res.status(httpStatus.NO_CONTENT).send();
+});
 
 module.exports = {
   createPost,
   getPostAll,
   getPostFriend,
   getPostById,
+  deletePostById,
 };
