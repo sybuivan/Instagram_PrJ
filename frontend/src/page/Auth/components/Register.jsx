@@ -1,10 +1,11 @@
-import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
+import { unwrapResult } from '@reduxjs/toolkit';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { registerAccount } from '../authSlice';
 import RegisterForm from './RegisterForm';
-import { authApi } from '../../../api';
-import { setSession } from '../../../utils';
 
 const useStyles = makeStyles({
   root: {
@@ -53,6 +54,7 @@ const useStyles = makeStyles({
   },
 });
 const Register = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const classes = useStyles();
   const initialValues = {
@@ -65,13 +67,10 @@ const Register = () => {
   const handleOnSubmit = async (data) => {
     try {
       // call api register
-      console.log(data);
-      const res = await authApi.registerUser(data);
-      console.log(res);
+      const resultAction = await dispatch(registerAccount(data));
+
+      unwrapResult(resultAction);
       navigate('/accounts/login');
-      // const { user, tokens } = res;
-      // setSession(tokens.access.token, tokens.refresh.token, user.id);
-      // console.log(user);
     } catch (error) {}
   };
   return (

@@ -26,11 +26,12 @@ import { makeStyles } from '@mui/styles';
 import { BasicModal, FriendInfo } from '..';
 import { commentsApi, postApi, likesApi } from '../../api';
 import { useNavigate } from 'react-router';
-import { getUserId } from '../../utils';
+import { getUserId, getUserName } from '../../utils';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Follow from '../../page/Profile/components/Follow';
 import { hiddenModal, showModal } from '../../page/Home/homeSlice';
+import { getInforPost } from '../../page/PostView/postSlice';
 
 const useStyles = makeStyles({
   root: {
@@ -85,7 +86,7 @@ const useStyles = makeStyles({
     display: 'none',
   },
 });
-const PostCard = ({ onClickShowMore, post, onPostComments }) => {
+const PostCard = ({ post, onPostComments }) => {
   const { comments, posted, totalComments, totalLikes } = post;
   const isShowModal = useSelector((state) => state.home.modal);
   const dispatch = useDispatch();
@@ -118,8 +119,14 @@ const PostCard = ({ onClickShowMore, post, onPostComments }) => {
   };
 
   const handleOnClickMore = () => {
-    if (!onClickShowMore) return;
-    onClickShowMore('MORE_POST', posted._id);
+    dispatch(
+      getInforPost({
+        idPost: posted._id,
+        userName: posted.user.userName,
+        userLogin: getUserName()
+      })
+    );
+    dispatch(showModal('MORE_POST'));
   };
 
   useEffect(() => {

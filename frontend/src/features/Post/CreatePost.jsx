@@ -10,9 +10,9 @@ import { BasicModal, ModalChooseItem } from '../../components';
 import { ReactComponent as PicSvg } from '../../assets/images/picVideo.svg';
 import { postApi } from '../../api';
 import ModalPost from '../../page/Home/components/ModalPost';
-import { hiddenModal, showModal } from '../../page/Home/homeSlice';
+import { fetchPostFriends, hiddenModal, showModal } from '../../page/Home/homeSlice';
 import PostContent from './components/PostContent';
-import { getUserId } from '../../utils';
+import { getUserId, getUserName } from '../../utils';
 
 const useStyles = makeStyles({
   root: {
@@ -125,6 +125,7 @@ const CreatePost = () => {
       console.log(post);
       setShareSucc(true);
       setIsPostContent(false);
+      dispatch(fetchPostFriends(getUserName()));
     } catch (error) {}
   };
   const classes = useStyles();

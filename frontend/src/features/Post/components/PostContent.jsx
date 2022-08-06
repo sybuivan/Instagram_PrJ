@@ -13,9 +13,11 @@ import {
 import { AiOutlineSmile } from 'react-icons/ai';
 import { images } from '../../../constants';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
 const PostContent = ({ thumbs, onChangeCaption, caption }) => {
   const { register } = useForm();
+  const inforUser = useSelector((state) => state.home.inforUser);
   const [showEmoji, setShowEmoji] = useState(false);
   const onEmojiClick = (event, emojiObject) => {
     // setComment((pre) => pre + emojiObject.emoji);
@@ -28,10 +30,13 @@ const PostContent = ({ thumbs, onChangeCaption, caption }) => {
       <Grid item xs={5} sx={{ overflowY: 'scroll' }}>
         <ListItem>
           <ListItemAvatar>
-            <Avatar alt="Remy Sharp" src={images.USER_FK} />
+            <Avatar
+              alt="Remy Sharp"
+              src={`${process.env.REACT_APP_BASE_URL}${inforUser.avatar}`}
+            />
           </ListItemAvatar>
           <Typography variant="h5" sx={{ fontWeight: '600' }}>
-            buivansy
+            {inforUser.userName}
           </Typography>
         </ListItem>
         <TextField

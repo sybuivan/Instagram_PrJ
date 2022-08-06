@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import storegeKeys from '../../constants/storegeKeys';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { userApi, followApi, postApi } from '../../api';
 const initialState = {
   modal: {
     CREATE_POST: false,
@@ -11,9 +11,43 @@ const initialState = {
     VIEW_POST: false,
     LIKES: false,
     COMMENT: false,
+    MODAL_DELETE: false,
   },
   loading: false,
+  listUserSuggets: [],
+  listUserFriends: [],
+  ListPostFriend: [],
+  inforUser: {},
 };
+
+export const fetchUserSuggets = createAsyncThunk(
+  'user/user-suggets',
+  async (payload) => {
+    const { listUserSuggets } = await userApi.getSuggetionsForUser(payload);
+    return listUserSuggets;
+  }
+);
+export const fetchUserFriends = createAsyncThunk(
+  'user/user-friends',
+  async (payload) => {
+    const { friends } = await followApi.getFriendsMe(payload);
+    return friends[0].following;
+  }
+);
+
+export const fetchPostFriends = createAsyncThunk(
+  'post/post-friend',
+  async (payload) => {
+    const { newList } = await postApi.getPostAllFriend(payload);
+    return newList;
+  }
+);
+
+export const fetchGetInfor = createAsyncThunk('user/infor', async (payload) => {
+  const user = await userApi.getUser(payload);
+  return user;
+});
+
 export const homeSlice = createSlice({
   name: 'home',
   initialState,
@@ -53,6 +87,10 @@ export const homeSlice = createSlice({
         }
         case 'COMMENT': {
           state.modal.COMMENT = true;
+          break;
+        }
+        case 'MODAL_DELETE': {
+          state.modal.MODAL_DELETE = true;
           break;
         }
         default:
@@ -96,6 +134,10 @@ export const homeSlice = createSlice({
           state.modal.COMMENT = false;
           break;
         }
+        case 'MODAL_DELETE': {
+          state.modal.MODAL_DELETE = false;
+          break;
+        }
         default:
           break;
       }
@@ -106,6 +148,20 @@ export const homeSlice = createSlice({
     hiddenLoading: (state) => {
       state.loading = false;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchUserSuggets.fulfilled, (state, action) => {
+      state.listUserSuggets = action.payload;
+    });
+    builder.addCase(fetchUserFriends.fulfilled, (state, action) => {
+      state.listUserFriends = action.payload;
+    });
+    builder.addCase(fetchPostFriends.fulfilled, (state, action) => {
+      state.ListPostFriend = action.payload;
+    });
+    builder.addCase(fetchGetInfor.fulfilled, (state, action) => {
+      state.inforUser = action.payload;
+    });
   },
 });
 

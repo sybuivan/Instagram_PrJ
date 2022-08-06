@@ -1,23 +1,35 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { authApi } from '../../api';
 import storegeKeys from '../../constants/storegeKeys';
 import { removeSession, setSession, setUserName } from '../../utils';
 const initialState = {
   current: localStorage.getItem(storegeKeys.USER),
 };
+export const loginAccount = createAsyncThunk('auth/login', async (payload) => {
+  console.log(payload);
+  const response = await authApi.loginUser(payload);
+  const { tokens, user } = response;
+  setSession(tokens.access.token, tokens.refresh.token, user.userName, user.id);
+  return user?.userName;
+});
+export const registerAccount = createAsyncThunk(
+  'auth/register',
+  async (payload) => {
+    // Call API to register
+    const user = await authApi.registerUser(payload);
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${user.tokens.access.token}`;
+    // reture data
+    return user.userName;
+  }
+);
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login_form: (state, action) => {
-      console.log(action.payload);
-      state.current = action.payload.userName;
-      setSession(
-        action.payload.token,
-        action.payload.refresh,
-        action.payload.userName,
-        action.payload.id
-      );
-    },
     logout: (state) => {
       state.current = null;
       removeSession();
@@ -27,6 +39,14 @@ export const authSlice = createSlice({
       state.current = action.payload.userName;
       setUserName(action.payload.userName);
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(loginAccount.fulfilled, (state, action) => {
+      state.current = action.payload;
+    });
+    builder.addCase(registerAccount.fulfilled, (state, action) => {
+      state.current = action.payload;
+    });
   },
 });
 

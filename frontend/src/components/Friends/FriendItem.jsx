@@ -53,7 +53,7 @@ const FriendItem = ({
   console.log('people', people);
   return (
     <ListItem alignItems="center">
-      <ListItemAvatar onClick={() => navigate(`${people.name}`)}>
+      <ListItemAvatar onClick={() => navigate(`${people.userName}`)}>
         <Avatar
           alt="Remy Sharp"
           src={`${process.env.REACT_APP_BASE_URL}${people.avatar}`}
@@ -61,7 +61,7 @@ const FriendItem = ({
       </ListItemAvatar>
       <ListItemText
         className={classes.name}
-        primary={people.name}
+        primary={people.userName}
         secondary={
           <React.Fragment>
             <Typography

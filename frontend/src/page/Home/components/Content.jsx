@@ -1,63 +1,40 @@
-import React, { useMemo, useSate, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Container, Grid } from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
+import React, { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { BasicModal, Footer, ModalChooseItem } from '../../../components';
+import { getUserName, toastify } from '../../../utils';
+import { deletePostById } from '../../PostView/postSlice';
+import { fetchPostFriends, hiddenModal, showModal } from '../homeSlice';
 import ListFriends from './ListFriends';
 import ListPostFriend from './ListPostFriend';
 import ModalPost from './ModalPost';
-import { BasicModal, Footer, ModalChooseItem } from '../../../components';
-import { useDispatch, useSelector } from 'react-redux';
-import { hiddenModal, showModal } from '../homeSlice';
 import Suggestions from './Suggestions';
 
 const Content = ({
-  listPost,
-  friends,
-  listUserSuggets,
   onClickFollow,
   onClickUnFollow,
   userFollow,
   onPostComments,
 }) => {
   const isShowModal = useSelector((state) => state.home.modal);
-  const [suggestions, setSuggestions] = useState(() => [
-    {
-      name: 'daudkavyinza',
-      byName: 'Follows you',
-      isFollow: false,
-    },
-    {
-      name: 'thuongdang3101',
-      byName: 'Followed by mingxin_ssy',
-      isFollow: true,
-    },
-    {
-      name: 'quyen.7899',
-      byName: 'Followed by mingxin_ssy',
-      isFollow: false,
-    },
-    {
-      name: 'daudkavyinza233',
-      byName: 'Follows you',
-      isFollow: false,
-    },
-  ]);
+  const { idPost, isPostMe } = useSelector((state) => state.post.inforPost);
   const dispatch = useDispatch();
-  const [idPostClick, setIdPostClick] = useState('');
   const [user, setUser] = useState(null);
-  const handleOnClickShowMore = (typeModal, idPost) => {
+  const handleOnClickShowMore = (typeModal) => {
     if (typeModal === 'MORE_POST') {
       dispatch(showModal('MORE_POST'));
     } else {
       dispatch(showModal('UNFOLLOW'));
     }
-    setIdPostClick(idPost);
+  };
+
+  // show modal accept delete
+  const handleShowModalDelete = () => {
+    dispatch(hiddenModal('MORE_POST'));
+    dispatch(showModal('MODAL_DELETE'));
   };
   const handleOnClickHideModal = (typeModal) => {
-    if (typeModal === 'MORE_POST') {
-      dispatch(hiddenModal('MORE_POST'));
-    } else {
-      dispatch(hiddenModal('UNFOLLOW'));
-    }
+    dispatch(hiddenModal(typeModal));
   };
   // const handleOnClickFollow = (id) => {
   //   onClickFollow(id);
@@ -74,17 +51,19 @@ const Content = ({
   //     name: name,
   //   });
   // };
+
   const handleOnAcceptUnFollow = () => {
-    const newSuggestions = [...suggestions];
-    const peopleIndex = suggestions.findIndex(
-      (people) => people.name === user?.name
-    );
-    if (peopleIndex >= 0) {
-      newSuggestions[peopleIndex].isFollow = false;
-      console.log(newSuggestions[peopleIndex]);
-      setSuggestions(newSuggestions);
-    }
     dispatch(hiddenModal());
+  };
+
+  // handle delete post
+  const handleOnAcceptDelete = () => {
+    try {
+      dispatch(deletePostById(idPost));
+      dispatch(hiddenModal('MODAL_DELETE'));
+      dispatch(fetchPostFriends(getUserName()));
+      toastify('success', 'Delete posted successfully');
+    } catch (error) {}
   };
   const memoizedCard = useMemo(() => {
     return (
@@ -112,20 +91,15 @@ const Content = ({
         onClickShowModal={handleOnClickShowMore}
         onClickFollow={onClickFollow}
         onClickUnFollow={onClickUnFollow}
-        listUserSuggets={listUserSuggets}
       />
     ),
-    [listUserSuggets, userFollow]
+    [userFollow]
   );
   return (
     <>
       <Grid item xs={7}>
-        <ListFriends friends={friends} />
-        <ListPostFriend
-          onClickShowMore={handleOnClickShowMore}
-          listPost={listPost}
-          onPostComments={onPostComments}
-        />
+        <ListFriends />
+        <ListPostFriend onPostComments={onPostComments} />
       </Grid>
       <Grid item xs={5}>
         {suggestionsMemo}
@@ -136,17 +110,66 @@ const Content = ({
       <BasicModal
         component={
           <ModalPost>
-            <ModalChooseItem name="Unfollow" active={true} />
+            <>
+              {!isPostMe && <ModalChooseItem name="Unfollow" active={true} />}
+              {isPostMe && (
+                <>
+                  <ModalChooseItem
+                    name="Delete post"
+                    active={true}
+                    onDelete={handleShowModalDelete}
+                  />
+                  <ModalChooseItem name="Edit post" active={false} />
+                </>
+              )}
+              <ModalChooseItem
+                name="Go to post"
+                active={false}
+                postId={idPost}
+              />
+            </>
             <ModalChooseItem
-              name="Go to post"
+              name="Cancal"
               active={false}
-              postId={idPostClick}
+              onClickHideModal={handleOnClickHideModal}
             />
-            <ModalChooseItem name="Cancal" active={false} />
           </ModalPost>
         }
         type="MORE_POST"
         showModal={isShowModal.MORE_POST}
+        onClickHideModal={handleOnClickHideModal}
+      />
+      <BasicModal
+        component={
+          <ModalPost>
+            <Box
+              sx={{
+                p: '2rem 0',
+                textAlign: 'center',
+                borderBottom: '0.1rem solid #efefef',
+              }}
+            >
+              <Typography variant="h4" sx={{ pb: 2, fontWeight: '600' }}>
+                Delete post?
+              </Typography>
+              <Typography variant="span" sx={{ fontSize: '1.5rem' }}>
+                Are you sure you want to delete this post?
+              </Typography>
+            </Box>
+            <ModalChooseItem
+              name="Delete"
+              active={true}
+              onAcceptDelete={handleOnAcceptDelete}
+            />
+            <ModalChooseItem
+              name="Cancal"
+              active={false}
+              onClickHideModal={handleOnClickHideModal}
+            />
+          </ModalPost>
+        }
+        type="MODAL_DELETE"
+        showModal={isShowModal.MODAL_DELETE}
         onClickHideModal={handleOnClickHideModal}
       />
     </>

@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { Box, List, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { FriendItem } from '../../../components';
+import { useSelector } from 'react-redux';
 const Suggestions = ({
   onClickShowModal,
   onClickFollow,
   onClickUnFollow,
-  listUserSuggets,
   userFollow,
 }) => {
+  const listUserSuggets = useSelector((state) => state.home.listUserSuggets);
+
   return (
     <Box>
       <Box
@@ -38,7 +40,6 @@ const Suggestions = ({
       <List>
         {listUserSuggets.map((people) => (
           <>
-            {console.log('id', people.isFollow)}
             <FriendItem
               onClickFollow={onClickFollow}
               onClickUnFollow={onClickUnFollow}

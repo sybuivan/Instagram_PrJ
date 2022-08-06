@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 import * as yup from 'yup';
 import { authApi, userApi } from '../../../api';
@@ -14,6 +14,8 @@ import { editProfile } from '../../Auth/authSlice';
 
 function FormEditProfile() {
   const dispatch = useDispatch();
+  const inforUser = useSelector((state) => state.home.inforUser);
+
   const location = useLocation();
   const isFormPassword = location.pathname === '/edit-profile/change-password';
   const schemaChangeName = yup.object().shape({
@@ -44,18 +46,11 @@ function FormEditProfile() {
       isFormPassword ? schemaChangePassword : schemaChangeName
     ),
   });
-  const getUser = async () => {
-    try {
-      const user = await userApi.getUser();
-
-      reset({
-        fullName: user.fullName,
-        userName: user.userName,
-      });
-    } catch (error) {}
-  };
   useEffect(() => {
-    getUser();
+    reset({
+      fullName: inforUser.fullName,
+      userName: inforUser.userName,
+    });
   }, []);
 
   const handleOnSubmit = async (data) => {

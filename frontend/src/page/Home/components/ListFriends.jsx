@@ -8,6 +8,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { images } from '../../../constants';
 const useStyles = makeStyles({
@@ -38,11 +39,12 @@ const useStyles = makeStyles({
     fontWeight: '500',
   },
 });
-const ListFriends = ({ friends }) => {
+const ListFriends = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const friends = useSelector((state) => state.home.listUserFriends);
   return (
-    <Paper sx={{ mb: 2 }}>
+    <Paper sx={{ mb: 2, overflow: 'auto' }}>
       <List sx={{ display: 'flex' }}>
         {friends.length > 0 ? (
           <>

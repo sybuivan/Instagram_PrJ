@@ -5,35 +5,31 @@ import { Navigate, Outlet, useNavigate, useParams } from 'react-router';
 import Content from './components/Content';
 import { commentsApi, followApi, postApi, userApi } from '../../api';
 import { getUserId, getUserName } from '../../utils';
-import { setLoading, hiddenLoading } from './homeSlice';
+import {
+  setLoading,
+  hiddenLoading,
+  fetchUserSuggets,
+  fetchUserFriends,
+  fetchPostFriends,
+  fetchGetInfor,
+} from './homeSlice';
 import { BasicModal, ModalChooseItem } from '../../components';
 
 const Home = () => {
   const isLogin = useSelector((state) => state.auth.current);
   const dispatch = useDispatch();
-  const [listPost, setListPost] = useState([]);
   const [listUserSuggets, setListUserSuggets] = useState([]);
-  const [friends, setFriends] = useState([]);
   const [status, setStatus] = useState(false);
   const { idPost } = useParams();
-  console.log(!!idPost);
 
   useEffect(() => {
     (async () => {
       try {
         dispatch(setLoading());
-        const { listUserSuggets } = await userApi.getSuggetionsForUser();
-        const { friends } = await followApi.getFriendsMe(getUserName());
-        getListPost();
-        setListUserSuggets(
-          listUserSuggets.map((user) => {
-            return {
-              ...user,
-              isFollow: false,
-            };
-          })
-        );
-        setFriends(friends[0].following);
+        dispatch(fetchUserSuggets(getUserId()));
+        dispatch(fetchUserFriends(getUserName()));
+        dispatch(fetchPostFriends(getUserName()));
+        dispatch(fetchGetInfor(getUserId()));
 
         setStatus(true);
         dispatch(hiddenLoading());
@@ -43,11 +39,6 @@ const Home = () => {
       }
     })();
   }, []);
-
-  const getListPost = async () => {
-    const { newList } = await postApi.getPostAllFriend(getUserName());
-    setListPost(newList);
-  };
 
   const handleOnClickFollow = async (id) => {
     const formData = new FormData();
@@ -68,7 +59,7 @@ const Home = () => {
   const handleOnPostComments = async (data) => {
     try {
       const commnet = await commentsApi.createComment(data);
-      getListPost();
+      dispatch(fetchPostFriends(getUserName()));
     } catch (error) {}
   };
   if (!isLogin) {
@@ -78,9 +69,6 @@ const Home = () => {
     <>
       {status && (
         <Content
-          friends={friends}
-          listPost={listPost}
-          listUserSuggets={listUserSuggets}
           onClickFollow={handleOnClickFollow}
           onClickUnFollow={handleOnClickFollow}
           onPostComments={handleOnPostComments}

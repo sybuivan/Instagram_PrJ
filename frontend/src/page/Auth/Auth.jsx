@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     '& img': {
       width: '25rem',
       position: 'absolute',
-      right: '4.4rem',
+      right: '9.4rem',
       top: '2.6rem',
       opacity: 0,
     },

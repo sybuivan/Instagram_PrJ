@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { commentsApi, postApi } from '../../api';
 import { BasicModal } from '../../components';
-import { getUserId, postComment } from '../../utils';
+import { getUserId, getUserName, postComment } from '../../utils';
 import { useGetPostDetail } from '../../hooks';
 
 import {
+  fetchPostFriends,
   hiddenLoading,
   hiddenModal,
   setLoading,
@@ -29,13 +30,14 @@ function PostView(props) {
 
   const handleOnPostComments = async (data) => {
     await postComment(idPost, data.comment);
-    setIsComment((pre) => !pre);
+    dispatch(fetchPostFriends(getUserName()));
   };
 
   const handleOnDeleteComment = async (idComment) => {
     await commentsApi.deleteComment(idComment);
     dispatch(hiddenModal('COMMENT'));
     setIsComment((pre) => !pre);
+    dispatch(fetchPostFriends(getUserName()));
   };
 
   const handleOnEditComment = async (idComment, comment) => {

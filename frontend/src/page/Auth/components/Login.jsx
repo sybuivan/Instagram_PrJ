@@ -4,7 +4,7 @@ import LoginForm from './LoginForm';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { login_form } from '../authSlice';
+import { loginAccount, login_form } from '../authSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { authApi } from '../../../api';
 import axios from 'axios';
@@ -72,25 +72,9 @@ const Login = () => {
   // handle on submit
   const handleOnSubmit = async (data) => {
     try {
-      // call api login
-      console.log(data);
-      // const resultAction = await dispatch(login(data));
+      const resultAction = await dispatch(loginAccount(data));
 
-      // unwrapResult(resultAction);
-      const res = await authApi.loginUser(data);
-      console.log('Res', res);
-      const { user, tokens } = res;
-      axios.defaults.headers.common[
-        'Authorization'
-      ] = `Bearer ${tokens.access.token}`;
-      dispatch(
-        login_form({
-          token: tokens.access.token,
-          refresh: tokens.refresh.token,
-          userName: user.userName,
-          id: user.id,
-        })
-      );
+      unwrapResult(resultAction);
 
       navigate('/');
     } catch (error) {

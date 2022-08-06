@@ -12,7 +12,6 @@ const postApi = {
     const { newList, follows } = await axiosClient.get(
       `/post/get-all/${userName}`
     );
-    console.log('API', newList);
     return { newList, follows };
   },
 
@@ -27,6 +26,9 @@ const postApi = {
       `/post/get-post-id/${id}`
     );
     return { posted, comments };
+  },
+  async deletePostId(id) {
+    await axiosClient.delete(`/post/delete-post-id/${id}`);
   },
 };
 

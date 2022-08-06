@@ -11,6 +11,9 @@ const ModalChooseItem = ({
   onDeleteComment,
   idComment,
   onEditComment,
+  onDelete,
+  onClickHideModal,
+  onAcceptDelete,
 }) => {
   const navigate = useNavigate();
   const handleChooseItem = () => {
@@ -28,6 +31,15 @@ const ModalChooseItem = ({
     }
     if (!!onEditComment) {
       onEditComment();
+    }
+    if (!!onDelete) {
+      onDelete();
+    }
+    if (!!onClickHideModal) {
+      onClickHideModal('MODAL_DELETE');
+    }
+    if (!!onAcceptDelete) {
+      onAcceptDelete();
     }
   };
   return (

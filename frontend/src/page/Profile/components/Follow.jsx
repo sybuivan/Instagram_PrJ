@@ -113,7 +113,7 @@ function Follow({ onClose, title, followings, followeres, listUser }) {
         </IconButton>
       </Box>
       <Box sx={{ height: '100%' }}>
-        <List sx={{ overflowY: 'scroll', height: '100%' }}>
+        <List sx={{ overflowY: 'scroll', height: 'calc(100% - 5.6rem)' }}>
           {followings && (
             <>
               {followings.map((people) => (
