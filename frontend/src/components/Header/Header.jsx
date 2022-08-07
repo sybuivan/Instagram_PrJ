@@ -1,6 +1,8 @@
 import { Grid, IconButton } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box, Container } from '@mui/system';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import json2mq from 'json2mq';
 import React, { useEffect, useMemo, useState } from 'react';
 import { RiAccountCircleFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,12 +29,14 @@ const useStyles = makeStyles({
     left: 0,
     zIndex: 10,
   },
+ 
   header: {
     height: '100%',
   },
   containerWrapper: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
     height: '100%',
   },
   logo: {
@@ -49,6 +53,10 @@ const useStyles = makeStyles({
 
 const Header = () => {
   const classes = useStyles();
+  const matches = useMediaQuery(json2mq({
+      maxWidth: 750,
+    }));
+  console.log(matches);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isShowModal = useSelector((state) => state.home.modal);
@@ -107,7 +115,7 @@ const Header = () => {
           sx={{ maxWidth: '97.5rem', height: '100%' }}
         >
           <Grid container className={classes.containerWrapper}>
-            <Grid item md={4}>
+            <Grid item md={2} sx={{display: matches && 'none'}} >
               <Box>
                 <Link to="/">
                   <Box
@@ -119,7 +127,7 @@ const Header = () => {
               </Box>
             </Grid>
 
-            <Grid item md={4}>
+            <Grid item md={4} >
               <Box sx={{ position: 'relative' }}>
                 <Search
                   onChangeSearch={handleOnChangeSearch}
@@ -131,7 +139,7 @@ const Header = () => {
               </Box>
             </Grid>
 
-            <Grid item md={4}>
+            <Grid item md={4} >
               {navRoutes.map((item) => (
                 <>
                   {item?.path ? (

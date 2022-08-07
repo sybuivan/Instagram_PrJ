@@ -12,7 +12,8 @@ const Suggestions = ({
   const listUserSuggets = useSelector((state) => state.home.listUserSuggets);
 
   return (
-    <Box>
+    <>{listUserSuggets.length > 0 &&
+    (<Box>
       <Box
         sx={{
           display: 'flex',
@@ -50,7 +51,7 @@ const Suggestions = ({
           </>
         ))}
       </List>
-    </Box>
+    </Box>) }</>
   );
 };
 

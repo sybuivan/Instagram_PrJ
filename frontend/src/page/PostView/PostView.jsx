@@ -30,6 +30,7 @@ function PostView(props) {
 
   const handleOnPostComments = async (data) => {
     await postComment(idPost, data.comment);
+    setIsComment((pre) => !pre);
     dispatch(fetchPostFriends(getUserName()));
   };
 
@@ -60,19 +61,20 @@ function PostView(props) {
           component={
             <Box
               sx={{
-                width: '120rem',
+                // width: '120rem',
                 height: '62rem',
-                overflow: 'hidden',
+                overflowX: 'hidden',
+                overflowY: 'scroll',
                 maxWidth: '120rem',
                 backgroundColor: 'var(--color-white)',
               }}
             >
               <Grid container sx={{ width: '100%', height: '100%' }}>
                 <Grid container sx={{ width: '100%', height: '100%' }}>
-                  <Grid item xs={6} sx={{ height: '100%' }}>
+                  <Grid item lg={6} md={6} sm={12} sx={{ height: '100%' }}>
                     <ViewImages images={postById.posted.images} />
                   </Grid>
-                  <Grid item xs={6} sx={{ height: '100%' }}>
+                  <Grid item lg={6} md={6} sm={12} sx={{ height: '100%' }}>
                     <ViewInforPost
                       postById={postById}
                       listPosted={listPosted}

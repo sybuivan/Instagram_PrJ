@@ -1,6 +1,7 @@
 import { Grid, Box, Typography } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { BasicModal, Footer, ModalChooseItem } from '../../../components';
 import { getUserName, toastify } from '../../../utils';
 import { deletePostById } from '../../PostView/postSlice';
@@ -17,6 +18,7 @@ const Content = ({
   onPostComments,
 }) => {
   const isShowModal = useSelector((state) => state.home.modal);
+  
   const { idPost, isPostMe } = useSelector((state) => state.post.inforPost);
   const dispatch = useDispatch();
   const [user, setUser] = useState(null);
@@ -97,11 +99,11 @@ const Content = ({
   );
   return (
     <>
-      <Grid item xs={7}>
+      <Grid item md={7}>
         <ListFriends />
         <ListPostFriend onPostComments={onPostComments} />
       </Grid>
-      <Grid item xs={5}>
+      <Grid item md={5}>
         {suggestionsMemo}
         {!!user && memoizedCard}
         {/* Footer */}

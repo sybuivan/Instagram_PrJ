@@ -103,10 +103,10 @@ function ProfileInfo({
   return (
     <>
       <Grid container sx={{ alignItems: 'center' }}>
-        <Grid item xs={4} sx={{ padding: '5rem 0' }}>
+        <Grid item lg={4} sx={{ padding: '5rem 0' }} md={4} sm={4}>
           {avatarMemo}
         </Grid>
-        <Grid item xs={5}>
+        <Grid item lg={5} md={5} sm={8}>
           <Box>
             <Box className={classes.flex}>
               <Typography variant="h4">{user.userName}</Typography>

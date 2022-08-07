@@ -10,7 +10,7 @@ function PostList({ listPost }) {
     return (
       <>
         {listPost.map((post) => (
-          <Grid item xs={4} key={post._id}>
+          <Grid item lg={4} md={4} key={post._id} sm={6}>
             <Post post={post} />
           </Grid>
         ))}
