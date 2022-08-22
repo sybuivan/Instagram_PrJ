@@ -4,10 +4,9 @@ import { Box, Container } from '@mui/system';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import json2mq from 'json2mq';
 import React, { useEffect, useMemo, useState } from 'react';
-import { RiAccountCircleFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { images, navRoutes } from '../../constants';
+import { images, navRoutesIcon } from '../../constants';
 import { hiddenModal, showModal } from '../../page/Home/homeSlice';
 import { CreateNewPost } from '../../features/Post/components';
 import { logout } from '../../page/Auth/authSlice';
@@ -16,6 +15,7 @@ import { LinkItem, MenuFrofile } from '.';
 import { ResultRearch, Search } from '..';
 import { userApi } from '../../api';
 import { useDebounce } from '../../hooks';
+import { AccountCircle } from '../Icons';
 
 const useStyles = makeStyles({
   root: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
     left: 0,
     zIndex: 10,
   },
- 
+
   header: {
     height: '100%',
   },
@@ -53,10 +53,11 @@ const useStyles = makeStyles({
 
 const Header = () => {
   const classes = useStyles();
-  const matches = useMediaQuery(json2mq({
+  const matches = useMediaQuery(
+    json2mq({
       maxWidth: 750,
-    }));
-  console.log(matches);
+    })
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isShowModal = useSelector((state) => state.home.modal);
@@ -74,7 +75,6 @@ const Header = () => {
   const [valueSearch, setValueSearch] = useState('');
   const [listResult, setListResult] = useState([]);
   const valueDebounce = useDebounce(valueSearch, 500);
-  console.log('valueDebounce', valueDebounce);
   useEffect(() => {
     (async () => {
       try {
@@ -87,6 +87,7 @@ const Header = () => {
       } catch (error) {}
     })();
   }, [valueDebounce]);
+
   const handleOnChangeSearch = (value) => {
     if (!!value) {
       setFocused(true);
@@ -115,7 +116,7 @@ const Header = () => {
           sx={{ maxWidth: '97.5rem', height: '100%' }}
         >
           <Grid container className={classes.containerWrapper}>
-            <Grid item md={2} sx={{display: matches && 'none'}} >
+            <Grid item md={2} sx={{ display: matches && 'none' }}>
               <Box>
                 <Link to="/">
                   <Box
@@ -127,20 +128,21 @@ const Header = () => {
               </Box>
             </Grid>
 
-            <Grid item md={4} >
+            <Grid item md={4}>
               <Box sx={{ position: 'relative' }}>
                 <Search
                   onChangeSearch={handleOnChangeSearch}
                   focused={focused}
                   valueSearch={valueSearch}
                   showLoading={showLoading}
+                  placeholder="Search user accounts"
                 />
                 <ResultRearch focused={focused} listResult={listResult} />
               </Box>
             </Grid>
 
-            <Grid item md={4} >
-              {navRoutes.map((item) => (
+            <Grid item md={4}>
+              {navRoutesIcon.map((item) => (
                 <>
                   {item?.path ? (
                     <LinkItem
@@ -167,7 +169,7 @@ const Header = () => {
                 className={classes.navIcon}
                 onClick={() => setOpenMenu((pre) => !pre)}
               >
-                <RiAccountCircleFill />
+                <AccountCircle />
                 {openMenu && (
                   <MenuFrofile
                     openMenu={openMenu}

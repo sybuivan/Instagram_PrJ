@@ -8,6 +8,7 @@ import {
   PostView,
   EditProfile,
   ViewPostDetail,
+  NotFound,
 } from '../page';
 import { Auth } from '../page/Auth';
 import Layout from '../components/Layout';
@@ -55,6 +56,14 @@ let routes = [
       {
         path: 'view-post-detail/:idPost',
         element: <ViewPostDetail />,
+      },
+      {
+        path: 'not-found',
+        element: <NotFound />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },

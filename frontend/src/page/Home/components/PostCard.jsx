@@ -14,24 +14,25 @@ import {
   OutlinedInput,
   Button,
 } from '@mui/material';
-import { FiMoreHorizontal } from 'react-icons/fi';
-import {
-  AiOutlineHeart,
-  AiOutlineComment,
-  AiOutlineSmile,
-} from 'react-icons/ai';
-import { BsShare, BsBookmarkCheck } from 'react-icons/bs';
-import { images } from '../../constants';
+
 import { makeStyles } from '@mui/styles';
-import { BasicModal, FriendInfo } from '..';
-import { commentsApi, postApi, likesApi } from '../../api';
+import { BasicModal, FriendInfo } from '../../../components';
 import { useNavigate } from 'react-router';
-import { getUserId, getUserName } from '../../utils';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import Follow from '../../page/Profile/components/Follow';
-import { hiddenModal, showModal } from '../../page/Home/homeSlice';
-import { getInforPost } from '../../page/PostView/postSlice';
+import Follow from '../../../page/Profile/components/Follow';
+import { hiddenModal, showModal } from '../../../page/Home/homeSlice';
+import { getInforPost } from '../../../page/PostView/postSlice';
+import { postApi, likesApi } from '../../../api';
+import { getUserId, getUserName } from '../../../utils';
+import {
+  BookmarkCheck,
+  MoreHorizontal,
+  OutlineComment,
+  OutlineHeart,
+  OutlineSmile,
+  Share,
+} from '../../../components/Icons';
 
 const useStyles = makeStyles({
   root: {
@@ -123,7 +124,7 @@ const PostCard = ({ post, onPostComments }) => {
       getInforPost({
         idPost: posted._id,
         userName: posted.user.userName,
-        userLogin: getUserName()
+        userLogin: getUserName(),
       })
     );
     dispatch(showModal('MORE_POST'));
@@ -226,7 +227,7 @@ const PostCard = ({ post, onPostComments }) => {
                   }
                 />
                 <IconButton onClick={handleOnClickMore}>
-                  <FiMoreHorizontal />
+                  <MoreHorizontal />
                 </IconButton>
               </ListItem>
             </Box>
@@ -248,11 +249,11 @@ const PostCard = ({ post, onPostComments }) => {
                           onClick={handleClickUnHeart}
                           sx={{ '& svg': { color: 'red' } }}
                         >
-                          <AiOutlineHeart />
+                          <OutlineHeart />
                         </IconButton>
                       ) : (
                         <IconButton onClick={handleClickHeart}>
-                          <AiOutlineHeart />
+                          <OutlineHeart />
                         </IconButton>
                       )}
                     </ListItem>
@@ -260,12 +261,12 @@ const PostCard = ({ post, onPostComments }) => {
                       <IconButton
                         onClick={() => navigate(`/view/${posted._id}`)}
                       >
-                        <AiOutlineComment />
+                        <OutlineComment />
                       </IconButton>
                     </ListItem>
                     <ListItem className={classes.listItem}>
                       <IconButton>
-                        <BsShare />
+                        <Share />
                       </IconButton>
                     </ListItem>
                   </List>
@@ -273,7 +274,7 @@ const PostCard = ({ post, onPostComments }) => {
                 <Grid item md={1}>
                   <ListItem className={classes.listItem}>
                     <IconButton>
-                      <BsBookmarkCheck />
+                      <BookmarkCheck />
                     </IconButton>
                   </ListItem>
                 </Grid>
@@ -326,7 +327,7 @@ const PostCard = ({ post, onPostComments }) => {
                     }}
                     onClick={() => setShowEmoji((pre) => !pre)}
                   >
-                    <AiOutlineSmile />
+                    <OutlineSmile />
                   </IconButton>
                   {showEmoji && <Picker onEmojiClick={onEmojiClick} />}
                 </Box>

@@ -7,7 +7,6 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { images } from '../../constants';
 import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router';
 
@@ -50,7 +49,6 @@ const FriendItem = ({
     onClickShowModal();
   };
   const navigate = useNavigate();
-  console.log('people', people);
   return (
     <ListItem alignItems="center">
       <ListItemAvatar onClick={() => navigate(`${people.userName}`)}>

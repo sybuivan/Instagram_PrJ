@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PostCard } from '../../../components';
 import { useSelector } from 'react-redux';
+import PostCard from './PostCard';
 
 const ListPostFriend = ({ onClickShowMore, onPostComments }) => {
   const listPost = useSelector((state) => state.home.ListPostFriend);

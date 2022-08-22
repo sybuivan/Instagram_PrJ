@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
-import { AiOutlineComment } from 'react-icons/ai';
 import { makeStyles } from '@mui/styles';
 import { useNavigate, useParams } from 'react-router';
+import { OutlineComment } from '../../../components/Icons';
 
 const useStyles = makeStyles({
   root: {
@@ -67,7 +66,7 @@ function Post({ post }) {
         />
       </Box>
       <Box className={classes.boxIcon}>
-        <AiOutlineComment />
+        <OutlineComment />
         <Typography variant="span">{totalComments}</Typography>
       </Box>
       <Box className={classes.overlay}></Box>

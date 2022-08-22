@@ -5,10 +5,10 @@ import { useForm } from 'react-hook-form';
 import { makeStyles } from '@mui/styles';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AiFillFacebook } from 'react-icons/ai';
 import { images } from '../../../constants';
 import { InputField, PasswordField } from '../../../form-control';
 import { useSelector } from 'react-redux';
+import { FillFacebook } from '../../../components/Icons';
 
 const useStyles = makeStyles({
   loginForm: {
@@ -161,7 +161,7 @@ const LoginForm = ({ initialValues, onSubmit }) => {
               <Box>
                 <Box component="button" className={classes.boxButton}>
                   <Box component="span">
-                    <AiFillFacebook />
+                    <FillFacebook />
                     Login with facebook
                   </Box>
                 </Box>

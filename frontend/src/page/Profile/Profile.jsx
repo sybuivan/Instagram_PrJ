@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import { followApi, postApi, userApi } from '../../api';
-import { getUserName } from '../../utils';
+import { getUserId, getUserName } from '../../utils';
 import {
   hiddenLoading,
   hiddenModal,
@@ -14,11 +14,15 @@ import { ProfileInfo } from './components';
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const [listPosted, setListPosted] = useState([]);
+  const friends = useSelector((state) => state.home.listUserFriends);
   const [user, setUser] = useState([]);
   const [status, setStatus] = useState(false);
   const [avatar, setAvatar] = useState(null);
+  const { userName } = useParams();
+  console.log(userName);
   const handleOnOpenModal = (type) => {
     dispatch(showModal(type));
   };
@@ -32,19 +36,17 @@ const Profile = () => {
     (async () => {
       try {
         dispatch(setLoading());
-        const { newList } = await postApi.getPostAll(
-          location.pathname.replace('/', '')
-        );
-        const { follows, user } = await followApi.getFollowUser(
-          location.pathname.replace('/', '')
+        const { newList } = await postApi.getPostAll(userName);
+        const { follows, user, follow_with_me } = await followApi.getFollowUser(
+          userName
         );
         console.log(follows, user);
-        setUser({ follows, user });
+        setUser({ follows, user, follow_with_me });
         setListPosted(newList);
         setStatus(true);
         dispatch(hiddenModal('FOLLOWING'));
       } catch (error) {
-        console.log(error);
+        navigate('/not-found');
       } finally {
         dispatch(hiddenLoading());
       }
@@ -62,6 +64,17 @@ const Profile = () => {
       await userApi.editAvatar(formData);
     } catch (error) {}
   };
+
+  // handleUnfollowUser
+  const handleUnfollowUser = async (idMember) => {
+    try {
+      await followApi.unFollowUser({
+        idFollow: friends[0]._id,
+        idMember: idMember,
+        idUser: getUserId(),
+      });
+    } catch (error) {}
+  };
   return (
     <>
       {status && (
@@ -71,11 +84,12 @@ const Profile = () => {
           infoUser={user}
           avatar={avatar}
           onChangeAvatar={handleOnChangeAvatar}
+          unfollowUser={handleUnfollowUser}
           isFollowere={isShowModal.FOLLOWERE}
           isFollowing={isShowModal.FOLLOWING}
           onHiddenModal={handleOnClickHideModal}
           onSaveAvatar={handleOnSaveAvatar}
-          isPrivate={location.pathname.replace('/', '') === getUserName()}
+          isPrivate={userName === getUserName()}
         />
       )}
     </>

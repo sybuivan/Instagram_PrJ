@@ -9,11 +9,10 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useMemo } from 'react';
-import { BsFillCameraFill } from 'react-icons/bs';
-import { FiMoreHorizontal, FiSettings } from 'react-icons/fi';
 import { useNavigate } from 'react-router';
 import { Followers, TabChoose } from '.';
 import { BasicModal } from '../../../components';
+import { FillCameraFill, MoreHorizontal, Settings } from '../../../components/Icons';
 
 const useStyles = makeStyles({
   root: {
@@ -44,11 +43,12 @@ function ProfileInfo({
   onChangeAvatar,
   onSaveAvatar,
   isPrivate,
+  unfollowUser,
 }) {
   const classes = useStyles();
   const navigate = useNavigate();
-  console.log(isPrivate);
-  const { user, follows } = infoUser;
+  const { user, follows, follow_with_me } = infoUser;
+  console.log('follow_with_me', follow_with_me);
   const handleOpenModal = (type) => {
     onOpenModal(type);
   };
@@ -85,7 +85,7 @@ function ProfileInfo({
                 type="file"
                 onChange={(e) => onChangeAvatar(e)}
               />
-              <BsFillCameraFill />
+              <FillCameraFill />
             </IconButton>
             {avatar && (
               <Box className={classes.avatarIcon} sx={{ top: '70%' }}>
@@ -124,16 +124,35 @@ function ProfileInfo({
                     Edit profile
                   </Button>
                   <IconButton>
-                    <FiSettings />
+                    <Settings />
                   </IconButton>
                 </>
               ) : (
                 <>
-                  <Button variant="outlined" sx={{ fontSize: '1.4rem' }}>
+                  <Button variant="outlined" sx={{ fontSize: '1.2rem' }}>
                     Message
                   </Button>
+                  {follow_with_me ? (
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      sx={{ fontSize: '1.2rem' }}
+                      onClick={() => unfollowUser(user.id)}
+                    >
+                      Unfollow
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      sx={{ fontSize: '1.2rem' }}
+                      onClick={() => unfollowUser(user.id)}
+                    >
+                      Follow
+                    </Button>
+                  )}
+
                   <IconButton sx={{ '& svg': { fontSize: '1.8rem' } }}>
-                    <FiMoreHorizontal />
+                    <MoreHorizontal />
                   </IconButton>
                 </>
               )}

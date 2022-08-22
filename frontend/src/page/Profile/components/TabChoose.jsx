@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Grid, Tab, Tabs, Box } from '@mui/material';
-import { BsBookmarkCheck, BsFillGrid3X3GapFill } from 'react-icons/bs';
-import { useNavigate, useParams, Outlet, useLocation } from 'react-router-dom';
+import { Grid, Tab, Tabs } from '@mui/material';
+import React from 'react';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { PostList } from '.';
+import { BookmarkCheck, FillGrid3X3GapFill } from '../../../components/Icons';
 
 function TabChoose({ listPost }) {
   console.log('listPost', listPost);
@@ -23,7 +23,7 @@ function TabChoose({ listPost }) {
         sx={{ borderTop: '1px solid var(--border-gray)', m: '2rem 0 3rem' }}
       >
         <Tab
-          icon={<BsFillGrid3X3GapFill />}
+          icon={<FillGrid3X3GapFill />}
           label="POSTS"
           sx={{
             flexDirection: 'row',
@@ -38,7 +38,7 @@ function TabChoose({ listPost }) {
           onClick={() => navigate(`/${userName}`)}
         />
         <Tab
-          icon={<BsBookmarkCheck />}
+          icon={<BookmarkCheck />}
           label="SAVED"
           sx={{
             flexDirection: 'row',

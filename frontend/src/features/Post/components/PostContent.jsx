@@ -10,10 +10,9 @@ import {
   Typography,
   Box,
 } from '@mui/material';
-import { AiOutlineSmile } from 'react-icons/ai';
-import { images } from '../../../constants';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import { OutlineSmile } from '../../../components/Icons';
 
 const PostContent = ({ thumbs, onChangeCaption, caption }) => {
   const { register } = useForm();
@@ -85,7 +84,7 @@ const PostContent = ({ thumbs, onChangeCaption, caption }) => {
               }}
               onClick={() => setShowEmoji((pre) => !pre)}
             >
-              <AiOutlineSmile />
+              <OutlineSmile />
             </IconButton>
             {showEmoji && <Picker onEmojiClick={onEmojiClick} />}
           </Box>

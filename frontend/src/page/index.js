@@ -7,3 +7,4 @@ export { default as Settings } from './Settings';
 export { default as PostView } from './PostView';
 export { default as EditProfile } from './EditProfile';
 export { default as ViewPostDetail } from './ViewPostDetail';
+export { default as NotFound } from './NotFound';

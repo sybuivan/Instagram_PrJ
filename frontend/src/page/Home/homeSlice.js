@@ -31,7 +31,7 @@ export const fetchUserFriends = createAsyncThunk(
   'user/user-friends',
   async (payload) => {
     const { friends } = await followApi.getFriendsMe(payload);
-    return friends[0].following;
+    return friends;
   }
 );
 

@@ -11,11 +11,8 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router';
-import { AiOutlineHeart } from 'react-icons/ai';
-import { FiMoreHorizontal } from 'react-icons/fi';
 import { getUserId } from '../../../utils';
-import { useDispatch, useSelector } from 'react-redux';
-import { showModal, hiddenModal } from '../../Home/homeSlice';
+import { MoreHorizontal, OutlineHeart } from '../../../components/Icons';
 
 const useStyles = makeStyles({
   name: {
@@ -107,7 +104,7 @@ function Comment({
               </Typography>
               {getUserId() === comments.user_id.id && (
                 <IconButton onClick={handleOnShowMoreModalComment}>
-                  <FiMoreHorizontal />
+                  <MoreHorizontal />
                 </IconButton>
               )}
             </React.Fragment>
@@ -120,7 +117,7 @@ function Comment({
         </Box>
         <Box sx={{ ml: '2rem', mt: '0.4rem', flex: 0 }}>
           <IconButton>
-            <AiOutlineHeart />
+            <OutlineHeart />
           </IconButton>
         </Box>
       </ListItem>

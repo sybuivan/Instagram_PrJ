@@ -13,14 +13,13 @@ import { makeStyles } from '@mui/styles';
 import Picker from 'emoji-picker-react';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { AiOutlineSmile } from 'react-icons/ai';
-import { FiMoreHorizontal } from 'react-icons/fi';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { ListComments } from '.';
 import { commentsApi } from '../../../api';
 import { FriendInfo } from '../../../components';
 import { BasicModal, ModalChooseItem } from '../../../components';
+import { MoreHorizontal, OutlineSmile } from '../../../components/Icons';
 import ModalPost from '../../Home/components/ModalPost';
 import { hiddenModal, showModal } from '../../Home/homeSlice';
 
@@ -167,7 +166,7 @@ function ViewInforPost({
           }
         />
         <IconButton>
-          <FiMoreHorizontal />
+          <MoreHorizontal />
         </IconButton>
       </ListItem>
       <ListComments
@@ -199,7 +198,7 @@ function ViewInforPost({
                 }}
                 onClick={() => setShowEmoji((pre) => !pre)}
               >
-                <AiOutlineSmile />
+                <OutlineSmile />
               </IconButton>
               {showEmoji && <Picker onEmojiClick={onEmojiClick} />}
             </Box>

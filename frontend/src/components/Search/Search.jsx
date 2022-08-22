@@ -1,10 +1,14 @@
 import { IconButton, InputBase, Paper, CircularProgress } from '@mui/material';
 import React from 'react';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { BsSearch } from 'react-icons/bs';
+import { OutlineCloseCircle, SearchIcon } from '../Icons';
 
-const Search = ({ onChangeSearch, focused, valueSearch, showLoading }) => {
-  console.log(showLoading);
+const Search = ({
+  onChangeSearch,
+  focused,
+  valueSearch,
+  showLoading,
+  placeholder,
+}) => {
   const handleOnChangeSearch = (e) => {
     onChangeSearch(e.target.value);
   };
@@ -12,7 +16,7 @@ const Search = ({ onChangeSearch, focused, valueSearch, showLoading }) => {
     <Paper sx={{ width: '27rem', display: 'flex' }}>
       <InputBase
         sx={{ ml: 1, flex: 1, fontSize: '1.3rem' }}
-        placeholder="Search Google Maps"
+        placeholder={placeholder}
         inputProps={{ 'aria-label': 'Search...' }}
         onChange={(e) => handleOnChangeSearch(e)}
       />
@@ -24,11 +28,11 @@ const Search = ({ onChangeSearch, focused, valueSearch, showLoading }) => {
                 sx={{ width: '2rem!important', height: '2rem!important' }}
               />
             ) : (
-              <AiOutlineCloseCircle />
+              <OutlineCloseCircle />
             )}
           </>
         ) : (
-          <BsSearch />
+          <SearchIcon />
         )}
       </IconButton>
     </Paper>

@@ -1,15 +1,11 @@
 import { ListItemButton, ListItemIcon, Menu } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import React from 'react';
-import { BsBookmarkCheck } from 'react-icons/bs';
-import { FiLogOut, FiSettings } from 'react-icons/fi';
-import { RiAccountCircleFill } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { AccountCircle, BookmarkCheck, Logout, Settings } from '../Icons';
 
 const MenuFrofile = ({ openMenu, onClickLogout }) => {
   const userName = useSelector((state) => state.auth.current);
-  console.log(userName);
   const navigate = useNavigate();
   const handleClose = () => {};
   return (
@@ -31,19 +27,19 @@ const MenuFrofile = ({ openMenu, onClickLogout }) => {
     >
       <ListItemButton onClick={() => navigate(`${userName}`)}>
         <ListItemIcon>
-          <RiAccountCircleFill />
+          <AccountCircle />
         </ListItemIcon>
         Profile
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
-          <BsBookmarkCheck />
+          <BookmarkCheck />
         </ListItemIcon>
         Saved
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
-          <FiSettings />
+          <Settings />
         </ListItemIcon>
         Settings
       </ListItemButton>
@@ -52,7 +48,7 @@ const MenuFrofile = ({ openMenu, onClickLogout }) => {
         onClick={() => onClickLogout()}
       >
         <ListItemIcon>
-          <FiLogOut fontSize="small" />
+          <Logout fontSize="small" />
         </ListItemIcon>
         Logout
       </ListItemButton>

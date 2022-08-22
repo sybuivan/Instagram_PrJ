@@ -12,8 +12,8 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useNavigate } from 'react-router';
+import { OutlineCloseCircle } from '../../../components/Icons';
 
 const useStyles = makeStyles({
   root: {
@@ -94,7 +94,7 @@ function People({ people, type }) {
 
 function Follow({ onClose, title, followings, followeres, listUser }) {
   const classes = useStyles();
-  console.log('listUser', listUser);
+  console.log('followeres', followeres);
   return (
     <Paper className={classes.root}>
       <Box className={classes.boxHead}>
@@ -109,7 +109,7 @@ function Follow({ onClose, title, followings, followeres, listUser }) {
             }
           }}
         >
-          <AiOutlineCloseCircle />
+          <OutlineCloseCircle />
         </IconButton>
       </Box>
       <Box sx={{ height: '100%' }}>
@@ -124,8 +124,12 @@ function Follow({ onClose, title, followings, followeres, listUser }) {
 
           {followeres && (
             <>
-              {followeres.map(() => (
-                <People type="FOLLOWERE" />
+              {followeres.map((item) => (
+                <People
+                  type="FOLLOWERE"
+                  people={item}
+                  key={item.id}
+                />
               ))}
             </>
           )}

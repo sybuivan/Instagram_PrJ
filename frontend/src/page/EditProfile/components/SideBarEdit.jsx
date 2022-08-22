@@ -1,17 +1,16 @@
 import {
   ListItemButton,
   ListItemIcon,
-  ListItemText, Paper
+  ListItemText,
+  Paper,
 } from '@mui/material';
 import React from 'react';
-import { AiFillProfile } from 'react-icons/ai';
-import { RiLockPasswordFill } from 'react-icons/ri';
 import { useLocation, useNavigate } from 'react-router';
-
+import { FillProfile, LockPasswordFill } from '../../../components/Icons';
 const data = [
-  { icon: <AiFillProfile />, label: 'Edit profile', to: '/edit-profile/' },
+  { icon: <FillProfile />, label: 'Edit profile', to: '/edit-profile/' },
   {
-    icon: <RiLockPasswordFill />,
+    icon: <LockPasswordFill />,
     label: 'Change password',
     to: '/edit-profile/change-password',
   },

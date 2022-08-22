@@ -46,9 +46,9 @@ const ListFriends = () => {
   return (
     <Paper sx={{ mb: 2, overflow: 'auto' }}>
       <List sx={{ display: 'flex' }}>
-        {friends.length > 0 ? (
+        {friends[0]?.following.length > 0 ? (
           <>
-            {friends.map((people) => (
+            {friends[0]?.following.map((people) => (
               <ListItem
                 key={people._id}
                 className={classes.item}

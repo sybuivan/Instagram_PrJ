@@ -3,16 +3,20 @@ import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useForm } from 'react-hook-form';
-import { BsArrowLeft } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostHead } from './components';
 import { BasicModal, ModalChooseItem } from '../../components';
 import { ReactComponent as PicSvg } from '../../assets/images/picVideo.svg';
 import { postApi } from '../../api';
 import ModalPost from '../../page/Home/components/ModalPost';
-import { fetchPostFriends, hiddenModal, showModal } from '../../page/Home/homeSlice';
+import {
+  fetchPostFriends,
+  hiddenModal,
+  showModal,
+} from '../../page/Home/homeSlice';
 import PostContent from './components/PostContent';
 import { getUserId, getUserName } from '../../utils';
+import { ArrowLeft } from '../../components/Icons';
 
 const useStyles = makeStyles({
   root: {
@@ -139,7 +143,7 @@ const CreatePost = () => {
           {!!files && !isPostContent && !shareSucc && (
             <Box className={classes.wrapperHead}>
               <PostHead
-                icon={<BsArrowLeft />}
+                icon={<ArrowLeft />}
                 onClickBack={handleOnBack}
                 onClickNext={handleOnNext}
                 name="Next"
@@ -151,7 +155,7 @@ const CreatePost = () => {
             <Box className={classes.wrapperHead}>
               <PostHead
                 title="Create new post"
-                icon={<BsArrowLeft />}
+                icon={<ArrowLeft />}
                 titleButton="Share"
               />
             </Box>

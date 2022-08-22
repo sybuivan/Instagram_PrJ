@@ -3,6 +3,5 @@ export { default as Footer } from './Footer';
 export { default as Loading } from './Loading';
 export * from './Modal';
 export * from './Friends';
-export * from './PostCard';
 export * from './Search';
 export * from './Header';

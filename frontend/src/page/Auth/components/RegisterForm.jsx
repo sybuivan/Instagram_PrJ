@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { AiFillFacebook } from 'react-icons/ai';
 import * as yup from 'yup';
 import { images } from '../../../constants';
 import { InputField, PasswordField } from '../../../form-control';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { FillFacebook } from '../../../components/Icons';
 
 const useStyles = makeStyles({
   loginForm: {
@@ -144,7 +144,7 @@ const RegisterForm = ({ initialValues, onSubmit }) => {
             <Box>
               <Box component="button" className={classes.boxButton}>
                 <Box component="span">
-                  <AiFillFacebook />
+                  <FillFacebook />
                   Login with facebook
                 </Box>
               </Box>

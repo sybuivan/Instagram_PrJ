@@ -5,6 +5,7 @@ const categoryApi = {
     const user = await axiosClient.get(`/users/${userId}`);
     return user;
   },
+
   async editAvatar(formData) {
     const userId = getUserId();
     await axiosClient.put(`/users/edit-avatar/${userId}`, formData, {
