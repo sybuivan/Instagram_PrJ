@@ -7,7 +7,6 @@ const initialState = {
   current: localStorage.getItem(storegeKeys.USER),
 };
 export const loginAccount = createAsyncThunk('auth/login', async (payload) => {
-  console.log(payload);
   const response = await authApi.loginUser(payload);
   const { tokens, user } = response;
   setSession(tokens.access.token, tokens.refresh.token, user.userName, user.id);

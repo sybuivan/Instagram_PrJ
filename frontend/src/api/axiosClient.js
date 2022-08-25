@@ -26,15 +26,14 @@ axiosClient.interceptors.response.use(
     return response;
   },
   (error) => {
+    const { data, config, status } = error.response;
+    console.log(data.message, status);
     const statusCode = error.response.status;
-    // if (statusCode === 404 || statusCode === 400) {
-    //   window.location.href = '/not-found';
-    //   return;
-    // }
-    if (statusCode === 401) {
-      window.location.href = '/login';
+    if (statusCode === 404 || statusCode === 400) {
+      window.location.href = '/not-found';
       return;
     }
+
     if (statusCode === 403) {
       window.location.href = '/forbidden';
       return;
@@ -44,7 +43,7 @@ axiosClient.interceptors.response.use(
       // toast.error('System has an error');
       return;
     }
-    throw error;
+    throw new Error(data.message);
   }
 );
 

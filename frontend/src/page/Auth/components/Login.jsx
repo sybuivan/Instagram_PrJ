@@ -8,7 +8,7 @@ import { loginAccount, login_form } from '../authSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { authApi } from '../../../api';
 import axios from 'axios';
-import { setSession } from '../../../utils';
+import { setSession, toastify } from '../../../utils';
 
 const useStyles = makeStyles({
   root: {
@@ -78,7 +78,8 @@ const Login = () => {
 
       navigate('/');
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+      toastify('error', error.message);
     }
   };
 
