@@ -38,22 +38,7 @@ const Content = ({
   const handleOnClickHideModal = (typeModal) => {
     dispatch(hiddenModal(typeModal));
   };
-  // const handleOnClickFollow = (id) => {
-  //   onClickFollow(id);
-  //   const newSuggestions = [...listUserSuggets];
-  //   const peopleIndex = newSuggestions.findIndex((people) => people.id === id);
-  //   if (peopleIndex >= 0) {
-  //     newSuggestions[peopleIndex].isFollow = true;
-  //     console.log(newSuggestions[peopleIndex]);
-  //     setSuggestions(newSuggestions);
-  //   }
-  // };
-  // const handleOnClickUnFollow = (name) => {
-  //   setUser({
-  //     name: name,
-  //   });
-  // };
-
+ 
   const handleOnAcceptUnFollow = () => {
     dispatch(hiddenModal());
   };

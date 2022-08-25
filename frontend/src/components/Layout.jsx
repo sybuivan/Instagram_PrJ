@@ -10,9 +10,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Layout = () => {
   const isLoading = useSelector((state) => state.home.loading);
-   const matches = useMediaQuery(json2mq({
+  const matches = useMediaQuery(
+    json2mq({
       maxWidth: 900,
-    }));
+    })
+  );
   return (
     <div>
       <Header />
@@ -21,25 +23,16 @@ const Layout = () => {
           maxWidth="false"
           sx={{ maxWidth: '97.5rem', height: '100%' }}
         >
-          <Grid container spacing={2} sx={{justifyContent: matches && 'center'}}>
+          <Grid
+            container
+            spacing={2}
+            sx={{ justifyContent: matches && 'center' }}
+          >
             <Outlet />
           </Grid>
         </Container>
       </Box>
       {isLoading && <Loading loading={isLoading} />}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      {/* Same as */}
-      <ToastContainer />
     </div>
   );
 };

@@ -18,13 +18,14 @@ const initialState = {
   listUserFriends: [],
   ListPostFriend: [],
   inforUser: {},
+  friends: [],
 };
 
 export const fetchUserSuggets = createAsyncThunk(
   'user/user-suggets',
   async (payload) => {
-    const { listUserSuggets } = await userApi.getSuggetionsForUser(payload);
-    return listUserSuggets;
+    const newListUser = await userApi.getSuggetionsForUser(payload);
+    return newListUser;
   }
 );
 export const fetchUserFriends = createAsyncThunk(
@@ -148,6 +149,26 @@ export const homeSlice = createSlice({
     hiddenLoading: (state) => {
       state.loading = false;
     },
+    followUser: (state, action) => {
+      const { idFriend } = action.payload;
+      console.log(idFriend);
+      const indexUser = state.listUserSuggets.findIndex(
+        (user) => user.id === idFriend
+      );
+      if (indexUser >= 0) {
+        state.listUserSuggets[indexUser].isFollow = true;
+      }
+    },
+    unFollowUser: (state, action) => {
+      const { idFriend } = action.payload;
+      console.log(idFriend);
+      const indexUser = state.listUserSuggets.findIndex(
+        (user) => user.id === idFriend
+      );
+      if (indexUser >= 0) {
+        state.listUserSuggets[indexUser].isFollow = false;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUserSuggets.fulfilled, (state, action) => {
@@ -166,7 +187,13 @@ export const homeSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { showModal, hiddenModal, setLoading, hiddenLoading } =
-  homeSlice.actions;
+export const {
+  showModal,
+  hiddenModal,
+  setLoading,
+  hiddenLoading,
+  followUser,
+  unFollowUser,
+} = homeSlice.actions;
 
 export default homeSlice.reducer;

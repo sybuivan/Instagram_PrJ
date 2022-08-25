@@ -22,7 +22,6 @@ const Profile = () => {
   const [status, setStatus] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const { userName } = useParams();
-  console.log(userName);
   const handleOnOpenModal = (type) => {
     dispatch(showModal(type));
   };
@@ -31,17 +30,19 @@ const Profile = () => {
     dispatch(hiddenModal(type));
   };
   const isShowModal = useSelector((state) => state.home.modal);
-
+  const fetchFollowUser = async () => {
+    const { follows, user, follow_with_me } = await followApi.getFollowUser(
+      userName
+    );
+    setUser({ follows, user, follow_with_me });
+  };
   useEffect(() => {
     (async () => {
       try {
         dispatch(setLoading());
         const { newList } = await postApi.getPostAll(userName);
-        const { follows, user, follow_with_me } = await followApi.getFollowUser(
-          userName
-        );
-        console.log(follows, user);
-        setUser({ follows, user, follow_with_me });
+
+        await fetchFollowUser();
         setListPosted(newList);
         setStatus(true);
         dispatch(hiddenModal('FOLLOWING'));
@@ -73,8 +74,19 @@ const Profile = () => {
         idMember: idMember,
         idUser: getUserId(),
       });
+      await fetchFollowUser();
     } catch (error) {}
   };
+  const handleFollowUser = async (idUser) => {
+    try {
+      await followApi.addFriend({
+        user: getUserId(),
+        idFriend: idUser,
+      });
+      await fetchFollowUser();
+    } catch (error) {}
+  };
+
   return (
     <>
       {status && (
@@ -85,6 +97,7 @@ const Profile = () => {
           avatar={avatar}
           onChangeAvatar={handleOnChangeAvatar}
           unfollowUser={handleUnfollowUser}
+          followUser={handleFollowUser}
           isFollowere={isShowModal.FOLLOWERE}
           isFollowing={isShowModal.FOLLOWING}
           onHiddenModal={handleOnClickHideModal}

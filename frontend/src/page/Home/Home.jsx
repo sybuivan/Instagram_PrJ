@@ -40,22 +40,6 @@ const Home = () => {
     })();
   }, []);
 
-  const handleOnClickFollow = async (id) => {
-    const formData = new FormData();
-    formData.append('user', getUserId());
-    formData.append('idFriend', id);
-    const user = await followApi.addFriend({
-      user: getUserId(),
-      idFriend: id,
-    });
-    const newListUser = [...listUserSuggets];
-    const index = newListUser.findIndex((item) => item.id === id);
-    newListUser[index].isFollow = true;
-    setListUserSuggets(newListUser);
-    try {
-    } catch (error) {}
-  };
-
   const handleOnPostComments = async (data) => {
     try {
       const commnet = await commentsApi.createComment(data);
@@ -69,8 +53,7 @@ const Home = () => {
     <>
       {status && (
         <Content
-          onClickFollow={handleOnClickFollow}
-          onClickUnFollow={handleOnClickFollow}
+          // onClickUnFollow={handleOnClickFollow}
           onPostComments={handleOnPostComments}
         />
       )}

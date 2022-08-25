@@ -46,7 +46,7 @@ export const toastify = (type, label) => {
     case 'error': {
       toast.error(label, {
         position: 'top-right',
-        autoClose: 3000,
+        autoClose: 1000,
       });
       break;
     }

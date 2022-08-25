@@ -12,7 +12,11 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { Followers, TabChoose } from '.';
 import { BasicModal } from '../../../components';
-import { FillCameraFill, MoreHorizontal, Settings } from '../../../components/Icons';
+import {
+  FillCameraFill,
+  MoreHorizontal,
+  Settings,
+} from '../../../components/Icons';
 
 const useStyles = makeStyles({
   root: {
@@ -44,11 +48,11 @@ function ProfileInfo({
   onSaveAvatar,
   isPrivate,
   unfollowUser,
+  followUser,
 }) {
   const classes = useStyles();
   const navigate = useNavigate();
   const { user, follows, follow_with_me } = infoUser;
-  console.log('follow_with_me', follow_with_me);
   const handleOpenModal = (type) => {
     onOpenModal(type);
   };
@@ -145,7 +149,7 @@ function ProfileInfo({
                     <Button
                       variant="contained"
                       sx={{ fontSize: '1.2rem' }}
-                      onClick={() => unfollowUser(user.id)}
+                      onClick={() => followUser(user.id)}
                     >
                       Follow
                     </Button>

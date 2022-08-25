@@ -14,8 +14,13 @@ const categoryApi = {
   },
 
   async getSuggetionsForUser(userId) {
-    const listUser = axiosClient.get(`/users/get-suggetions-friend/${userId}`);
-    return listUser;
+    const { listUserSuggets } = await axiosClient.get(
+      `/users/get-suggetions-friend/${userId}`
+    );
+    const newListUser = listUserSuggets.map((v) =>
+      Object.assign(v, { isFollow: false })
+    );
+    return newListUser;
   },
   async findUsers(userSearch) {
     const listResult = await axiosClient.get(`/users/get-search/${userSearch}`);
