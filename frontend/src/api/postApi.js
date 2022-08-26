@@ -30,6 +30,11 @@ const postApi = {
   async deletePostId(id) {
     await axiosClient.delete(`/post/delete-post-id/${id}`);
   },
+
+  async editPostById(formData, id) {
+    const posted = await axiosClient.put(`/post/edit-post-id/${id}`, formData);
+    return posted;
+  },
 };
 
 export default postApi;

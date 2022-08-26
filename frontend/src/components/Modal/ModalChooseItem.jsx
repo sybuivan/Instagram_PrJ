@@ -12,6 +12,7 @@ const ModalChooseItem = ({
   idComment,
   onEditComment,
   onDelete,
+  onEdit,
   onClickHideModal,
   onAcceptDelete,
 }) => {
@@ -40,6 +41,9 @@ const ModalChooseItem = ({
     }
     if (!!onAcceptDelete) {
       onAcceptDelete();
+    }
+    if (!!onEdit) {
+      onEdit();
     }
   };
   return (

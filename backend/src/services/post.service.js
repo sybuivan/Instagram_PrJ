@@ -17,6 +17,18 @@ const deletePostById = async (idPost) => {
   }
   await post.remove();
 };
+
+const editPostById = async (body, id) => {
+  const posted = await Post.findById(id);
+  console.log(posted, id);
+  if (!posted) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Post not found');
+  }
+
+  Object.assign(posted, body);
+  await posted.save();
+  return posted;
+};
 const getPostById = async (id) => {
   const posted = await Post.findById(id).populate({ path: 'user' });
   const comments = await Comments.find({ post_id: id }).populate({ path: 'user_id' });
@@ -73,4 +85,4 @@ const getPostFriend = async (user) => {
   }
 };
 
-module.exports = { createPost, getPostAll, getPostFriend, getPostById, deletePostById };
+module.exports = { createPost, getPostAll, getPostFriend, getPostById, deletePostById, editPostById };

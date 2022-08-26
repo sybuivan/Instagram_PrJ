@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { BasicModal, Footer, ModalChooseItem } from '../../../components';
 import { getUserName, toastify } from '../../../utils';
-import { deletePostById } from '../../PostView/postSlice';
+import {
+  deletePostById,
+  showFormEditPost,
+  fetchGetDetailPost,
+} from '../../PostView/postSlice';
 import { fetchPostFriends, hiddenModal, showModal } from '../homeSlice';
 import ListFriends from './ListFriends';
 import ListPostFriend from './ListPostFriend';
@@ -18,7 +22,7 @@ const Content = ({
   onPostComments,
 }) => {
   const isShowModal = useSelector((state) => state.home.modal);
-  
+
   const { idPost, isPostMe } = useSelector((state) => state.post.inforPost);
   const dispatch = useDispatch();
   const [user, setUser] = useState(null);
@@ -38,7 +42,7 @@ const Content = ({
   const handleOnClickHideModal = (typeModal) => {
     dispatch(hiddenModal(typeModal));
   };
- 
+
   const handleOnAcceptUnFollow = () => {
     dispatch(hiddenModal());
   };
@@ -51,6 +55,13 @@ const Content = ({
       dispatch(fetchPostFriends(getUserName()));
       toastify('success', 'Delete posted successfully');
     } catch (error) {}
+  };
+
+  const handleOnEditPost = () => {
+    dispatch(hiddenModal('MORE_POST'));
+    dispatch(showModal('CREATE_POST'));
+    dispatch(showFormEditPost('show'));
+    dispatch(fetchGetDetailPost(idPost));
   };
   const memoizedCard = useMemo(() => {
     return (
@@ -106,7 +117,11 @@ const Content = ({
                     active={true}
                     onDelete={handleShowModalDelete}
                   />
-                  <ModalChooseItem name="Edit post" active={false} />
+                  <ModalChooseItem
+                    name="Edit post"
+                    active={false}
+                    onEdit={handleOnEditPost}
+                  />
                 </>
               )}
               <ModalChooseItem

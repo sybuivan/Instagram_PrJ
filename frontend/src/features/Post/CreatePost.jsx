@@ -4,7 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { PostHead } from './components';
+import {
+  PostBodyShared,
+  PostContent,
+  PostHead,
+  PostSelect,
+  PostHeadShared,
+} from './components';
 import { BasicModal, ModalChooseItem } from '../../components';
 import { ReactComponent as PicSvg } from '../../assets/images/picVideo.svg';
 import { postApi } from '../../api';
@@ -14,9 +20,10 @@ import {
   hiddenModal,
   showModal,
 } from '../../page/Home/homeSlice';
-import PostContent from './components/PostContent';
-import { getUserId, getUserName } from '../../utils';
+import { getUserId, getUserName, toastify } from '../../utils';
 import { ArrowLeft } from '../../components/Icons';
+import { showContentPost } from '../../page/PostView/postSlice';
+import { useGetPostDetail } from '../../hooks';
 
 const useStyles = makeStyles({
   root: {
@@ -60,7 +67,12 @@ const CreatePost = () => {
   const dispatch = useDispatch();
   const isShowModal = useSelector((state) => state.home.modal);
   const [files, setFiles] = useState();
-  const [isPostContent, setIsPostContent] = useState(false);
+  const isShowContentPost = useSelector(
+    (state) => state.post.isShowContentPost
+  );
+  const isShowEditPost = useSelector((state) => state.post.isEditPost);
+  const detailsPost = useSelector((state) => state.post.detailsPost);
+
   const [shareSucc, setShareSucc] = useState(false);
   const [caption, setCaption] = useState('');
   const {
@@ -96,6 +108,7 @@ const CreatePost = () => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => files?.forEach((file) => URL.revokeObjectURL(file.preview));
   }, []);
+
   const handleOnBack = () => {
     dispatch(showModal('CANCEL'));
   };
@@ -105,12 +118,11 @@ const CreatePost = () => {
   const handleOnDiscard = () => {
     dispatch(hiddenModal('CANCEL'));
     setFiles();
-    setIsPostContent(false);
+    dispatch(showContentPost('hidden'));
   };
 
   const handleOnNext = () => {
-    console.log('NEXT');
-    setIsPostContent(true);
+    dispatch(showContentPost('show'));
   };
   const handleOnChangeCaption = (value) => {
     setCaption(value);
@@ -126,72 +138,82 @@ const CreatePost = () => {
       formData.append('images', files[0], files[0].name);
       formData.append('user', getUserId());
       const post = await postApi.createPost(formData);
-      console.log(post);
       setShareSucc(true);
-      setIsPostContent(false);
+      dispatch(showContentPost('hidden'));
       dispatch(fetchPostFriends(getUserName()));
+    } catch (error) {}
+  };
+  const handleOnEditPost = async () => {
+    try {
+      const post = await postApi.editPostById(
+        {
+          caption: caption,
+          user: getUserId(),
+        },
+        detailsPost._id
+      );
+      dispatch(fetchPostFriends(getUserName()));
+      dispatch(hiddenModal('CREATE_POST'));
+      toastify('success', 'Edit post successfully');
     } catch (error) {}
   };
   const classes = useStyles();
   return (
     <Box
       className={classes.root}
-      sx={{ width: isPostContent ? '70rem' : '45rem' }}
+      sx={{ width: isShowContentPost || isShowEditPost ? '70rem' : '45rem' }}
     >
-      <form onSubmit={handleSubmit(handleOnShare)}>
-        <Box className={classes.postHead}>
-          {!!files && !isPostContent && !shareSucc && (
+      {isShowEditPost ? (
+        <>
+          <form onSubmit={handleSubmit(handleOnEditPost)}>
             <Box className={classes.wrapperHead}>
               <PostHead
+                title="Edit info"
                 icon={<ArrowLeft />}
-                onClickBack={handleOnBack}
-                onClickNext={handleOnNext}
-                name="Next"
+                titleButton="Done"
               />
             </Box>
-          )}
-          {!files && <PostHead title="Create new post" />}
-          {isPostContent && (
-            <Box className={classes.wrapperHead}>
-              <PostHead
-                title="Create new post"
-                icon={<ArrowLeft />}
-                titleButton="Share"
+            <Grid container sx={{ overflow: 'hidden' }}>
+              <PostContent
+                isEdit
+                thumbs={detailsPost?.images}
+                onChangeCaption={handleOnChangeCaption}
+                caption={detailsPost?.caption}
               />
-            </Box>
-          )}
-          {shareSucc && (
-            <Box
-              className={classes.wrapperHead}
-              sx={{ justifyContent: 'center' }}
-            >
-              <Typography
-                variant="h5"
-                sx={{ textAlign: 'center', fontWeight: '600' }}
-              >
-                Post shared
-              </Typography>
-            </Box>
-          )}
-        </Box>
-        {!files ? (
-          <Box {...getRootProps({ className: 'dropzone' })}>
-            <Box className={classes.wrapperPic}>
-              <Box className={classes.boxPic}>
-                <PicSvg />
-                <Typography variant="h5">
-                  Drag photos and videos here
-                </Typography>
+            </Grid>
+          </form>
+        </>
+      ) : (
+        <form onSubmit={handleSubmit(handleOnShare)}>
+          <Box className={classes.postHead}>
+            {!!files && !isShowContentPost && !shareSucc && (
+              <Box className={classes.wrapperHead}>
+                <PostHead
+                  icon={<ArrowLeft />}
+                  onClickBack={handleOnBack}
+                  onClickNext={handleOnNext}
+                  name="Next"
+                />
               </Box>
-
-              <Box>
-                <Button variant="contained">Select from computer</Button>
+            )}
+            {!files && <PostHead title="Create new post" />}
+            {isShowContentPost && (
+              <Box className={classes.wrapperHead}>
+                <PostHead
+                  title="Create new post"
+                  icon={<ArrowLeft />}
+                  titleButton="Share"
+                />
               </Box>
-            </Box>
+            )}
+            <PostHeadShared shareSucc={shareSucc} />
           </Box>
-        ) : (
+
+          <Box {...getRootProps({ className: 'dropzone' })}>
+            <PostSelect files={files} />
+          </Box>
           <Box>
-            {isPostContent ? (
+            {isShowContentPost ? (
               <Grid container sx={{ overflow: 'hidden' }}>
                 <PostContent
                   thumbs={thumbs}
@@ -201,31 +223,13 @@ const CreatePost = () => {
               </Grid>
             ) : (
               <>
-                {shareSucc ? (
-                  <Box className={classes.wrapperPic}>
-                    <Box className={classes.boxPic}>
-                      <Box
-                        component="img"
-                        src="https://static.cdninstagram.com/rsrc.php/v3/yb/r/sHkePOqEDPz.gif"
-                        sx={{
-                          position: 'relative',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                        }}
-                      />
-                      <Typography variant="h5">
-                        Your post has been shared
-                      </Typography>
-                    </Box>
-                  </Box>
-                ) : (
-                  thumbs
-                )}
+                {shareSucc ? <PostBodyShared shareSucc={shareSucc} /> : thumbs}
               </>
             )}
           </Box>
-        )}
-      </form>
+        </form>
+      )}
+
       <BasicModal
         component={
           <ModalPost>

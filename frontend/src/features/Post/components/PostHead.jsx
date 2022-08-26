@@ -22,7 +22,7 @@ const PostHead = ({
       {!!icon && <IconButton onClick={handleOnBack}>{icon}</IconButton>}
       {!!title && (
         <Typography variant="h5" sx={{ textAlign: 'center' }}>
-          Create new post
+          {title}
         </Typography>
       )}
       {!!name && (
@@ -38,7 +38,7 @@ const PostHead = ({
           {name}
         </Box>
       )}
-      {!!titleButton && <Button type="submit">Share</Button>}
+      {!!titleButton && <Button type="submit">{titleButton}</Button>}
     </>
   );
 };

@@ -27,10 +27,16 @@ const deletePostById = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const editPostById = catchAsync(async (req, res) => {
+  const posted = await postService.editPostById(req.body, req.params.id);
+  res.send({ posted });
+});
+
 module.exports = {
   createPost,
   getPostAll,
   getPostFriend,
   getPostById,
   deletePostById,
+  editPostById,
 };

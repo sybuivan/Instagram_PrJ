@@ -6,11 +6,21 @@ export const deletePostById = createAsyncThunk(
     await postApi.deletePostId(payload);
   }
 );
+export const fetchGetDetailPost = createAsyncThunk(
+  '/post/details',
+  async (payload) => {
+    const { posted } = await postApi.getPostById(payload);
+    return posted;
+  }
+);
 
 export const postSlice = createSlice({
   name: 'post',
   initialState: {
     inforPost: {},
+    isShowContentPost: false,
+    isEditPost: false,
+    detailsPost: [],
   },
   reducers: {
     getInforPost: (state, action) => {
@@ -21,14 +31,43 @@ export const postSlice = createSlice({
         state.inforPost = { idPost, isPostMe: false };
       }
     },
+
+    showContentPost: (state, action) => {
+      switch (action.payload) {
+        case 'show':
+          state.isShowContentPost = true;
+          break;
+        case 'hidden':
+          state.isShowContentPost = false;
+          break;
+        default:
+          break;
+      }
+    },
+    showFormEditPost: (state, action) => {
+      switch (action.payload) {
+        case 'show':
+          state.isEditPost = true;
+          break;
+        case 'hidden':
+          state.isEditPost = false;
+          break;
+        default:
+          break;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(deletePostById.fulfilled, (action, payload) => {
       //
     });
+    builder.addCase(fetchGetDetailPost.fulfilled, (state, action) => {
+      state.detailsPost = action.payload;
+    });
   },
 });
 // Action creators are generated for each case reducer function
-export const { getInforPost } = postSlice.actions;
+export const { getInforPost, showContentPost, showFormEditPost } =
+  postSlice.actions;
 
 export default postSlice.reducer;

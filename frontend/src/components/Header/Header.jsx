@@ -1,21 +1,22 @@
 import { Grid, IconButton } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { makeStyles } from '@mui/styles';
 import { Box, Container } from '@mui/system';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import json2mq from 'json2mq';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { images, navRoutesIcon } from '../../constants';
-import { hiddenModal, showModal } from '../../page/Home/homeSlice';
-import { CreateNewPost } from '../../features/Post/components';
-import { logout } from '../../page/Auth/authSlice';
-import { BasicModal } from '../Modal';
 import { LinkItem, MenuFrofile } from '.';
 import { ResultRearch, Search } from '..';
 import { userApi } from '../../api';
+import { images, navRoutesIcon } from '../../constants';
+import { CreateNewPost } from '../../features/Post/components';
 import { useDebounce } from '../../hooks';
+import { logout } from '../../page/Auth/authSlice';
+import { hiddenModal, showModal } from '../../page/Home/homeSlice';
+import { showFormEditPost } from '../../page/PostView/postSlice';
 import { AccountCircle } from '../Icons';
+import { BasicModal } from '../Modal';
 
 const useStyles = makeStyles({
   root: {
@@ -66,6 +67,7 @@ const Header = () => {
   };
   const handleOnClickHideModal = () => {
     dispatch(hiddenModal('CREATE_POST'));
+    dispatch(showFormEditPost('hidden'));
   };
 
   const [openMenu, setOpenMenu] = useState(false);

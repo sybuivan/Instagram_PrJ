@@ -11,4 +11,5 @@ router.get('/get-all/:userName', postController.getPostAll);
 router.get('/get-all-friend/:userId', postController.getPostFriend);
 router.get('/get-post-id/:postId', postController.getPostById);
 router.delete('/delete-post-id/:postId', postController.deletePostById);
+router.put('/edit-post-id/:id', postController.editPostById);
 module.exports = router;
