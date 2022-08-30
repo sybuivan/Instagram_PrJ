@@ -9,35 +9,54 @@ import {
   EditProfile,
   ViewPostDetail,
   NotFound,
-} from '../page';
-import { Auth } from '../page/Auth';
-import Layout from '../components/Layout';
-import { FormEditProfile } from '../page/EditProfile';
-let routes = [
-  // A route object has the same properties as a <Route>
-  // element. The `children` is just an array of child routes.
+} from '../../page';
+import { Auth } from '../../page/Auth';
+import Layout from '../../components/Layout';
+import { FormEditProfile } from '../../page/EditProfile';
+import ProtectedRoute from './ProtectedRoute';
+
+let routes = (isLogin) => [
   {
     path: '/',
     element: <Layout />,
     children: [
       {
         path: '/',
-        element: <Home />,
+        element: (
+          <ProtectedRoute isLogin={isLogin}>
+            <Home />
+          </ProtectedRoute>
+        ),
         children: [{ path: 'view-h/:idPost', element: <PostView /> }],
       },
       {
         path: ':userName',
-        element: <Profile />,
+        element: (
+          <ProtectedRoute isLogin={isLogin}>
+            <Profile />
+          </ProtectedRoute>
+        ),
         children: [
           { path: 'saved', element: <Saved /> },
           { path: 'view-p/:idPost', element: <PostView /> },
         ],
       },
 
-      { path: 'saved', element: <Saved /> },
+      {
+        path: 'saved',
+        element: (
+          <ProtectedRoute isLogin={isLogin}>
+            <Saved />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: 'edit-profile',
-        element: <EditProfile />,
+        element: (
+          <ProtectedRoute isLogin={isLogin}>
+            <EditProfile />
+          </ProtectedRoute>
+        ),
         children: [
           {
             index: true,
@@ -51,11 +70,19 @@ let routes = [
       },
       {
         path: 'message',
-        element: <Message />,
+        element: (
+          <ProtectedRoute isLogin={isLogin}>
+            <Message />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'view-post-detail/:idPost',
-        element: <ViewPostDetail />,
+        element: (
+          <ProtectedRoute isLogin={isLogin}>
+            <ViewPostDetail />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'not-found',
