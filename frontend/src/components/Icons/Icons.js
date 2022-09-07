@@ -16,6 +16,10 @@ import {
   AiFillFacebook,
   AiFillProfile,
   AiOutlineComment,
+  AiOutlinePhone,
+  AiOutlineVideoCamera,
+  AiOutlineInfoCircle,
+  AiOutlinePicture,
 } from 'react-icons/ai';
 import { BiMessageSquareAdd } from 'react-icons/bi';
 
@@ -39,3 +43,7 @@ export const Share = () => <BsShare />;
 export const OutlineComment = () => <AiOutlineComment />;
 export const FillCameraFill = () => <BsFillCameraFill />;
 export const FillGrid3X3GapFill = () => <BsFillGrid3X3GapFill />;
+export const OutlinePhone = () => <AiOutlinePhone />;
+export const OutlineVideoCamera = () => <AiOutlineVideoCamera />;
+export const OutlineInfoCircle = () => <AiOutlineInfoCircle />;
+export const OutlinePicture = () => <AiOutlinePicture />;
