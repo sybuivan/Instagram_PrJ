@@ -14,6 +14,7 @@ import { Auth } from '../../page/Auth';
 import Layout from '../../components/Layout';
 import { FormEditProfile } from '../../page/EditProfile';
 import ProtectedRoute from './ProtectedRoute';
+import { ContentMessage, ContentMessageUser, ContentSend } from '../../page/Message/components';
 
 let routes = (isLogin) => [
   {
@@ -75,6 +76,16 @@ let routes = (isLogin) => [
             <Message />
           </ProtectedRoute>
         ),
+        children: [
+          {
+            index: true,
+            element: <ContentSend />,
+          },
+          {
+            path: ':idUser',
+            element: <ContentMessageUser />,
+          },
+        ],
       },
       {
         path: 'view-post-detail/:idPost',
