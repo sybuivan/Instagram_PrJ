@@ -20,16 +20,16 @@ This repository is still under development and I will continue to add more featu
 - Saved post, chat message(Developing)
 
   <p>
-  <img src="https://ibb.co/VMXHLR8" alt="feed example" width = "400" >
-  <img src="https://ibb.co/WsntxR8" width = "400" >
-  <img src="https://ibb.co/bPvkWZm" alt="go to a profile from feed" width = "400">
-  <img src="https://ibb.co/nsyZdjV" alt="edit profile example" width = "400" >
-  <img src="https://ibb.co/9wTkCxs" alt="comment and activity feed example" width = "400">
+  <img src="https://i.ibb.co/GCgsdyj/login.png" alt="feed example" width = "400" >
+  <img src="https://i.ibb.co/25qNnpV/signup.png" width = "400" >
+  <img src="https://i.ibb.co/KXsJ0kh/homepage.png" alt="go to a profile from feed" width = "400">
+  <img src="https://i.ibb.co/fYWB6HK/detail-post.png" alt="edit profile example" width = "400" >
+  <img src="https://i.ibb.co/28t1fzg/create-post.png" alt="comment and activity feed example" width = "400">
 
-<img src="https://ibb.co/SKW5d7x" alt="feed example" width = "400" >
-<img src="https://ibb.co/FD6qNkb" width = "400" >
-<img src="https://ibb.co/W2cSGgx" alt="go to a profile from feed" width = "400">
-<img src="https://ibb.co/x1R45PM" alt="edit profile example" width = "400" >
-<img src="https://ibb.co/NndrRjY" alt="comment and activity feed example" width = "400">
+<img src="https://i.ibb.co/kSK6kVg/edit-post.png" width = "400" >
+<img src="https://i.ibb.co/WcqGPp3/edit.png" alt="feed example" width = "400" >
+<img src="https://i.ibb.co/qrRb7ky/follwing.png" alt="go to a profile from feed" width = "400">
+<img src="https://i.ibb.co/k4Wdckh/profile.png" alt="edit profile example" width = "400" >
+<img src="https://i.ibb.co/gFLdYTg/tcn.png" alt="comment and activity feed example" width = "400">
 
 </p>
