@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet, useParams } from 'react-router';
 import { commentsApi } from '../../api';
+import { socketIo } from '../../configs';
 import { getUserId, getUserName } from '../../utils';
 import Content from './components/Content';
 import {
