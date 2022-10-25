@@ -1,4 +1,5 @@
 const express = require('express');
+
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -15,6 +16,10 @@ const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 
 const app = express();
+
+// enable cors
+app.use(cors());
+app.options('*', cors());
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
@@ -36,10 +41,6 @@ app.use(mongoSanitize());
 
 // gzip compression
 app.use(compression());
-
-// enable cors
-app.use(cors());
-app.options('*', cors());
 
 // jwt authentication
 app.use(passport.initialize());
@@ -63,6 +64,10 @@ app.use((req, res, next) => {
 
 // convert error to ApiError, if needed
 app.use(errorConverter);
+
+// server.listen(5000, () => {
+//   logger.info('SERVER IS RUNNING');
+// });
 
 // handle error
 app.use(errorHandler);

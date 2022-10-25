@@ -17,6 +17,7 @@ export const registerAccount = createAsyncThunk(
   async (payload) => {
     // Call API to register
     const user = await authApi.registerUser(payload);
+    console.log(user);
     axios.defaults.headers.common[
       'Authorization'
     ] = `Bearer ${user.tokens.access.token}`;
@@ -34,7 +35,6 @@ export const authSlice = createSlice({
       removeSession();
     },
     editProfile: (state, action) => {
-      console.log(action.payload);
       state.current = action.payload.userName;
       setUserName(action.payload.userName);
     },

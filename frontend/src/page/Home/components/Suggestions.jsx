@@ -14,7 +14,6 @@ const Suggestions = ({
 }) => {
   const listUserSuggets = useSelector((state) => state.home.listUserSuggets);
   const friends = useSelector((state) => state.home.listUserFriends);
-  console.log(friends);
   const dispatch = useDispatch();
   const handleOnClickFollow = async (id) => {
     const formData = new FormData();

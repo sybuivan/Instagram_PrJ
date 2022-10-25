@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -18,10 +18,12 @@ import {
   Send,
 } from '../../../components/Icons';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
-import { socketIo } from '../../../configs';
+
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router';
 import { getUserId } from '../../../utils';
+import messagesApi from '../../../api/messagesApi';
+import { io } from 'socket.io-client';
 
 const useStyles = makeStyles({
   root: {
@@ -105,8 +107,36 @@ export const ContentSend = () => {
   );
 };
 
+var connectionOptions = {
+  'force new connection': true,
+  reconnectionAttempts: 'Infinity',
+  timeout: 10000,
+  transports: ['websocket'],
+};
+
+var socketIo = io.connect('http://localhost:5000', connectionOptions);
+
 export const ContentMessageUser = () => {
   const { idUser } = useParams();
+  const [messages, setMessages] = useState([]);
+  const [user, setUser] = useState([]);
+  const [isSend, setIsSend] = useState(false);
+
+  useEffect(() => {
+    socketIo.emit(
+      'join',
+      { toUser: getUserId(), fromUser: idUser },
+      (error) => {
+        if (error) {
+          alert(error);
+        }
+      }
+    );
+    return () => {
+      // socketIo.emit('disconnect');
+      // socketIo.off();
+    };
+  }, [idUser]);
   const {
     control,
     handleSubmit,
@@ -119,19 +149,31 @@ export const ContentMessageUser = () => {
     },
   });
   const handleSendMessage = (data) => {
-    socketIo.emit('send_message', {
-      idClient: idUser,
-      idUser: getUserId(),
-      message: data.messageText,
+    console.log(data);
+    socketIo.emit('send-msg', {
+      toUser: getUserId(),
+      fromUser: idUser,
+      textMessage: data.messageText,
     });
     reset({ messageText: '' });
+    setIsSend((pre) => !pre);
   };
 
   useEffect(() => {
-    socketIo.on('receive_message', (data) => {
-      console.log(data);
+    socketIo.on('msg-recieve', (message) => {
+      setMessages([...messages, message]);
     });
-  }, [socketIo]);
+  }, [messages]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { messages, user } = await messagesApi.getListMessageUser(idUser);
+        setMessages(messages);
+        setUser(user);
+      } catch (error) {}
+    })();
+  }, [idUser]);
   const classes = useStyles();
   return (
     <Box sx={{ height: '100%' }} className={classes.root}>
@@ -145,12 +187,19 @@ export const ContentMessageUser = () => {
           height: ' 6rem',
         }}
       >
-        <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            '& h5': { fontWeight: '600' },
+          }}
+        >
           <Avatar
             alt="Remy Sharp"
-            src="http://localhost:5000/v1/1659004142736272911605_966139784010639_5137371691398520701_n.jpg"
+            src={`http://localhost:5000/v1/${user[0]?.avatar}`}
             sx={{ width: '4rem', height: '4rem', mr: 2 }}
           />
+          <Typography variant="h5">{user[0]?.fullName}</Typography>
         </Box>
         <Box sx={{ '& svg': { fontSize: '2.4rem' } }}>
           <IconButton>
@@ -167,68 +216,16 @@ export const ContentMessageUser = () => {
 
       {/* Content messages */}
       <Box className={classes.boxContent}>
-        <Box className={classes.client}>
-          <Typography variant="span" className={classes.textMessage}>
-            Hello ban
-          </Typography>
-        </Box>
-        <Box className={classes.user}>
-          <Typography variant="span" className={classes.textMessage}>
-            Hello ban
-          </Typography>
-        </Box>
-        <Box className={classes.user}>
-          <Typography variant="span" className={classes.textMessage}>
-            Hello ban
-          </Typography>
-        </Box>
-        <Box className={classes.client}>
-          <Typography variant="span" className={classes.textMessage}>
-            Hello cai qq
-          </Typography>
-        </Box>
-        <Box className={classes.client}>
-          <Typography variant="span" className={classes.textMessage}>
-            Met moi
-          </Typography>
-        </Box>
-        <Box className={classes.client}>
-          <Typography variant="span" className={classes.textMessage}>
-            Toi guc nga!!
-          </Typography>
-        </Box>
-        <Box className={classes.client}>
-          <Typography variant="span" className={classes.textMessage}>
-            Toi dau don
-          </Typography>
-        </Box>
-        <Box className={classes.user}>
-          <Typography variant="span" className={classes.textMessage}>
-            Di cafe khong ban?
-          </Typography>
-        </Box>
-        <Box className={classes.user}>
-          <Typography variant="span" className={classes.textMessage}>
-            コーヒーを飲みましょうか。
-          </Typography>
-          　
-        </Box>
-        <Box className={classes.user}>
-          <Typography variant="span" className={classes.textMessage}>
-            EZIで会い来るね。
-          </Typography>
-        </Box>
-        <Box className={classes.user}>
-          <Typography variant="span" className={classes.textMessage}>
-            コーヒーを飲みましょうか。
-          </Typography>
-          　
-        </Box>
-        <Box className={classes.user}>
-          <Typography variant="span" className={classes.textMessage}>
-            EZIで会い来るね。
-          </Typography>
-        </Box>
+        {messages.map((message, index) => (
+          <Box
+            className={message?.user_id ? classes.user : classes.client}
+            key={index}
+          >
+            <Typography variant="span" className={classes.textMessage}>
+              {message.text_message}
+            </Typography>
+          </Box>
+        ))}
       </Box>
 
       <form onSubmit={handleSubmit(handleSendMessage)}>

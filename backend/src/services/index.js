@@ -6,3 +6,4 @@ module.exports.postService = require('./post.service');
 module.exports.followService = require('./follow.service');
 module.exports.commentsService = require('./comments.service');
 module.exports.likesService = require('./likes.service');
+module.exports.messageService = require('./message.service');
